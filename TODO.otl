@@ -1,0 +1,290 @@
+> Recognisance | Piony | Cion <
+
+TODO
+	2015-04-20 [X] first extract radial layout
+	2015-04-20 [$] then reconcile all buttons and rotate paint itself
+		: but is it really possible for layout abstraction?
+		:> in which case I will try prototype w/o layout to check smoothiness
+	2015-04-22 [X] FIX text 'krita' in the center of ring
+
+RFC
+	[_] RingSegment: extract separate funcs
+		[_] coord-systems conversion code
+		[_] segment contour shrinking
+
+PR-DISTRIBUTION
+	Use them as beta-testers (write email):
+		Blogs of digital painters under Linux
+	Goal:
+		There is provided full-fledged Qt polar layouts group, which can be
+		freely ported and integrated in original Qt.
+	Arch-linux wiki
+	http://linuxwacom.sourceforge.net/wiki/
+
+
+IDEAS
+	2015-04-18 [$] use OpenGL window with transparent background :> replaced by pyqt
+	[_] create 3D sphere, which can be rotated with M2 with buttons on it
+		: ALT: plain-composition of window with magnify
+	[_] how about elliptic rings, with slope on 60 deg -- for hand anisotropy?
+		of course they can be rotated, changing their slope
+	[_] mouse gestures -- useful as I can write complex symbols by pen
+		http://www.gulon.co.uk/2013/01/14/pyqt4-mouse-gestures-part-deux/
+	[_] use whole screen overlay
+		[_] toggle show/hide instead of creating each time
+		[_] whole area around buttons to intercept clicks from drawing in krita
+		[_] ability to create smart hover for buttons, etc, many comfortable UI
+		[_] gestures drawing on transparent canvas
+
+	ICONS
+		[_] can set icons instead of text (applied by blending) in petals
+			| maybe I will be OK simply with hieroglyphs? (case: setStyleSheet)
+		[_] draw icons directly on buttons in edit-icons mode! Export them!
+
+AIR-MENU
+: activation of widget: {overlaying, floating, shadow-casting, bkgr-fading}
+	[_] Air-widgets are loaded in separate subwindows, overlaying original
+		MouseLeave must check that QRegion([QRect,...]).contains(QCursor.pos)
+	[_] Visual: gradient filler and gradient border, opaque around center and transparent at far
+		| inherit QPen and change paintEvent
+	[_] Emulating wpad wheel -- create widget, which can be rotated by wstylus
+		[_] it will emulate events on being rotated in different directions
+		[_] ALT: v/h strip, which being slided generates events -- may be more convenient
+	[_] Air-wheel -- continue  idea of emulating wpad
+		On sector hover (instead Air-slice) show wide floating collar around
+		center -- on top of all rings. Sliding on it concentrically generates
+		events according to direction of sliding.
+		Moving from center closes piony completely.
+		Moving on center -- cancels and returns to previous menu.
+		Wheel widget may be solid, or with radial lines -- trespassing them generates keypress
+	[_] Air-touch select -- autoclick when mouse moves farther then middle of petal
+		Autoclick on center -- solid press of underlying button
+			when moving till petal click edge, its color became more opaque untill
+			acquire full red (press color) -- then you can choose w/o touching panel
+		Autoclick on edge -- air-petal additional to origin button (leaves two cases how to click)
+			can appear as air-petal on outer radial, crossing border -- activates it
+	[_] Air-chain submenu -- air-touch of one closes bud and opens submenu centered on cursor
+	[_] Air-strife -- when button almost have activated air-touch, but wstylus
+		moves through petal side -- activates another actions
+		Move through 3/5 of button activates side-petal ring
+		: instantly or from transparent to opaque when you are farther from center?
+		Floating over real neighbour petals on higher level (with shadow?).
+		One which closest to wstylus -- becomes more opaque
+		: Their appearance -- border and filler are full opaque on contacting
+		: with central petal side and transparent on opposite side.
+		Instead of two petals on side you can use whole ring layout -- Air-slice!
+		It's almost like gestures!
+		Petal by it's own may remain clickable and do another action -- even launch new bud!
+		: E.g. layer mgmt : switch layers by left/right air-petal, create new on click
+	[_] -b : batch -- do not close menu on action
+		click petal -- stay still as is
+		air-touch petal -- reopen/move starting menu at cursor location
+		: so gesture generating multiple different buttons can be contiguous
+		also this flag must be toggled by widget from inside RingMenu
+		: if menu was launched and only then decided to type multiple commands
+		:> widget can be one of corner buttons
+
+LAYOUT
+	<Nesting>   Layer:l - Ring:r - Sector:s - Grid:x:y - Button:b
+	: KISS : for now each level can accept only ones below it
+	Window
+		overlay : local or fullscreen
+	Slice
+		< Manage rings, spacers and four corner buttons (if present -- nw,ne,sw,se)
+		several rings alongside
+		drag ring and switch nesting of neighbours (each button will scale size)
+		: to adapt icons towards hand's anisotropy
+		: to group instruments for current task from different rings
+		rings can be hidden, remaining only small icon in window frame corner
+		has percentage thickness for elastic or fixed width
+	Ring
+		< Manage sectors, spacers
+		emit event on rotate by M3
+	Sector
+		has percentage for elastic filling (60% -> for 6 buttons it's a=360/6*0.6)
+		or has fixed angle for strict mosaic composition
+		space-filler is simply button w/o text and events
+		: but how about partial fillers -- which has air-strife menu?
+	Grid (or replace by binary tree nested splitting? It will be 3x3 max...)
+		divide cell to keep relative position of it's parts
+		: helpful when you need keep several complementary buttons alongside
+		same bkgr color for grouped buttons -- like painting cells similar to Excel
+		merging cells to construct bigger one for more important button
+	Button
+		emit event
+			on press
+			close-up to borders or center
+			cross borders
+		shape -- two straight lines and two concentric arcs, rounded corners
+			coeff of roundness: 0..1 as for square..circle
+			: for more easy pressing of petals, their inner radius may be
+			: negative -- so I will use my elliptic petals in any case:)
+
+
+CONFIGS
+	[_] Support several config formats on cmdline for one-time launch (linux)
+		[_] inner format -- use native classes or directly json dict?
+		[_] json -- complex folded menu
+		[_] plain -- simple 1-ring list
+			: this one must use shared button style to start-up much faster
+
+	[_] Separate settings file
+		[_] <krita...>.json
+			| it can be merged with Qt style file, written in CSS (QSS?)
+		[_] style.js
+			: default style, if not specified one in <...>.json
+		[_] keymap.json
+			: general kbd/mse/wst keys to control menu
+		[_] settings.ini
+
+	Dirty fast
+		http://martin-thoma.com/configuration-files-in-python/
+	Species
+		https://docs.python.org/3.4/library/configparser.html
+		http://www.voidspace.org.uk/python/configobj.html
+		https://docs.python.org/3.4/library/shlex.html#module-shlex
+		https://docs.python.org/2/library/json.html#module-json
+		http://pyyaml.org/wiki/PyYAMLDocumentation
+		OR: use regular python files!
+
+CONTROLS
+	[_] launch until hold
+		pressDown -- menu appears, as you hover buttons highlighted, pressUp -- activate
+		if you don't move from center -- menu disappears
+	2015-04-12 [X] holding M3 allows to move menu on screen
+	[_] on button press event change its hint to red and not press it until mouse release
+		this will give feedback what will be pressed and allow to undo pressing, moving from button
+	MODES
+		[_] while you hold Mod (C/S/A), show another layer (total 1+3!)
+		[_] clicking petal with Mod pressed choses linked layer (total N1)
+			: can be combined with holding mode
+
+UIX
+	2015-04-13 [$] clicks outside menu must be intercepted (not pass over to underlying programm)
+		can be done by fullscreen transparent overlay
+		: actually better to close window on Leave event ouside QRegion circle
+	[_] BUG: petal bHold isn't released if you click on ContextMenu
+		https://wiki.python.org/moin/PyQt/Handling%20context%20menus
+	[_] Replace custom drag by M3 to official dragMoveEvent ? Or eventHolder
+	[_] Suggest menu scaling in edit mode. Sizes: min from font, max from screen.
+	2015-04-20 [X] RingSegment class (draft version)
+	[_] Adjustable RingSegment class (merge petal's ellipse and segment)
+	[_] BUG: replace items order CW -> CCW
+	Flags
+		[_] -P : disable pop-up items, for those who is irritated
+
+
+VISUALS
+	2015-04-14 [X] make clipping ellipse over petals to leave focus on circle, not square
+	[_] replace filling with gradient (radial?) to add volume
+		http://doc.qt.digia.com/4.6/painting-painterpaths.html
+	2015-04-21 [X] BUG: bad antialising due to clipping mask, make it more steady
+	2015-04-21 [X] BUG: petals positions are somewhat none-symmetrical
+		2015-04-18 [$] lets try QPointF :: No such
+		2015-04-18 [$] place all button on top each other and rotate only painting inside
+	2015-04-21 [X] inner petal's half-ellipses must cover arc (180-a), outer=(180+a)
+		http://en.wikipedia.org/wiki/Ellipse
+	[_] self.spacer() as pre-modifier for button outer size: path and mask
+	[_] for Tab selecting of petal, there must be highlight different from hover
+		thin red-thansparent gradient lines as outer contour to current yellow.
+		they will cover only half-leght of one petal, fading out with distance
+
+SYSTEM
+	[_] Port to PyQt5 and python3
+		[_] http://pyqt.sourceforge.net/Docs/PyQt5/pyqt4_differences.html
+		[_] http://habrahabr.ru/post/248189/
+		[X] Complete current dev stage and only then port
+	[_] Port layouts to QGraphicsLayout and QGraphicsWidget (for QRectF support)
+		http://pyqt.sourceforge.net/Docs/PyQt4/qgraphicslayoutitem.html
+		: A top-level item's style defaults to QGraphicsScene.style
+		: Graphics View provides a custom drag and drop framework, different from QWidget.
+		: If you are subclassing from QGraphicsItem directly and not from one
+		: of the provided subclasses like QGraphicsEllipseItem, make sure
+		: your contains() and boundingRect() methods are returning the correct results
+		http://www.qtcentre.org/threads/40241-PyQt-QGraphicsItem-not-recieving-mouse-events
+	[_] try set my window as 'modal' -- to intercept all input events
+		: but this possible only for subwindows, or not?
+	[_] Optimize event calls with caching and restructuring
+		: e.g. setGeometry called three times on launch!
+	[_] only one instance
+		https://pythonadventures.wordpress.com/2013/01/10/launch-just-one-instance-of-a-qt-application/
+		: now on creating new, previous instance is closed due to losing focus
+	[_] find last active window to send keystrokes
+		https://github.com/Mte90/QAsana/blob/master/qasana.py
+		: or you can simply unfocuse current before sending keystrokes
+	[_] checkinstall : create and install package on system
+		http://habrahabr.ru/post/130868/
+		or use similar to ranger's setup.py
+		Посмотрите в сторону pacinstall/wocka — аналоги checkinstall для Arch.
+		: В Arch'е тоже отличная штука есть: makepkg называется, грузит
+		: исходники и собирает пакет по простенькому скрипту (PKGBUILD).  Тоже
+		: пользуется fakeroot'ом, об этом даже задумываться не надо.  Умеет
+		: готовить скрипт сборки для загрузки в AUR (репозиторий
+		: пользовательских пакетов Arch'а) и сама доложит в архив всё, что
+		: надо (если есть какие-то сторонние патчи, которые нельзя стянуть с
+		: интернета во время установки).
+		Mac:
+			http://guide.macports.org/#development
+			http://site/sources/coolsoft-1.2.3.tgz
+	Flags
+		[_] -d <v/a>: debug all/{visuals/actions}
+		[_] -f : overlay fullscreen / local
+		[_] -p : print choosen value / simulate action as keystroke to xdootool
+			: allows create bash-friendly dmenu analog, combined with straight
+			: config feeding
+
+LAYERS
+	[_] layers -- bud profiles to switch
+	[_] switch wpad wheel functions through additional ui around bud
+	[_] wpad wheel must select current sector of radial menu
+		[_] try to select by absolute wheel value, not relative
+	[_] wpad wheel can scroll through available buds and wheels (cool: wheel to choose wheel!)
+	[_] more logically would be show different rings when you hold modifiers
+		C/S/A instead of allowing drag window on M1, as it's already possible with i3
+	| How-to intuitively fuse between layers by UI element?
+
+RINGS
+	[_] each petal will shrink in length and will be more compact
+	[_] func to insert new petal takes button and position to insert (<Ring_n,CCW_pos>)
+	Flags
+		[_] -r <N> : many rings of petals -- 1,2,3... -- next around previous
+		[_] -s <N> : slots dynamic / fixate amount on ring
+
+GROUPS
+	[_] color groups -- different filler tint colors for slots in groups
+		case: re-use values from setStyleSheet() instead my own
+	[_] different petal angle width depending on usage frequency
+		like ccw-decreasing spiral as top-right petals are most simple to access
+		[_] may use QSpacerItem to deal with unfull fixed-angle petals ring
+
+EDIT MENU
+	[_] activate editing mode from context menu
+		drag-n-drop buttons around rings
+	Animation
+		http://doc.qt.io/qt-5/qpropertyanimation.html
+
+
+>>> TESTS >>>
+< [_] Maybe, test under Windows too? It will expand users.
+	http://habrahabr.ru/post/248189/
+
+TILE-WM
+	[_] Overlay on-top of fullscreen window
+		[_] local bud
+		[_] fullscreen bud
+
+PY
+	http://pythontesting.net/framework/pytest/pytest-introduction/
+	http://pytest.org/latest/example/index.html
+	http://pytest.org/latest/fixture.html#fixtures
+	http://pytest.org/latest/plugins.html#plugins
+	Automate testing in reprodusable env
+		https://testrun.org/tox/latest/
+
+	SEE: http://pytest.org/latest/apiref.html#apiref
+	PyQt testing
+		https://wiki.python.org/moin/PyQt/Tutorials
+		http://johnnado.com/pyqt-qtest-example/
+
+
+

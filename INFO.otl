@@ -1,0 +1,74 @@
+> Awesome Python frameworks, libraries and software list
+	https://github.com/vinta/awesome-python
+
+Consider caching of calculated results
+	: if (d->isDirty() || rect != geometry()) {
+	: 	QRect cr = alignment() ? alignmentRect(rect) : rect;
+	: 	d->distribute(cr, horizontalSpacing(), verticalSpacing());
+	: 	QLayout::setGeometry(rect);
+	: }
+
+Size distribute
+	qgridlayout.cpp:917
+		void QGridLayoutPrivate::distribute(QRect r, int hSpacing, int vSpacing)
+
+Use styles instead my own vehicle:
+	http://doc.qt.io/qt-4.8/style-reference.html
+
+Create layout
+: see when creating nested layouts
+	http://doc.qt.io/qt-4.8/layout.html
+: next to it is styles -- is interesting too
+
+	: void QGridLayout::addLayout(QLayout *layout, int row, int column, Qt::Alignment alignment)
+	: {
+	: 	Q_D(QGridLayout);
+	: 	if (!adoptLayout(layout))
+	: 		return;
+	: 	QGridBox *b = new QGridBox(layout);
+	: 	b->setAlignment(alignment);
+	: 	d->add(b, row, column);
+	: }
+
+	: void QGridLayoutPrivate::add(QGridBox *box, int row, int col)
+	: {
+	: 	expand(row + 1, col + 1);
+	: 	box->row = box->torow = row;
+	: 	box->col = box->tocol = col;
+	: 	things.append(box);
+	: 	setDirty();
+	: 	setNextPosAfter(row, col);
+	: }
+
+when creating grid:
+	~/hub/qt/src/gui/kernel/qgridlayout.cpp
+
+New widget:
+	Reimplement QWidget::sizeHint() to return the preferred size of the widget.
+	Reimplement QWidget::minimumSizeHint() to return the smallest size the widget can have.
+	Call QWidget::setSizePolicy() to specify the space requirements of the widget.
+	Call QWidget::updateGeometry() whenever the size hint, minimum size hint
+	or size policy changes. This will cause a layout recalculation. Multiple
+	consecutive calls to QWidget::updateGeometry() will only cause one layout
+	recalculation.
+
+hide -- will it be useful?
+	To remove a widget from a layout, call removeWidget(). Calling
+	QWidget::hide() on a widget also effectively removes the widget
+	from the layout until QWidget::show() is called.
+
+# ["foo", " bar", "baz"].index('bar')
+
+profiling
+	list2 = [4, 5, 6]*10**5
+	list1 = [1, 2, 3]*10**5
+	%timeit from operator import add;map(add, list1, list2)
+	: 10 loops, best of 3: 44.6 ms per loop
+	%timeit from itertools import izip; [a + b for a, b in izip(list1, list2)]
+	: 10 loops, best of 3: 71 ms per loop
+	%timeit [a + b for a, b in zip(list1, list2)]
+	: 10 loops, best of 3: 112 ms per loop
+	%timeit from itertools import izip;[sum(x) for x in izip(list1, list2)]
+	: 1 loops, best of 3: 139 ms per loop
+	%timeit [sum(x) for x in zip(list1, list2)]
+	: 1 loops, best of 3: 177 ms per loop

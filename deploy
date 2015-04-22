@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+die() { echo "Install '$1' by [sudo apt-get install $1] (on Ubuntu/Debian/LinuxMint)"; exit 1; }
+
+## Check availability of programms
+for pr in xdotool xbindkeys pgrep; do
+    which $pr > /dev/null || die $pr
+done
+
+## Setup controls
+FL=/tmp/wacom_xbindkeysrc
+cat - << EOT > "$FL"
+# Disable mapping if needed
+"kill \$(pgrep xbindkeys)"
+    Mod4 + q
+
+# Launch piony menu
+"~/aura/devq/projects/piony/piony.py"
+    F8
+"~/aura/devq/projects/piony/piony.py"
+    Mod4 + F7+Release
+EOT
+
+## Launch demon
+pr=xbindkeys
+killall -q $pr
+pgrep $pr > /dev/null || $pr -f "$FL" &
+# killall -HUP $pr -- changes in .xbindkeysrc takes effect only after moving mouse
