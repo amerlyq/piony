@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 # vim: fileencoding=utf-8
 
-# http://pyqt.sourceforge.net/Docs/PyQt4/qmouseevent.html
-
 import sys, os
 from piony import *
 from PyQt5.QtWidgets import QApplication
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

@@ -1,6 +1,9 @@
 > Awesome Python frameworks, libraries and software list
 	https://github.com/vinta/awesome-python
 
+See
+	http://pyqt.sourceforge.net/Docs/PyQt4/qmouseevent.html
+
 Consider caching of calculated results
 	: if (d->isDirty() || rect != geometry()) {
 	: 	QRect cr = alignment() ? alignmentRect(rect) : rect;
@@ -11,9 +14,6 @@ Consider caching of calculated results
 Size distribute
 	qgridlayout.cpp:917
 		void QGridLayoutPrivate::distribute(QRect r, int hSpacing, int vSpacing)
-
-Use styles instead my own vehicle:
-	http://doc.qt.io/qt-4.8/style-reference.html
 
 Create layout
 : see when creating nested layouts

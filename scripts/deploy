@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+## Go to project dir
+SDIR="$(readlink -m ${0%/*})"
+PROJ="${SDIR%/*/*}"
+cd "$PROJ"
+
 die() { echo "Install '$1' by [sudo apt-get install $1] (on Ubuntu/Debian/LinuxMint)"; exit 1; }
 
 ## Check availability of programms
@@ -15,9 +20,9 @@ cat - << EOT > "$FL"
     Mod4 + q
 
 # Launch piony menu
-"~/aura/devq/projects/piony/piony.py"
+"$PWD/piony.py"
     F8
-"~/aura/devq/projects/piony/piony.py"
+"$PWD/piony.py"
     Mod4 + F7+Release
 EOT
 

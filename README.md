@@ -48,11 +48,11 @@ There is already written ```deploy``` script, which will set all that by itself.
 
 Custom Environment
 -------------------
- * i3wm:
+ * Make window floating for i3wm: {```~/.i3/config```}
 ```
   for_window [class="^piony.py"] floating enable
 ```
- * compton:
+ * Disable shadow in compton: {```~/.config/compton.conf```}
 ```
   shadow-exclude = [ "class_g = 'piony.py'" ];
 ```

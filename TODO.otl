@@ -1,4 +1,4 @@
-> Recognisance | Piony | Cion <
+>>> Piony >>>
 
 TODO
 	2015-04-20 [X] first extract radial layout
@@ -11,16 +11,6 @@ RFC
 	[_] RingSegment: extract separate funcs
 		[_] coord-systems conversion code
 		[_] segment contour shrinking
-
-PR-DISTRIBUTION
-	Use them as beta-testers (write email):
-		Blogs of digital painters under Linux
-	Goal:
-		There is provided full-fledged Qt polar layouts group, which can be
-		freely ported and integrated in original Qt.
-	Arch-linux wiki
-	http://linuxwacom.sourceforge.net/wiki/
-
 
 IDEAS
 	2015-04-18 [$] use OpenGL window with transparent background :> replaced by pyqt
@@ -170,6 +160,8 @@ UIX
 	2015-04-20 [X] RingSegment class (draft version)
 	[_] Adjustable RingSegment class (merge petal's ellipse and segment)
 	[_] BUG: replace items order CW -> CCW
+	[_] Use styles instead my own vehicle:
+		http://doc.qt.io/qt-4.8/style-reference.html
 	Flags
 		[_] -P : disable pop-up items, for those who is irritated
 
@@ -212,20 +204,7 @@ SYSTEM
 	[_] find last active window to send keystrokes
 		https://github.com/Mte90/QAsana/blob/master/qasana.py
 		: or you can simply unfocuse current before sending keystrokes
-	[_] checkinstall : create and install package on system
-		http://habrahabr.ru/post/130868/
-		or use similar to ranger's setup.py
-		Посмотрите в сторону pacinstall/wocka — аналоги checkinstall для Arch.
-		: В Arch'е тоже отличная штука есть: makepkg называется, грузит
-		: исходники и собирает пакет по простенькому скрипту (PKGBUILD).  Тоже
-		: пользуется fakeroot'ом, об этом даже задумываться не надо.  Умеет
-		: готовить скрипт сборки для загрузки в AUR (репозиторий
-		: пользовательских пакетов Arch'а) и сама доложит в архив всё, что
-		: надо (если есть какие-то сторонние патчи, которые нельзя стянуть с
-		: интернета во время установки).
-		Mac:
-			http://guide.macports.org/#development
-			http://site/sources/coolsoft-1.2.3.tgz
+
 	Flags
 		[_] -d <v/a>: debug all/{visuals/actions}
 		[_] -f : overlay fullscreen / local
@@ -262,29 +241,4 @@ EDIT MENU
 		drag-n-drop buttons around rings
 	Animation
 		http://doc.qt.io/qt-5/qpropertyanimation.html
-
-
->>> TESTS >>>
-< [_] Maybe, test under Windows too? It will expand users.
-	http://habrahabr.ru/post/248189/
-
-TILE-WM
-	[_] Overlay on-top of fullscreen window
-		[_] local bud
-		[_] fullscreen bud
-
-PY
-	http://pythontesting.net/framework/pytest/pytest-introduction/
-	http://pytest.org/latest/example/index.html
-	http://pytest.org/latest/fixture.html#fixtures
-	http://pytest.org/latest/plugins.html#plugins
-	Automate testing in reprodusable env
-		https://testrun.org/tox/latest/
-
-	SEE: http://pytest.org/latest/apiref.html#apiref
-	PyQt testing
-		https://wiki.python.org/moin/PyQt/Tutorials
-		http://johnnado.com/pyqt-qtest-example/
-
-
 

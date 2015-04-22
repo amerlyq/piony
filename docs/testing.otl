@@ -1,0 +1,20 @@
+>>> TESTS >>>
+
+TILE-WM
+	[_] Overlay on-top of fullscreen window
+		[_] local bud
+		[_] fullscreen bud
+
+PY
+	http://pythontesting.net/framework/pytest/pytest-introduction/
+	http://pytest.org/latest/example/index.html
+	http://pytest.org/latest/fixture.html#fixtures
+	http://pytest.org/latest/plugins.html#plugins
+	Automate testing in reprodusable env
+		https://testrun.org/tox/latest/
+
+	SEE: http://pytest.org/latest/apiref.html#apiref
+	PyQt testing
+		https://wiki.python.org/moin/PyQt/Tutorials
+		http://johnnado.com/pyqt-qtest-example/
+

@@ -1,0 +1,42 @@
+>>> DISTRIBUTION >>>
+
+< [_] Maybe, test under Windows too? It will expand users.
+	http://habrahabr.ru/post/248189/
+
+Python
+	[_] setup.py wheels
+		http://pythonwheels.com/
+		http://habrahabr.ru/post/210450/
+	[_] checkinstall : create and install package on system
+		http://habrahabr.ru/post/130868/
+		or use similar to ranger's setup.py
+		Посмотрите в сторону pacinstall/wocka — аналоги checkinstall для Arch.
+		: В Arch'е тоже отличная штука есть: makepkg называется, грузит
+		: исходники и собирает пакет по простенькому скрипту (PKGBUILD).
+		: Тоже пользуется fakeroot'ом, об этом даже задумываться не надо.
+		: Умеет готовить скрипт сборки для загрузки в AUR (репозиторий
+		: пользовательских пакетов Arch'а) и сама доложит в архив всё, что
+		: надо (если есть какие-то сторонние патчи, которые нельзя стянуть
+		: с интернета во время установки).
+	[_] Mac:
+		http://guide.macports.org/#development
+		http://site/sources/coolsoft-1.2.3.tgz
+
+	Для меня это выглядит слишком мудрено. Мы считаем что единственно правильный
+	путь распространения пакетов для Linux это deb/rpm.
+	FPM делает создание пакетов тривиальным.
+	Мы даже не используем virtualenv — вполне достаточно установить PYTHONPATH.
+
+Isolated env
+	http://www.fig.sh/
+
+
+PR-DISTRIBUTION
+	Use them as beta-testers (write email):
+		Blogs of digital painters under Linux
+	Goal:
+		There is provided full-fledged Qt polar layouts group, which can be
+		freely ported and integrated in original Qt.
+	Arch-linux wiki
+	http://linuxwacom.sourceforge.net/wiki/
+
