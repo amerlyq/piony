@@ -34,6 +34,10 @@ Isolated env
 
 
 PR-DISTRIBUTION
+	Host blog on gitpages for programm
+		https://pages.github.com/
+		http://jekyllrb.com/
+		https://github.com/jekyll/jekyll/issues/277
 	Use them as beta-testers (write email):
 		Blogs of digital painters under Linux
 	Goal:

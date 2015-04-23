@@ -15,6 +15,7 @@ RFC
 
 IDEAS
 	2015-04-18 [$] use OpenGL window with transparent background :> replaced by pyqt
+		:> need too much time to start application, delayed feeling
 	[_] create 3D sphere, which can be rotated with M2 with buttons on it
 		: ALT: plain-composition of window with magnify
 	[_] how about elliptic rings, with slope on 60 deg -- for hand anisotropy?
@@ -246,6 +247,10 @@ SYSTEM
 		[_] -p : print choosen value / simulate action as keystroke to xdootool
 			: allows create bash-friendly dmenu analog, combined with straight
 			: config feeding
+	[_] multithreading to accelerate air-layouts pre-creation and launch time
+		http://stackoverflow.com/questions/2846653/python-multithreading-for-dummies
+		http://www.tutorialspoint.com/python/python_multithreading.htm
+
 
 
 > SUPPORT
