@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 # vim: fileencoding=utf-8
 
+from PyQt5 import QtCore,QtGui,QtWidgets
+
 from .action import sendKey
 from .hgevent import HGEvent
 from .layout_sector import *
 from .segment_button import *
-from PyQt5 import QtCore,QtGui,QtWidgets
+
 
 class Window(QtWidgets.QWidget, HGEvent):
-    def __init__(self, names):
+    def __init__(self, bud):
         super().__init__()
         self.bM3 = False
         self.ppos = QtCore.QPoint()
@@ -16,7 +18,7 @@ class Window(QtWidgets.QWidget, HGEvent):
         self.dr = 80
 
         self.setWnd()
-        self.setContent(names)
+        self.setContent(bud)
         self.resize(self.sizeHint())
         self.centerOnCursor()
 
@@ -34,7 +36,6 @@ class Window(QtWidgets.QWidget, HGEvent):
             )
         self.installEventFilter(self)
         self.setMouseTracking(True)
-        self.setWindowTitle('Piony')
 
         # Context menu -- can be used to add new shortcuts "on the fly"
         quitAction = QtWidgets.QAction("E&xit", self, shortcut="Ctrl+Q",
@@ -42,15 +43,20 @@ class Window(QtWidgets.QWidget, HGEvent):
         self.addAction(quitAction)
         self.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
 
-    def setContent(self, names):
+    def setContent(self, bud):
         # QtGui.QToolTip.setFont(QtGui.QFont('Ubuntu', 12))
         # self.setToolTip('This is a <b>QWidget</b> widget')
 
-        playout = SectorLayout(self.r, self.dr)
-        for name in names:
+        playout = SectorLayout(self.r, self.dr, 0)
+        for segment in bud:
+            if isinstance(segment, dict):
+                action = segment.get('action', None)
+                name = segment.get('name', action)
+            else:
+                name = segment
             btn = SegmentButton(None, name)
             # btn.setToolTip('Action -> <b>' + name + '</b>')
-            btn.clicked.connect(lambda b,nm=name: sendKey(nm))
+            btn.clicked.connect(lambda b: sendKey(name))
             playout.addWidget(btn)
         self.setLayout(playout)
 
@@ -63,8 +69,6 @@ class Window(QtWidgets.QWidget, HGEvent):
         # self.grid.addWidget(lbl, *pos)
 
     def drawBkgr(self, p):
-        p.begin(self)
-        p.setRenderHint(QtWidgets.QPainter.Antialiasing);
         p.setPen(QtCore.Qt.NoPen);
         p.setBrush(QtGui.QColor(255, 255, 0, 50));
         p.drawEllipse(self.rect());
@@ -78,9 +82,9 @@ class Window(QtWidgets.QWidget, HGEvent):
         p.drawText(tq, Qt.AlignCenter, "krita")
 
     def paintEvent(self, e):
-        p = QtWidgets.QStylePainter(self)
-        if g_bDebugVisuals: self.drawBkgr(p)
-        self.drawName(p)
+        p = QtWidgets.QStylePainter(self) # p.begin(self)
+        if G_DEBUG_VISUALS: self.drawBkgr(p)
+        # self.drawName(p)  # temporarily disabled
         p.end()
 
     """

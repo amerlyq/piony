@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # vim: fileencoding=utf-8
 
-g_bDebugActions = True
-g_bDebugVisuals = False  # True
+G_DEBUG_ACTIONS = True
+G_DEBUG_VISUALS = False  # True
 
 
 ## ----------

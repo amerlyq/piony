@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 # vim: fileencoding=utf-8
 
-from .common import *
-
 import math
 from PyQt5 import QtGui
 from PyQt5.QtCore import *
+
+from .common import *
+
 
 class RingSegment(object):
     def __init__(self, r, a, dr, da):     # 4 -- 3

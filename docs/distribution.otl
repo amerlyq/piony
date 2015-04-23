@@ -4,12 +4,14 @@
 	http://habrahabr.ru/post/248189/
 
 Python
-	[_] setup.py wheels
+	[_] setup.py
+		http://www.vascop.com/simple-guide-to-packaging-python-applications.html
+		or use similar to ranger's setup.py
+	[_] wheels
 		http://pythonwheels.com/
 		http://habrahabr.ru/post/210450/
 	[_] checkinstall : create and install package on system
 		http://habrahabr.ru/post/130868/
-		or use similar to ranger's setup.py
 		Посмотрите в сторону pacinstall/wocka — аналоги checkinstall для Arch.
 		: В Arch'е тоже отличная штука есть: makepkg называется, грузит
 		: исходники и собирает пакет по простенькому скрипту (PKGBUILD).

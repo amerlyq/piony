@@ -6,6 +6,7 @@ TODO
 		: but is it really possible for layout abstraction?
 		:> in which case I will try prototype w/o layout to check smoothiness
 	2015-04-22 [X] FIX text 'krita' in the center of ring
+	[_] Compare performance for individual pathes and QTransform rotated.
 
 RFC
 	[_] RingSegment: extract separate funcs
@@ -79,6 +80,7 @@ LAYOUT
 	: KISS : for now each level can accept only ones below it
 	Window
 		overlay : local or fullscreen
+		several slices to switch as layers
 	Slice
 		< Manage rings, spacers and four corner buttons (if present -- nw,ne,sw,se)
 		several rings alongside
@@ -89,7 +91,11 @@ LAYOUT
 		has percentage thickness for elastic or fixed width
 	Ring
 		< Manage sectors, spacers
-		emit event on rotate by M3
+		[_] emit event on rotate by M3
+		[_] each petal will shrink in length and will be more compact
+		[_] func to insert new petal takes button and position to insert (<Ring_n,CCW_pos>)
+		[_] -r <N> : many rings of petals -- 1,2,3... -- next around previous
+		[_] -s <N> : slots dynamic / fixate amount on ring
 	Sector
 		has percentage for elastic filling (60% -> for 6 buttons it's a=360/6*0.6)
 		or has fixed angle for strict mosaic composition
@@ -112,6 +118,11 @@ LAYOUT
 
 
 CONFIGS
+	[_] Command line arguments support
+		https://docs.python.org/3/library/argparse.html
+		https://pythonhosted.org/kitchen/unicode-frustrations.html
+		https://docs.python.org/2/tutorial/introduction.html#tut-unicodestrings
+	2015-04-23 [X] Basic config support in json
 	[_] Support several config formats on cmdline for one-time launch (linux)
 		[_] inner format -- use native classes or directly json dict?
 		[_] json -- complex folded menu
@@ -126,6 +137,10 @@ CONFIGS
 		[_] keymap.json
 			: general kbd/mse/wst keys to control menu
 		[_] settings.ini
+
+	[_] -c /{-/<path>}: path to configs
+		[_] - : read config from stdin
+		[_] <path> : relative in ./cfgs/ or absolute in ~/.piony/
 
 	Dirty fast
 		http://martin-thoma.com/configuration-files-in-python/
@@ -142,25 +157,36 @@ CONTROLS
 		pressDown -- menu appears, as you hover buttons highlighted, pressUp -- activate
 		if you don't move from center -- menu disappears
 	2015-04-12 [X] holding M3 allows to move menu on screen
+	[_] Replace custom drag by M3 to official dragMoveEvent ? Or eventHolder
 	[_] on button press event change its hint to red and not press it until mouse release
 		this will give feedback what will be pressed and allow to undo pressing, moving from button
 	MODES
 		[_] while you hold Mod (C/S/A), show another layer (total 1+3!)
 		[_] clicking petal with Mod pressed choses linked layer (total N1)
 			: can be combined with holding mode
+	LAYERS
+		[_] switch wpad wheel functions through additional ui around bud
+		[_] wpad wheel must select current sector of radial menu
+			[_] try to select by absolute wheel value, not relative
+		[_] wpad wheel can scroll through available buds and wheels (cool: wheel to choose wheel!)
+		[_] more logically would be show different rings when you hold modifiers
+			C/S/A instead of allowing drag window on M1, as it's already possible with i3
+		| How-to intuitively fuse between layers by UI element?
 
 UIX
 	2015-04-13 [$] clicks outside menu must be intercepted (not pass over to underlying programm)
-		can be done by fullscreen transparent overlay
-		: actually better to close window on Leave event ouside QRegion circle
+		: can be done by fullscreen transparent overlay
+		:> actually better to close window on Leave event ouside QRegion circle
 	[_] BUG: petal bHold isn't released if you click on ContextMenu
 		https://wiki.python.org/moin/PyQt/Handling%20context%20menus
-	[_] Replace custom drag by M3 to official dragMoveEvent ? Or eventHolder
 	[_] Suggest menu scaling in edit mode. Sizes: min from font, max from screen.
 	2015-04-20 [X] RingSegment class (draft version)
-	[_] Adjustable RingSegment class (merge petal's ellipse and segment)
-	[_] BUG: replace items order CW -> CCW
-	[_] Use styles instead my own vehicle:
+	2015-04-22 [X] BUG: replace items order CW -> CCW
+	[_] BUG: resets geometry position to 0,0 when cursor at screen border
+	[_] BUG: no text when only 1 element in ring list -- must show at farthest
+	[_] BUG: exception when list is empty -> must show only ring bkgr
+	[_] If possible, use styles instead my own vehicle:
+		http://wiki.qt.io/Main_Page
 		http://doc.qt.io/qt-4.8/style-reference.html
 	Flags
 		[_] -P : disable pop-up items, for those who is irritated
@@ -170,22 +196,31 @@ VISUALS
 	2015-04-14 [X] make clipping ellipse over petals to leave focus on circle, not square
 	[_] replace filling with gradient (radial?) to add volume
 		http://doc.qt.digia.com/4.6/painting-painterpaths.html
+	[_] Adjustable RingSegment class (merge petal's ellipse and segment)
+		[_] use bezier (cubicTo) to draw segment -- then I will have more control
+		: http://doc.qt.digia.com/4.6/painting-painterpaths.html
 	2015-04-21 [X] BUG: bad antialising due to clipping mask, make it more steady
 	2015-04-21 [X] BUG: petals positions are somewhat none-symmetrical
 		2015-04-18 [$] lets try QPointF :: No such
 		2015-04-18 [$] place all button on top each other and rotate only painting inside
 	2015-04-21 [X] inner petal's half-ellipses must cover arc (180-a), outer=(180+a)
 		http://en.wikipedia.org/wiki/Ellipse
-	[_] self.spacer() as pre-modifier for button outer size: path and mask
+	2015-04-23 [X] self.spacing() as pre-modifier for button outer size: path and mask
 	[_] for Tab selecting of petal, there must be highlight different from hover
 		thin red-thansparent gradient lines as outer contour to current yellow.
 		they will cover only half-leght of one petal, fading out with distance
 
+	GROUPS
+		[_] color groups -- different filler tint colors for slots in groups
+			case: re-use values from setStyleSheet() instead my own
+		[_] different petal angle width depending on usage frequency
+			like ccw-decreasing spiral as top-right petals are most simple to access
+			[_] may use QSpacerItem to deal with unfull fixed-angle petals ring
+
 SYSTEM
-	[_] Port to PyQt5 and python3
-		[_] http://pyqt.sourceforge.net/Docs/PyQt5/pyqt4_differences.html
-		[_] http://habrahabr.ru/post/248189/
-		[X] Complete current dev stage and only then port
+	2015-04-23 [X] Port to PyQt5 and python3
+		2015-04-23 [X] http://pyqt.sourceforge.net/Docs/PyQt5/pyqt4_differences.html
+		2015-04-23 [X] Complete current dev stage and only then port
 	[_] Port layouts to QGraphicsLayout and QGraphicsWidget (for QRectF support)
 		http://pyqt.sourceforge.net/Docs/PyQt4/qgraphicslayoutitem.html
 		: A top-level item's style defaults to QGraphicsScene.style
@@ -212,31 +247,19 @@ SYSTEM
 			: allows create bash-friendly dmenu analog, combined with straight
 			: config feeding
 
-LAYERS
-	[_] layers -- bud profiles to switch
-	[_] switch wpad wheel functions through additional ui around bud
-	[_] wpad wheel must select current sector of radial menu
-		[_] try to select by absolute wheel value, not relative
-	[_] wpad wheel can scroll through available buds and wheels (cool: wheel to choose wheel!)
-	[_] more logically would be show different rings when you hold modifiers
-		C/S/A instead of allowing drag window on M1, as it's already possible with i3
-	| How-to intuitively fuse between layers by UI element?
 
-RINGS
-	[_] each petal will shrink in length and will be more compact
-	[_] func to insert new petal takes button and position to insert (<Ring_n,CCW_pos>)
-	Flags
-		[_] -r <N> : many rings of petals -- 1,2,3... -- next around previous
-		[_] -s <N> : slots dynamic / fixate amount on ring
+> SUPPORT
+	[_] Isolated environment -- several testing environments
+		http://habrahabr.ru/post/248189/
+	[_] Docstrings, make documentation -- add docs extraction
+		https://www.python.org/dev/peps/pep-0257/
+	[_] Style guideline -- add script with autochecking
+		https://code.google.com/p/rad2py/wiki/CodingStandard
+	[_] Multilang support -- extract texts into lang file
+		http://blog.nicolargo.com/2012/11/internationaliser-ses-programmes-python.html
 
-GROUPS
-	[_] color groups -- different filler tint colors for slots in groups
-		case: re-use values from setStyleSheet() instead my own
-	[_] different petal angle width depending on usage frequency
-		like ccw-decreasing spiral as top-right petals are most simple to access
-		[_] may use QSpacerItem to deal with unfull fixed-angle petals ring
 
-EDIT MENU
+> EDIT MENU
 	[_] activate editing mode from context menu
 		drag-n-drop buttons around rings
 	Animation

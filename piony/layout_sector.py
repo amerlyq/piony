@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 # vim: fileencoding=utf-8
 
-from .common import *
-from .ringsegment import *
-
 import math
 from PyQt5.QtWidgets import QLayout,QWidgetItem
 from PyQt5.QtCore import *
+
+from .common import *
+from .ringsegment import *
+
 
 ## Storage for inscribed layer data
 class SectorWrapper(object):
@@ -16,7 +17,7 @@ class SectorWrapper(object):
 
 # Rather SectorStrip, or SectorRing
 class SectorLayout(QLayout):
-    def __init__(self, r, dr, margin=0, spacing=0, parent=None):
+    def __init__(self, r, dr, spacing=0, margin=0, parent=None):
         super().__init__(parent)
         if parent is not None:
             self.setMargin(margin)
@@ -33,13 +34,14 @@ class SectorLayout(QLayout):
         while item:
             item = self.takeAt(0)
 
-    def addItem(self, item, pos=0):
-        self.sectors.insert(pos, SectorWrapper(item))
+    def addItem(self, item, pos=None):
+        sw = SectorWrapper(item)
+        if pos: self.sectors.insert(pos, sw)
+        else: self.sectors.append(sw)
         # setDirty()
         # QLayout::invalidate();
 
-    def addWidget(self, widget, pos=0):
-        # super(SectorLayout, self).addChildWidget(widget)
+    def addWidget(self, widget, pos=None):
         self.addChildWidget(widget)
         self.addItem(QWidgetItem(widget), pos)
 
@@ -92,9 +94,9 @@ class SectorLayout(QLayout):
             wdg = item.widget()
             sp = self.spacing()  # may be linear or angle
 
-            segment = RingSegment(self.r, a*i, self.dr, a)
+            segment = RingSegment(self.r, a*i + sp/2., self.dr, a - sp)
             x,y = ra2xy(self.r, a*i)
-            wdg.setGeometry(segment.geometry(c.x()+x, c.y()-y))
+            wdg.setGeometry(segment.geometry(c.x() + x, c.y() - y))
             wdg.gPath = segment.path()
             wdg.gText = segment.text_bbox_scr()
             wdg.setMask(segment.region())

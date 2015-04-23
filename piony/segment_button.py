@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # vim: fileencoding=utf-8
 
-from .common import *
-
 import math
 from PyQt5 import QtGui,QtWidgets
 from PyQt5.QtCore import *
+
+from .common import *
 
 
 class PetalStyle():
@@ -92,12 +92,12 @@ class SegmentButton(QtWidgets.QToolButton):
     def drawSegmentText(self, p):
         p.setPen(self._clr("cText"))
         p.setFont(QtGui.QFont('Ubuntu', 16))
-        if g_bDebugVisuals: p.drawRect(self.gText)
+        if G_DEBUG_VISUALS: p.drawRect(self.gText)
         p.drawText(self.gText, Qt.AlignCenter, self.text())
 
     def paintEvent(self, e):
         p = self.createPainter()
-        if g_bDebugVisuals: self.drawSegmentRegion(p)
+        if G_DEBUG_VISUALS: self.drawSegmentRegion(p)
         self.drawSegment(p);
         self.drawSegmentText(p);
         p.end()
