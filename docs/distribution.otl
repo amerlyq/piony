@@ -29,9 +29,6 @@ Python
 	FPM делает создание пакетов тривиальным.
 	Мы даже не используем virtualenv — вполне достаточно установить PYTHONPATH.
 
-Isolated env
-	http://www.fig.sh/
-
 
 PR-DISTRIBUTION
 	Host blog on gitpages for programm

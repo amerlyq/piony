@@ -12,12 +12,14 @@ RFC
 	[_] RingSegment: extract separate funcs
 		[_] coord-systems conversion code
 		[_] segment contour shrinking
+	[_] Try extract R() as single separate function instead defining in each class
 
 IDEAS
 	2015-04-18 [$] use OpenGL window with transparent background :> replaced by pyqt
 		:> need too much time to start application, delayed feeling
-	[_] create 3D sphere, which can be rotated with M2 with buttons on it
+	2015-04-23 [$] create 3D sphere, which can be rotated with M2 with buttons on it
 		: ALT: plain-composition of window with magnify
+		:> Too slow the choosing of action, distraction from drawing process
 	[_] how about elliptic rings, with slope on 60 deg -- for hand anisotropy?
 		of course they can be rotated, changing their slope
 	[_] mouse gestures -- useful as I can write complex symbols by pen
@@ -33,56 +35,15 @@ IDEAS
 			| maybe I will be OK simply with hieroglyphs? (case: setStyleSheet)
 		[_] draw icons directly on buttons in edit-icons mode! Export them!
 
-AIR-MENU
-: activation of widget: {overlaying, floating, shadow-casting, bkgr-fading}
-	[_] Air-widgets are loaded in separate subwindows, overlaying original
-		MouseLeave must check that QRegion([QRect,...]).contains(QCursor.pos)
-	[_] Visual: gradient filler and gradient border, opaque around center and transparent at far
-		| inherit QPen and change paintEvent
-	[_] Emulating wpad wheel -- create widget, which can be rotated by wstylus
-		[_] it will emulate events on being rotated in different directions
-		[_] ALT: v/h strip, which being slided generates events -- may be more convenient
-	[_] Air-wheel -- continue  idea of emulating wpad
-		On sector hover (instead Air-slice) show wide floating collar around
-		center -- on top of all rings. Sliding on it concentrically generates
-		events according to direction of sliding.
-		Moving from center closes piony completely.
-		Moving on center -- cancels and returns to previous menu.
-		Wheel widget may be solid, or with radial lines -- trespassing them generates keypress
-	[_] Air-touch select -- autoclick when mouse moves farther then middle of petal
-		Autoclick on center -- solid press of underlying button
-			when moving till petal click edge, its color became more opaque untill
-			acquire full red (press color) -- then you can choose w/o touching panel
-		Autoclick on edge -- air-petal additional to origin button (leaves two cases how to click)
-			can appear as air-petal on outer radial, crossing border -- activates it
-	[_] Air-chain submenu -- air-touch of one closes bud and opens submenu centered on cursor
-	[_] Air-strife -- when button almost have activated air-touch, but wstylus
-		moves through petal side -- activates another actions
-		Move through 3/5 of button activates side-petal ring
-		: instantly or from transparent to opaque when you are farther from center?
-		Floating over real neighbour petals on higher level (with shadow?).
-		One which closest to wstylus -- becomes more opaque
-		: Their appearance -- border and filler are full opaque on contacting
-		: with central petal side and transparent on opposite side.
-		Instead of two petals on side you can use whole ring layout -- Air-slice!
-		It's almost like gestures!
-		Petal by it's own may remain clickable and do another action -- even launch new bud!
-		: E.g. layer mgmt : switch layers by left/right air-petal, create new on click
-	[_] -b : batch -- do not close menu on action
-		click petal -- stay still as is
-		air-touch petal -- reopen/move starting menu at cursor location
-		: so gesture generating multiple different buttons can be contiguous
-		also this flag must be toggled by widget from inside RingMenu
-		: if menu was launched and only then decided to type multiple commands
-		:> widget can be one of corner buttons
 
-LAYOUT
-	<Nesting>   Layer:l - Ring:r - Sector:s - Grid:x:y - Button:b
-	: KISS : for now each level can accept only ones below it
-	Window
+> LAYOUT
+
+<Nesting>   Layer:l - Ring:r - Sector:s - Grid:x:y - Button:b
+: KISS : for now each level can accept only ones below it
+	Window : ???
 		overlay : local or fullscreen
 		several slices to switch as layers
-	Slice
+	Slice : RingLayout (Cascade)
 		< Manage rings, spacers and four corner buttons (if present -- nw,ne,sw,se)
 		several rings alongside
 		drag ring and switch nesting of neighbours (each button will scale size)
@@ -90,14 +51,15 @@ LAYOUT
 		: to group instruments for current task from different rings
 		rings can be hidden, remaining only small icon in window frame corner
 		has percentage thickness for elastic or fixed width
-	Ring
+		| options: style
+	Ring : SectorLayout (Fan)
 		< Manage sectors, spacers
 		[_] emit event on rotate by M3
 		[_] each petal will shrink in length and will be more compact
 		[_] func to insert new petal takes button and position to insert (<Ring_n,CCW_pos>)
 		[_] -r <N> : many rings of petals -- 1,2,3... -- next around previous
 		[_] -s <N> : slots dynamic / fixate amount on ring
-	Sector
+	Sector : GridLayout (BTree)
 		has percentage for elastic filling (60% -> for 6 buttons it's a=360/6*0.6)
 		or has fixed angle for strict mosaic composition
 		space-filler is simply button w/o text and events
@@ -123,25 +85,30 @@ CONFIGS
 		https://docs.python.org/3/library/argparse.html
 		https://pythonhosted.org/kitchen/unicode-frustrations.html
 		https://docs.python.org/2/tutorial/introduction.html#tut-unicodestrings
+
 	2015-04-23 [X] Basic config support in json
-	[_] Support several config formats on cmdline for one-time launch (linux)
-		[_] inner format -- use native classes or directly json dict?
-		[_] json -- complex folded menu
-		[_] plain -- simple 1-ring list
-			: this one must use shared button style to start-up much faster
+	[_] Gradual config complexity
+		[_] plain 1D list of keys : 1-ring
+		[_] dict for some items
+		[_] list of N lists : N-ring
+		: ... air-widgets, etc...
 
 	[_] Separate settings file
 		[_] <krita...>.json
 			| it can be merged with Qt style file, written in CSS (QSS?)
-		[_] style.js
+		[_] style.js or style.css
 			: default style, if not specified one in <...>.json
+			: colors, spacings, curveness, etc
 		[_] keymap.json
 			: general kbd/mse/wst keys to control menu
 		[_] settings.ini
 
+	<Flags>
 	[_] -c /{-/<path>}: path to configs
 		[_] - : read config from stdin
 		[_] <path> : relative in ./cfgs/ or absolute in ~/.piony/
+	[_] -e "[...]" : setup layout directly on cmdline
+		[_] can be specified several times -- one for each Slice
 
 	Dirty fast
 		http://martin-thoma.com/configuration-files-in-python/
@@ -159,8 +126,9 @@ CONTROLS
 		if you don't move from center -- menu disappears
 	2015-04-12 [X] holding M3 allows to move menu on screen
 	[_] Replace custom drag by M3 to official dragMoveEvent ? Or eventHolder
-	[_] on button press event change its hint to red and not press it until mouse release
-		this will give feedback what will be pressed and allow to undo pressing, moving from button
+	[_] don't press button until mouse release
+		: allow to undo pressing, moving from button to center
+
 	MODES
 		[_] while you hold Mod (C/S/A), show another layer (total 1+3!)
 		[_] clicking petal with Mod pressed choses linked layer (total N1)
@@ -178,28 +146,33 @@ UIX
 	2015-04-13 [$] clicks outside menu must be intercepted (not pass over to underlying programm)
 		: can be done by fullscreen transparent overlay
 		:> actually better to close window on Leave event ouside QRegion circle
+	2015-04-20 [X] RingSegment class (draft version)
+	2015-04-22 [X] BUG: replace items order CW -> CCW
+	[_] On button press event change its hint to green
+		: this will give feedback what will be pressed
 	[_] BUG: petal bHold isn't released if you click on ContextMenu
 		https://wiki.python.org/moin/PyQt/Handling%20context%20menus
 	[_] Suggest menu scaling in edit mode. Sizes: min from font, max from screen.
-	2015-04-20 [X] RingSegment class (draft version)
-	2015-04-22 [X] BUG: replace items order CW -> CCW
 	[_] BUG: resets geometry position to 0,0 when cursor at screen border
 	[_] BUG: no text when only 1 element in ring list -- must show at farthest
 	[_] BUG: exception when list is empty -> must show only ring bkgr
 	[_] If possible, use styles instead my own vehicle:
 		http://wiki.qt.io/Main_Page
 		http://doc.qt.io/qt-4.8/style-reference.html
-	Flags
-		[_] -P : disable pop-up items, for those who is irritated
+	<Flags>
+	[_] -P : disable pop-up items, for those who is irritated
 
 
 VISUALS
-	2015-04-14 [X] make clipping ellipse over petals to leave focus on circle, not square
+	[_] for Tab selecting of petal, there must be highlight different from hover
+		thin red-thansparent gradient lines as outer contour to current yellow.
+		they will cover only half-leght of one petal, fading out with distance
 	[_] replace filling with gradient (radial?) to add volume
 		http://doc.qt.digia.com/4.6/painting-painterpaths.html
 	[_] Adjustable RingSegment class (merge petal's ellipse and segment)
 		[_] use bezier (cubicTo) to draw segment -- then I will have more control
 		: http://doc.qt.digia.com/4.6/painting-painterpaths.html
+	2015-04-14 [X] make clipping ellipse over petals to leave focus on circle, not square
 	2015-04-21 [X] BUG: bad antialising due to clipping mask, make it more steady
 	2015-04-21 [X] BUG: petals positions are somewhat none-symmetrical
 		2015-04-18 [$] lets try QPointF :: No such
@@ -207,9 +180,6 @@ VISUALS
 	2015-04-21 [X] inner petal's half-ellipses must cover arc (180-a), outer=(180+a)
 		http://en.wikipedia.org/wiki/Ellipse
 	2015-04-23 [X] self.spacing() as pre-modifier for button outer size: path and mask
-	[_] for Tab selecting of petal, there must be highlight different from hover
-		thin red-thansparent gradient lines as outer contour to current yellow.
-		they will cover only half-leght of one petal, fading out with distance
 
 	GROUPS
 		[_] color groups -- different filler tint colors for slots in groups
@@ -232,30 +202,39 @@ SYSTEM
 		http://www.qtcentre.org/threads/40241-PyQt-QGraphicsItem-not-recieving-mouse-events
 	[_] try set my window as 'modal' -- to intercept all input events
 		: but this possible only for subwindows, or not?
-	[_] Optimize event calls with caching and restructuring
-		: e.g. setGeometry called three times on launch!
-	[_] only one instance
-		https://pythonadventures.wordpress.com/2013/01/10/launch-just-one-instance-of-a-qt-application/
-		: now on creating new, previous instance is closed due to losing focus
 	[_] find last active window to send keystrokes
 		https://github.com/Mte90/QAsana/blob/master/qasana.py
 		: or you can simply unfocuse current before sending keystrokes
+	[_] Maybe, make on close() teleport mouse back to starting position?
+		: it's convenient for mouse, but has not much sense for Wacom
+	<Flags>
+	[_] -d : start as background demon
+		[_] check self.hide() functional -- does it hide from i3wm?
+		[_] use only one instance (now old autocloses on focus lost when new created)
+			: https://pythonadventures.wordpress.com/2013/01/10/launch-just-one-instance-of-a-qt-application/
+	[_] -f : overlay fullscreen/local
+	[_] -v <v/a>: verbose (debug) {all/{visuals/actions}}
+		[_] activates several global variables from common.py
+	[_] -p : toggle action print/execute
+		[_] simulate action due to it's field 'type' in config
+		[_] print this action on stdout
+		: for bash-friendly dmenu-like usecase, complementary with '-e' flag
 
-	Flags
-		[_] -d <v/a>: debug all/{visuals/actions}
-		[_] -f : overlay fullscreen / local
-		[_] -p : print choosen value / simulate action as keystroke to xdootool
-			: allows create bash-friendly dmenu analog, combined with straight
-			: config feeding
+
+
+> OPTIMIZATION
+	[_] Optimize event calls with caching and restructuring
+		: e.g. setGeometry called three times on launch!
 	[_] multithreading to accelerate air-layouts pre-creation and launch time
 		http://stackoverflow.com/questions/2846653/python-multithreading-for-dummies
 		http://www.tutorialspoint.com/python/python_multithreading.htm
-
+	[_] for layout-on-cmdline use shared button style to start-up much faster
 
 
 > SUPPORT
 	[_] Isolated environment -- several testing environments
 		http://habrahabr.ru/post/248189/
+		http://www.fig.sh/
 	[_] Docstrings, make documentation -- add docs extraction
 		https://www.python.org/dev/peps/pep-0257/
 	[_] Style guideline -- add script with autochecking
@@ -264,7 +243,7 @@ SYSTEM
 		http://blog.nicolargo.com/2012/11/internationaliser-ses-programmes-python.html
 
 
-> EDIT MENU
+> EDIT MENU (not expected untill v2.5)
 	[_] activate editing mode from context menu
 		drag-n-drop buttons around rings
 	Animation

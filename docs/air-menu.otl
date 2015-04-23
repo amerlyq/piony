@@ -1,0 +1,96 @@
+>>> AIR-MENU (expected in v2) >>>
+
+
+> GENERAL
+
+Visual
+	[_] Separate subwindows
+		[_] overlaying
+		[_] floating
+		[_] shadow-casting
+		[_] bkgr-fading
+	[_] Gradient edges and filler
+		[_] opaque around center and full transparent at far
+			| inherit QPen and change paintEvent
+		[_] three cross-buttons has straight border (not cuniated), differing from origin
+	[_] Dynamic transparency when approaching to zone hover
+		[_] overall opaqueness is proportional to current rx = R*[0..0.4]
+		[_] acquire full opaque color (red) when at zone border rx = R*0.4
+		: and then zone hover event is generated
+		[_] all attached to event floating widgets also will be slowly exhibit
+	[_] Dynamic transparency when approaching to sides, before zone [0..0.4]
+		: for 'crossing side borders' events
+		[_] closest to wstylus -- more opaque
+		[_] opaqueness of nearest side button: ~ (da/2 - |a-a0|)
+
+Events
+	[_] press button
+	: any action, compatible with everything next
+	[_] crossing far radial border
+	: mutually exclusive with hover zone
+		action
+		submenu
+		sliding strip
+	[_] crossing side borders
+	: can be crossed before hover zone, co-existing with it
+		action
+		submenu
+		rotating ring
+	[_] hover onto zone at R*[0.35..1]
+	: original action on 'press button' can be distinct and not conflict
+		action
+		submenu
+		preview border-crossing widgets
+	[_] Window MouseLeave must check that QRegion([QRect,...]).contains(QCursor.pos)
+
+Contiguous (gestures analog)
+	[_] Path : event from one submenu opens next submenu overlay, centered on cursor
+	: choose action inside submenu in one motion
+	[_] Chain : -b : batch -- do not close menu on action -- allow multiple
+	: generate multiple actions in one motion
+		[_] press button -- menu remains visible, no changes
+		[_] crossing/hover + close -- reopen/move menu group at cursor location
+	[_] Widget to toggle Chained actions
+		[_] place small circle inside Ring center / at Corner
+		[_] concept: empty / filled circle
+
+
+> WIDGETS
+
+Air-menu
+	[_] Displayed in overlaying window (see general section '^Visual')
+	[_] Appearance
+		[_] opaque-transparent bud, can have another edge color hint
+		[_] likely many expanding spacers will be used to create specific layout
+		[_] Button in direction of active button replaced by spacer
+	[_] Moving through spacers (in limits of window) will return to previous menu
+	[_] Clicking center will close piony completely as for ordinar menu
+	[_] Same as ordinar menu in all another aspects
+
+
+Air-wheel
+	[_] Appearance
+		[_] Wide thick floating collar
+		: smallest inner radius possible (to rotate it by small motions)
+		: outer radius same as R for active button
+		[_] touches sides of active button (OR: solid, collides over it)
+	[_] rotated as whole by wstylus
+		[_] must have some gradient/microtexture to see that rotation occurs
+		[_] pin mouse on screen when rotating start
+		[_] generate event due to rotation direction on each relative angle
+	[_] or static ring with transverse marks
+		[_] generate event on wstylus crossing each mark
+		[_] type of event determined by direction of crossing
+	[_] at ring center shows current produced event
+		[_] two possible: for each rotating direction
+	| Those movings are concentric only.
+	[_] Mapping radial movements
+		[_] change current wheel actions? -- brush transparency/color/darkness?
+		[_] generate action? -- focus layers up/down, create new one on click
+		[_] moving away from center closes piony, to center -- returns in previous menu
+
+Air-strip : ALT to air-wheel, linear analog
+	[_] v/h strip, or inclined radial -- lays along axis of active button
+	[_] can be pulled as whole -- imagine flat strip, joined by narrow ends
+	[_] or used as static touch strip
+

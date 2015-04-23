@@ -1,4 +1,6 @@
 [
     {"name":"All", "action":"Ctrl+a"},
-    "b", "c", "d"
+    "b",
+    {"action":"c", "type":"key"},
+    "d"
 ]
