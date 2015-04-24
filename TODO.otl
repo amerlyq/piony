@@ -20,67 +20,66 @@ IDEAS
 	2015-04-23 [$] create 3D sphere, which can be rotated with M2 with buttons on it
 		: ALT: plain-composition of window with magnify
 		:> Too slow the choosing of action, distraction from drawing process
-	[_] how about elliptic rings, with slope on 60 deg -- for hand anisotropy?
-		of course they can be rotated, changing their slope
 	[_] mouse gestures -- useful as I can write complex symbols by pen
 		http://www.gulon.co.uk/2013/01/14/pyqt4-mouse-gestures-part-deux/
-	[_] use whole screen overlay
-		[_] toggle show/hide instead of creating each time
-		[_] whole area around buttons to intercept clicks from drawing in krita
-		[_] ability to create smart hover for buttons, etc, many comfortable UI
-		[_] gestures drawing on transparent canvas
-
-	ICONS
-		[_] can set icons instead of text (applied by blending) in petals
-			| maybe I will be OK simply with hieroglyphs? (case: setStyleSheet)
-		[_] draw icons directly on buttons in edit-icons mode! Export them!
+		[_] for whole screen -- drawing on transparent canvas anywhere
+		[_] can have different sense, when written in different screen zones
+	[_] how about elliptic rings, with slope on 60 deg -- for hand anisotropy?
+		of course they can be rotated, changing their slope
+	[_] icons instead of / under text (applied by blending) in segments
+		| maybe I will be OK simply with hieroglyphs? (image from StyleSheet)
 
 
 > LAYOUT
+: KISS : each level can accept only ones below it for now
 
-<Nesting>   Layer:l - Ring:r - Sector:s - Grid:x:y - Button:b
-: KISS : for now each level can accept only ones below it
-	Window : ???
-		overlay : local or fullscreen
-		several slices to switch as layers
-	Slice : RingLayout (Cascade)
-		< Manage rings, spacers and four corner buttons (if present -- nw,ne,sw,se)
-		several rings alongside
-		drag ring and switch nesting of neighbours (each button will scale size)
-		: to adapt icons towards hand's anisotropy
-		: to group instruments for current task from different rings
-		rings can be hidden, remaining only small icon in window frame corner
-		has percentage thickness for elastic or fixed width
-		| options: style
-	Ring : SectorLayout (Fan)
-		< Manage sectors, spacers
-		[_] emit event on rotate by M3
-		[_] each petal will shrink in length and will be more compact
-		[_] func to insert new petal takes button and position to insert (<Ring_n,CCW_pos>)
-		[_] -r <N> : many rings of petals -- 1,2,3... -- next around previous
-		[_] -s <N> : slots dynamic / fixate amount on ring
-	Sector : GridLayout (BTree)
-		has percentage for elastic filling (60% -> for 6 buttons it's a=360/6*0.6)
-		or has fixed angle for strict mosaic composition
-		space-filler is simply button w/o text and events
-		: but how about partial fillers -- which has air-strife menu?
-	Grid (or replace by binary tree nested splitting? It will be 3x3 max...)
-		divide cell to keep relative position of it's parts
-		: helpful when you need keep several complementary buttons alongside
-		same bkgr color for grouped buttons -- like painting cells similar to Excel
-		merging cells to construct bigger one for more important button
-	Button
-		emit event
-			on press
-			close-up to borders or center
-			cross borders
-		shape -- two straight lines and two concentric arcs, rounded corners
-			coeff of roundness: 0..1 as for square..circle
-			: for more easy pressing of petals, their inner radius may be
-			: negative -- so I will use my elliptic petals in any case:)
+Window : ???
+	[_] list of independent slices
+	[_] -s <N> : sets window size WxH=NxN to derive all rings sizes from it
+	[_] global func to insert new petal
+		takes button and position to insert = {Slice_n, Ring_n, CCW_pos}
+
+Slice : RingLayout (Cascade)
+	[_] several stacking rings around center
+		rings can be hidden (show small icon around corner button)
+	[_] four corner buttons (if present -- aliases: nw,ne,sw,se)
+	[_] common style -- applied to all unstyled segments in slice
+
+Ring : SectorLayout (Fan) : sectors, spacers
+	doLayout
+		[_] weight -> derive width of each ring on window resize
+			: or set directly width to receive fixed immutable ring
+		[_] firmness/elasticity : which one is less firm will shrink
+			: can emulate fixed slots on ring
+	[_] angle -- rotation of insert position (default at angle=0)
+	[_] ring style -- to impose segments cascades differentiation
+	>[_] emit event on rotating ring by M3
+
+Sector
+	has percentage for elastic filling (60% -> for 6 buttons it's a=360/6*0.6)
+	or has fixed angle for strict mosaic composition
+	space-filler is simply button w/o text and events
+	: but how about partial fillers -- which has air-strife menu?
+
+	[_] GridLayout (not expected untill v1.5)
+		Advantage: keeps relative arrangement of buttons in grid when drags it
+			: helpful when you need keep several complementary buttons alongside
+		[_] merging cells to construct bigger one for important button
+		[_] ALT: nested BTree are suitable -- as max grid ~ 3x3
+
+Button
+	Behaviour
+		emit event on press
+	Appearance
+	Shape by parametric equation, using Bezier/Spline curves (cubicTo?)
+		: http://doc.qt.digia.com/4.6/painting-painterpaths.html
+		[X] bbox by segment : two straight lines and two concentric arcs
+		[_] round corners for [segment..cookie] by coefficient k=0..1
+		[_] inner and outer arcs defined by their elliptic coeffs
+		[_] inward edge offset by border linewidth (or half of it?)
 
 
-CONFIGS
+> CONFIGS
 	[_] Command line arguments support
 		https://docs.python.org/3/library/argparse.html
 		https://pythonhosted.org/kitchen/unicode-frustrations.html
@@ -92,6 +91,8 @@ CONFIGS
 		[_] dict for some items
 		[_] list of N lists : N-ring
 		: ... air-widgets, etc...
+		[_] specify all slices separately in json, and then insert transition
+		    links in action keys
 
 	[_] Separate settings file
 		[_] <krita...>.json
@@ -121,35 +122,47 @@ CONFIGS
 		OR: use regular python files!
 
 CONTROLS
-	[_] launch until hold
-		pressDown -- menu appears, as you hover buttons highlighted, pressUp -- activate
-		if you don't move from center -- menu disappears
-	2015-04-12 [X] holding M3 allows to move menu on screen
-	[_] Replace custom drag by M3 to official dragMoveEvent ? Or eventHolder
-	[_] don't press button until mouse release
-		: allow to undo pressing, moving from button to center
+	[_] Extract key mappings into separate 'keymap.json' file
+	[_] Drag: replace by official dragMoveEvent? Or eventHolder?
+	2015-04-12 [X]     M3+drag | moves piony window (ALT: Mod_i3+M1+drag)
+	[_]  M3+nodrag | opens context menu
+	[_]  C+M3+drag | rotate ring around center
+		: to adapt icons towards hand's anisotropy
+		: to group instruments for current task from different rings
+	[_] CS+M3+drag | rotates all rings as whole
 
-	MODES
-		[_] while you hold Mod (C/S/A), show another layer (total 1+3!)
-		[_] clicking petal with Mod pressed choses linked layer (total N1)
-			: can be combined with holding mode
-	LAYERS
-		[_] switch wpad wheel functions through additional ui around bud
-		[_] wpad wheel must select current sector of radial menu
-			[_] try to select by absolute wheel value, not relative
-		[_] wpad wheel can scroll through available buds and wheels (cool: wheel to choose wheel!)
-		[_] more logically would be show different rings when you hold modifiers
-			C/S/A instead of allowing drag window on M1, as it's already possible with i3
-		| How-to intuitively fuse between layers by UI element?
+	Slices
+		[_] -l <No>  | current active slice
+		[_] CSA+hold | preview another slice (total 1+3!)
+		[_] CSA+M1   | switch to choosen slice (total 3N)
+			: useful if all instruments are grouped on several rings
+		[_] A+[0..9] | switch to slice <Number>
+	| How-to intuitively fuse between layers by UI element?
+
+	[_] action on mouse release
+		[_] M1+down | changes segment hint to green
+			: this will give feedback what will be activated
+		[_] Crossing segment borders when dragging -- resets its color
+		[_] M2+up   | use action from current button under cursor
+		[_] if M1+ was in segment and M1- occurs over center
+			:> do nothing and don't close menu
+
+	[_] W1+down | open piony
+	[_] W1+up   | activate current button under cursor (or close on center)
+	[_] W-Wheel | select active sector of menu
+		[_] try to select by absolute wacom-wheel value, not relative
+	[_] W-Wheel | ALT: scroll through available slices and wheels
+
+
+Widgets
+	[_] switch W-Wheel functions through additional UI around slice bud
+	[_] for whole screen overlay -- place smart dynamic widgets anywhere
 
 UIX
 	2015-04-13 [$] clicks outside menu must be intercepted (not pass over to underlying programm)
-		: can be done by fullscreen transparent overlay
 		:> actually better to close window on Leave event ouside QRegion circle
 	2015-04-20 [X] RingSegment class (draft version)
 	2015-04-22 [X] BUG: replace items order CW -> CCW
-	[_] On button press event change its hint to green
-		: this will give feedback what will be pressed
 	[_] BUG: petal bHold isn't released if you click on ContextMenu
 		https://wiki.python.org/moin/PyQt/Handling%20context%20menus
 	[_] Suggest menu scaling in edit mode. Sizes: min from font, max from screen.
@@ -169,9 +182,6 @@ VISUALS
 		they will cover only half-leght of one petal, fading out with distance
 	[_] replace filling with gradient (radial?) to add volume
 		http://doc.qt.digia.com/4.6/painting-painterpaths.html
-	[_] Adjustable RingSegment class (merge petal's ellipse and segment)
-		[_] use bezier (cubicTo) to draw segment -- then I will have more control
-		: http://doc.qt.digia.com/4.6/painting-painterpaths.html
 	2015-04-14 [X] make clipping ellipse over petals to leave focus on circle, not square
 	2015-04-21 [X] BUG: bad antialising due to clipping mask, make it more steady
 	2015-04-21 [X] BUG: petals positions are somewhat none-symmetrical
@@ -183,7 +193,7 @@ VISUALS
 
 	GROUPS
 		[_] color groups -- different filler tint colors for slots in groups
-			case: re-use values from setStyleSheet() instead my own
+		[_] same bkgr color for grouped buttons -- like painting cells similar to Excel
 		[_] different petal angle width depending on usage frequency
 			like ccw-decreasing spiral as top-right petals are most simple to access
 			[_] may use QSpacerItem to deal with unfull fixed-angle petals ring
@@ -209,10 +219,12 @@ SYSTEM
 		: it's convenient for mouse, but has not much sense for Wacom
 	<Flags>
 	[_] -d : start as background demon
-		[_] check self.hide() functional -- does it hide from i3wm?
+		[_] toggle show/hide instead of creating each time
+			| check self.hide() functional -- does it hide from i3wm?
 		[_] use only one instance (now old autocloses on focus lost when new created)
 			: https://pythonadventures.wordpress.com/2013/01/10/launch-just-one-instance-of-a-qt-application/
 	[_] -f : overlay fullscreen/local
+		: whole screen to intercept clicks from drawing in krita
 	[_] -v <v/a>: verbose (debug) {all/{visuals/actions}}
 		[_] activates several global variables from common.py
 	[_] -p : toggle action print/execute
@@ -228,7 +240,8 @@ SYSTEM
 	[_] multithreading to accelerate air-layouts pre-creation and launch time
 		http://stackoverflow.com/questions/2846653/python-multithreading-for-dummies
 		http://www.tutorialspoint.com/python/python_multithreading.htm
-	[_] for layout-on-cmdline use shared button style to start-up much faster
+	[_] For layout-on-cmdline use shared button style to start-up much faster
+	[_] Edit menu loads only on demand, when you toggle option in M2 menu
 
 
 > SUPPORT
@@ -244,8 +257,23 @@ SYSTEM
 
 
 > EDIT MENU (not expected untill v2.5)
+	Appearance
+		At ring center: three icons {ring,sector,grid} as radiobutton
+		One of them can be selected by touching or CSA modifier.
+			Motions on other axes will be prohibited
+			Changing modifier at time of dragging, button can be moved between axes
+			: such will allow to create new ring, pulling out button
+		[_] how to pull out ring onto another slice?
+			:> place slices in row, to drag segments/rings between them
 	[_] activate editing mode from context menu
-		drag-n-drop buttons around rings
+	[_] drag-n-drop buttons around rings
+		: modifiers CSA chooses axe (zone) where drag buttons -- ring/sector/grid
+	[_] drag ring, switching nesting of neighbours
+	[_] Need LineEdit or similar to enter names and actions for buttons
+	Selection
+		[_] M3 in Edit can select seral segments (even in different rings)
+		[_] All selected can be dragged and placed in new place as single group
 	Animation
 		http://doc.qt.io/qt-5/qpropertyanimation.html
-
+	Ideas
+		[_] draw icons directly on buttons in edit-icons mode! Export them!

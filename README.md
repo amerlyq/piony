@@ -9,8 +9,10 @@ I'm not saying «use this», it's rather «use best».
 
 What left is to make the best this one.
 
+
 Description
 -----------
+Nonintrusive fast-emerging cascade menu.
 
 
 Usage
