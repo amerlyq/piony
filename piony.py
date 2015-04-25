@@ -6,13 +6,20 @@ import sys
 import json
 from PyQt5.QtWidgets import QApplication
 
-from piony import *
-from piony import __appname__
+import piony
+from piony import common
 
+
+def apply_args(args):
+    if args.verbose == 'v':
+        common.G_DEBUG_VISUALS = True
+    elif args.verbose == 'a':
+        common.G_DEBUG_ACTIONS = True
 
 if __name__ == '__main__':
     cdir = os.path.dirname(os.path.abspath(__file__))
-    args = cmd_args()
+    args = piony.cmd_args()
+    print("check print:", args.verbose, args.size)
 
     # mmc.read(os.path.abspath(args.input))
     # for f_out in args.output:
@@ -25,8 +32,10 @@ if __name__ == '__main__':
     with open('cfgs/map.json') as bud_file:
         bud = json.load(bud_file)
 
-    wnd = Window(bud)
-    wnd.setWindowTitle(__appname__)
+    apply_args(args)
+
+    wnd = piony.Window(bud, args.size)
+    wnd.setWindowTitle(piony.__appname__)
     wnd.show()
     sys.exit(app.exec_())
 

@@ -7,15 +7,17 @@ from .action import sendKey
 from .hgevent import HGEvent
 from .layout.pie import *
 from .segment_button import *
+from piony import common
 
 
 class Window(QtWidgets.QWidget, HGEvent):
-    def __init__(self, bud):
+    def __init__(self, bud, size_w):
         super().__init__()
         self.bM3 = False
         self.ppos = QtCore.QPoint()
-        self.r = 30
-        self.dr = 80
+        self.size_w = size_w
+        self.r = int(0.3 * self.size_w / 2)
+        self.dr = int(0.7 * self.size_w / 2)
 
         self.setWnd()
         self.setContent(bud)
@@ -26,7 +28,7 @@ class Window(QtWidgets.QWidget, HGEvent):
         return self.r + self.dr
 
     def sizeHint(self):
-        return QtCore.QSize(2*self.R(), 2*self.R())
+        return QtCore.QSize(self.size_w, self.size_w)
 
     def setWnd(self):
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
@@ -83,7 +85,7 @@ class Window(QtWidgets.QWidget, HGEvent):
 
     def paintEvent(self, e):
         p = QtWidgets.QStylePainter(self) # p.begin(self)
-        if G_DEBUG_VISUALS: self.drawBkgr(p)
+        if common.G_DEBUG_VISUALS: self.drawBkgr(p)
         # self.drawName(p)  # temporarily disabled
         p.end()
 

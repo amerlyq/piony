@@ -3,7 +3,7 @@
 
 Window
 	[_] list of independent slices
-	[_] -s <N> : sets window size WxH=NxN to derive all rings sizes from it
+	2015-04-25 [X] -s <N> : sets window size WxH=NxN to derive all rings sizes from it
 	[_] insert new segments by Add(btn, pos=[Slice_n, Ring_n, Sector_ccw_n])
 	< (v2.2) InstrumentalLayout
 		: dynamic placeholders for all available smart widgets
