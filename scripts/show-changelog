@@ -13,6 +13,6 @@ VERFL=./piony/__init__.py
         echo "$dt --- version $ver ---"
     done
 
-    cat "$FL" | sed -rn '/\s*(.*\[[X$~]\]\s.*)/s//\1/p'
+    find . -name '*.otl' -exec cat {} \; | sed -rn '/(\s*)(.*)(\[[X$~]\]\s.*)/s//\2\1\3/p'
 
 } | sort -rn | sed -r '/.*(--- version.*)/s//\n\1/' | less
