@@ -1,5 +1,6 @@
 > Awesome Python frameworks, libraries and software list
 	https://github.com/vinta/awesome-python
+> Awesome framework http://ipython.org/
 
 See
 	http://pyqt.sourceforge.net/Docs/PyQt4/qmouseevent.html
@@ -59,16 +60,17 @@ hide -- will it be useful?
 
 # ["foo", " bar", "baz"].index('bar')
 
-profiling
-	list2 = [4, 5, 6]*10**5
-	list1 = [1, 2, 3]*10**5
-	%timeit from operator import add;map(add, list1, list2)
-	: 10 loops, best of 3: 44.6 ms per loop
-	%timeit from itertools import izip; [a + b for a, b in izip(list1, list2)]
-	: 10 loops, best of 3: 71 ms per loop
-	%timeit [a + b for a, b in zip(list1, list2)]
-	: 10 loops, best of 3: 112 ms per loop
-	%timeit from itertools import izip;[sum(x) for x in izip(list1, list2)]
-	: 1 loops, best of 3: 139 ms per loop
-	%timeit [sum(x) for x in zip(list1, list2)]
-	: 1 loops, best of 3: 177 ms per loop
+profiling results
+	operation on two lists
+		list2 = [4, 5, 6]*10**5
+		list1 = [1, 2, 3]*10**5
+		%timeit from operator import add;map(add, list1, list2)
+		: 10 loops, best of 3: 44.6 ms per loop
+		%timeit from itertools import izip; [a + b for a, b in izip(list1, list2)]
+		: 10 loops, best of 3: 71 ms per loop
+		%timeit [a + b for a, b in zip(list1, list2)]
+		: 10 loops, best of 3: 112 ms per loop
+		%timeit from itertools import izip;[sum(x) for x in izip(list1, list2)]
+		: 1 loops, best of 3: 139 ms per loop
+		%timeit [sum(x) for x in zip(list1, list2)]
+		: 1 loops, best of 3: 177 ms per loop

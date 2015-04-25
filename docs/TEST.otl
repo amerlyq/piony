@@ -1,0 +1,17 @@
+>>> TESTS >>>
+
+> UNIT
+
+Cfgs
+	[_] for each file format or cmdline test that created objects has correct
+		names, actions and positions
+
+
+> SYSTEM
+
+Tile-WM
+	[_] Overlay on-top of fullscreen window
+		[_] local bud
+		[_] fullscreen bud
+
+

@@ -1,0 +1,80 @@
+>>> LAYOUT >>>
+: KISS : each level can accept only ones below it for now
+
+Window
+	[_] list of independent slices
+	[_] -s <N> : sets window size WxH=NxN to derive all rings sizes from it
+	[_] insert new segments by Add(btn, pos=[Slice_n, Ring_n, Sector_ccw_n])
+	< (v2.2) InstrumentalLayout
+		: dynamic placeholders for all available smart widgets
+		2015-04-11 [X] Slices placed at current cursor position
+	<Flags>
+	[_] -P : disable QToolTip items (OR: -H to enable)
+		: for those who are distracted and irritated by text hints
+
+Slice
+	[_] style (common) -- applied to all unstyled segments in slice
+	< ConcentricLayout (Cascade)
+		[_] stacking rings around center
+			[_] rings can be hidden (show icon on right side strip)
+		[_] (v1.1) four corner buttons
+			[_] positon: nw,ne,sw,se
+			[_] anchor at corner/maxring
+			[_] indent from anchor
+		[_] (v1.2) side strip widgets
+			: like small circles in right QVBoxLayout, etc
+		[_] (v1.3) cetral space widgets
+			[_] switch W-Wheel mappings
+
+Ring
+	doLayout
+		[_] weight -> derive width of each ring on window resize
+			: or set directly width to receive fixed immutable ring
+		[_] firmness/elasticity : which one is less firm will shrink
+			: can emulate fixed slots on ring for mosaic composition
+		[_] automatic weights layouts
+			[_] ccw-decreasing spiral (top-right is most simple to access)
+				: arrange items in ring depending on usage frequency
+			[_] may use QSpacerItem to deal with unfull fixed-angle petals ring
+	[_] angle origin -- start of insert position (default at origin=0)
+	[_] style (ring) -- to differ segments in cascades
+	>? [_] emit event on rotating ring by M3
+	< PieLayout (Fan)
+		segment
+		spacer
+			space-filler is simply button w/o text and events
+
+Sector
+	button
+	[_] (v1.5) GridLayout
+		Advantage: keeps relative arrangement of buttons in grid when drags it
+			: helpful when you need keep several complementary buttons alongside
+		[_] merging cells to construct bigger one for important button
+		[_] ALT: nested BTree are suitable -- as max grid ~ 3x3
+
+Button
+	Behaviour
+		[_] emit action on press
+	Appearance
+		[_] font size must be derived from gText size
+		[_] long text must wrap and scale font size accordingly (as PowerPoint)
+			: wouldn't became too small? Must I specify minimal font size?
+	[_] Shape by parametric equation, using Bezier/Spline curves (cubicTo?)
+		:& http://doc.qt.digia.com/4.6/painting-painterpaths.html
+		2015-04-20 [X] bbox by segment : two straight lines and two concentric arcs
+		[_] round corners for [segment..cookie] by coefficient k=0..1
+		[_] inner and outer arcs defined by their elliptic coeffs
+		[_] inward edge offset by border linewidth (or half of it?)
+
+Action
+	system command
+		emulate key
+		launch script
+	ui event
+		open/close submenu or widget
+	<Flags>
+	[_] -p : toggle action print/execute
+		[_] simulate action due to it's field 'type' in config
+		[_] print this action on stdout
+		:= for bash-friendly dmenu-like usecase, complementary with '-e' flag
+

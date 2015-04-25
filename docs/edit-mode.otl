@@ -1,0 +1,28 @@
+>>> EDIT MODE (not expected untill v2.5) >>>
+
+Appearance
+	At ring center: three icons {ring,sector,grid} as radiobutton
+	One of them can be selected by touching or CSA modifier.
+		Motions on other axes will be prohibited
+		Changing modifier at time of dragging, button can be moved between axes
+		: such will allow to create new ring, pulling out button
+	[_] how to pull out ring onto another slice?
+		:> place slices in row, to drag segments/rings between them
+
+Behaviour
+	[_] activate editing mode from context menu
+	[_] drag-n-drop buttons around rings
+		: modifiers CSA chooses axe (zone) where drag buttons -- ring/sector/grid
+	[_] drag ring, switching nesting of neighbours
+	[_] Need LineEdit or similar to enter names and actions for buttons
+	[_] Suggest menu scaling in edit mode. Sizes: min from font, max from screen.
+
+Selection
+	[_] M3 in Edit can select seral segments (even in different rings)
+	[_] All selected can be dragged and placed in new place as single group
+
+Animation
+	:& http://doc.qt.io/qt-5/qpropertyanimation.html
+
+Ideas
+	[_] draw icons directly on buttons in edit-icons mode! Export them!

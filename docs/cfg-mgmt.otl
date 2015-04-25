@@ -1,0 +1,85 @@
+>>> Configuration Management >>>
+
+DEVELOPMENT
+	[_] Isolated environment -- several reprodusable testing environments
+		: http://habrahabr.ru/post/248189/
+		: http://www.fig.sh/
+		: https://testrun.org/tox/latest/
+	[_] Profiling
+		http://www.pyvmmonitor.com/
+	[_] Debugging
+		> https://zapier.com/engineering/debugging-python-boss/
+		https://pythonconquerstheuniverse.wordpress.com/2009/09/10/debugging-in-python/
+		pdb rc setup
+			> http://stackoverflow.com/questions/1623039/python-debugging-tips
+		http://habrahabr.ru/post/104086/
+		http://pymotw.com/2/pdb/
+		Complex workflow
+			> http://scipy-lectures.github.io/advanced/debugging/
+	[_] Logging
+		http://stackoverflow.com/questions/1623039/python-debugging-tips
+		https://docs.python.org/3.4/library/logging.html
+	[_] Disassemble-bytecode
+		https://docs.python.org/3/library/dis.html
+		http://stackoverflow.com/questions/12524570/how-do-you-implement-ifdef-in-python
+
+	[_] Preprocessing, macroses
+		http://www.swig.org/Doc1.3/Preprocessor.html
+
+
+QA
+	[_] Docstrings, make documentation -- add docs extraction
+		: https://www.python.org/dev/peps/pep-0257/
+		http://sphinx-doc.org/
+		https://github.com/snide/sphinx_rtd_theme
+	[_] Multilang support -- extract texts into lang file
+		: http://blog.nicolargo.com/2012/11/internationaliser-ses-programmes-python.html
+	[_] Style guideline -- add script with autochecking
+		: https://code.google.com/p/rad2py/wiki/CodingStandard
+		: http://docs.python-guide.org/en/latest/writing/style/
+
+		PyLint
+			http://www.pylint.org/
+			http://docs.pylint.org/
+			: Comment: #pylint:disable-msg=R0903,C0103,R0903,F0401,C0301
+			: Argument: pylint --disable-msg=R0903,C0103,R0903,F0401,C0301 myfile.py
+
+		https://github.com/jcrocholl/pep8
+		https://pypi.python.org/pypi/pep8
+
+		Imports packages. Proc: more deep, Cons: actualy runs code (like sql queue)
+			http://pychecker.sourceforge.net/
+
+		FAQ
+			https://docs.python.org/2/faq/programming.html#how-do-i-share-global-variables-across-modules
+
+		Merge pylint and pep8
+		: http://stackoverflow.com/questions/6879640/how-to-configure-pylint-to-check-all-things-pep8-checks
+		: +Nose,+xunit: http://blog.jameskyle.org/2014/05/pep8-pylint-tests-with-nose-xunit/
+
+	[_] Do check on git hooks
+		https://seanmckaybeck.com/2014/08/20/pep8-git-hooks/
+
+
+TESTING
+	DocTest
+		http://johnnado.com/test-xml-using-python-doctest/
+
+	Infrastructure
+		https://pytest.org/latest/goodpractises.html
+
+	PyTest
+		http://pythontesting.net/framework/pytest/pytest-introduction/
+		http://pytest.org/latest/apiref.html#apiref
+		http://pytest.org/latest/usage.html#cmdline
+
+		http://pytest.org/latest/example/index.html
+		http://pytest.org/latest/fixture.html#fixtures
+		http://pytest.org/latest/plugins.html#plugins
+
+	ALT: nose
+		https://nose.readthedocs.org/en/latest/
+
+	PyQt
+		https://wiki.python.org/moin/PyQt/Tutorials
+		http://johnnado.com/pyqt-qtest-example/
