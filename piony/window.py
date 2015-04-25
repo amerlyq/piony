@@ -5,7 +5,7 @@ from PyQt5 import QtCore,QtGui,QtWidgets
 
 from .action import sendKey
 from .hgevent import HGEvent
-from .layout_sector import *
+from .layout.pie import *
 from .segment_button import *
 
 
@@ -47,7 +47,7 @@ class Window(QtWidgets.QWidget, HGEvent):
         # QtGui.QToolTip.setFont(QtGui.QFont('Ubuntu', 12))
         # self.setToolTip('This is a <b>QWidget</b> widget')
 
-        playout = SectorLayout(self.r, self.dr, 0)
+        playout = PieLayout(self.r, self.dr, 0)
         for segment in bud:
             if isinstance(segment, dict):
                 action = segment.get('action', None)

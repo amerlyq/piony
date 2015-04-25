@@ -12,9 +12,9 @@ class PetalStyle():
     wLine = 3
     def __init__(self):
         self.cBorder = { "select":[255,200,0,220]
-                , "press":[255,200,0,220],"normal":[10 ,10 ,0,220] }
+                , "press":[255,200,0,220],"normal":[10,10,0,220] }
         self.cFiller = { "select":[ 30,30 ,0,180]
-                , "press":[ 30,80 ,0,180],"normal":[10 ,10 ,0,180] }
+                , "press":[ 30,80 ,0,180],"normal":[40,40,40,180] } # 10,10,0
         self.cText   = { "select":[255,120,0,255]
                 , "press":[255,40,40,255],"normal":[100,255,0,255] }
 

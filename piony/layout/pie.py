@@ -5,18 +5,18 @@ import math
 from PyQt5.QtWidgets import QLayout,QWidgetItem
 from PyQt5.QtCore import *
 
-from .common import *
-from .ringsegment import *
+from ..common import *
+from ..ringsegment import *
 
 
 ## Storage for inscribed layer data
-class SectorWrapper(object):
+class SegmentWrapper(object):
     def __init__(self, item):
         self.item = item
         self.weight = 1
 
 # Rather SectorStrip, or SectorRing
-class SectorLayout(QLayout):
+class PieLayout(QLayout):
     def __init__(self, r, dr, spacing=0, margin=0, parent=None):
         super().__init__(parent)
         if parent is not None:
@@ -35,7 +35,7 @@ class SectorLayout(QLayout):
             item = self.takeAt(0)
 
     def addItem(self, item, pos=None):
-        sw = SectorWrapper(item)
+        sw = SegmentWrapper(item)
         if pos: self.sectors.insert(pos, sw)
         else: self.sectors.append(sw)
         # setDirty()
