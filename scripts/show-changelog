@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Extract changelog from completed tasks
+
+cd ..
+FL=${1:-./TODO.otl}
+VERFL=./piony/__init__.py
+
+{
+    git rev-list --all  -- "$VERFL" | while read line; do
+        dt=$(git show -s --format=%ci $line | awk '{printf $1}')
+        ver=$(git cat-file -p $line:"$VERFL" \
+            | sed -rn '/.*__version__\s*=\s*"(\S+)"/s//\1/p')
+        echo "$dt --- version $ver ---"
+    done
+
+    cat "$FL" | sed -rn '/\s*(.*\[[X$~]\]\s.*)/s//\1/p'
+
+} | sort -rn | sed -r '/.*(--- version.*)/s//\n\1/' | less

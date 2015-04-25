@@ -10,7 +10,7 @@ test: export PYTHONPATH := .:$(PYTHONPATH)
 test:
 	py.test
 
-collect:
+list-tests:
 	py.test --collect-only
 
 keys:

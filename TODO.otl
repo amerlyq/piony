@@ -73,7 +73,7 @@ Button
 	Appearance
 	Shape by parametric equation, using Bezier/Spline curves (cubicTo?)
 		: http://doc.qt.digia.com/4.6/painting-painterpaths.html
-		[X] bbox by segment : two straight lines and two concentric arcs
+		2015-04-20 [X] bbox by segment : two straight lines and two concentric arcs
 		[_] round corners for [segment..cookie] by coefficient k=0..1
 		[_] inner and outer arcs defined by their elliptic coeffs
 		[_] inward edge offset by border linewidth (or half of it?)
@@ -185,7 +185,7 @@ VISUALS
 	2015-04-14 [X] make clipping ellipse over petals to leave focus on circle, not square
 	2015-04-21 [X] BUG: bad antialising due to clipping mask, make it more steady
 	2015-04-21 [X] BUG: petals positions are somewhat none-symmetrical
-		2015-04-18 [$] lets try QPointF :: No such
+		2015-04-18 [$] lets try QPointF :> No such overload
 		2015-04-18 [$] place all button on top each other and rotate only painting inside
 	2015-04-21 [X] inner petal's half-ellipses must cover arc (180-a), outer=(180+a)
 		http://en.wikipedia.org/wiki/Ellipse
