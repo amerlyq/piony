@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 # vim: fileencoding=utf-8
 
-import math
-from PyQt5.QtWidgets import QLayout,QWidgetItem
-from PyQt5.QtCore import *
+from PyQt5.QtWidgets import QLayout, QWidgetItem
+from PyQt5.QtCore import QSize
 
-from ..common import *
-from ..ringsegment import *
+from piony.common import ra2xy
+from piony.ringsegment import RingSegment
 
 
 ## Storage for inscribed layer data
@@ -14,6 +13,7 @@ class SegmentWrapper(object):
     def __init__(self, item):
         self.item = item
         self.weight = 1
+
 
 # Rather SectorStrip, or SectorRing
 class PieLayout(QLayout):
@@ -36,8 +36,10 @@ class PieLayout(QLayout):
 
     def addItem(self, item, pos=None):
         sw = SegmentWrapper(item)
-        if pos: self.sectors.insert(pos, sw)
-        else: self.sectors.append(sw)
+        if pos:
+            self.sectors.insert(pos, sw)
+        else:
+            self.sectors.append(sw)
         # setDirty()
         # QLayout::invalidate();
 
@@ -51,7 +53,7 @@ class PieLayout(QLayout):
     def expandingDirections(self):
         # return QtCore.Qt.Horizontal | QtCore.Qt.Vertical
         # return Qt.Orientations(Qt.Orientation(0))
-        return False;
+        return False
 
     def itemAt(self, index):
         if index >= 0 and index < len(self.sectors):
@@ -95,7 +97,7 @@ class PieLayout(QLayout):
             sp = self.spacing()  # may be linear or angle
 
             segment = RingSegment(self.r, a*i + sp/2., self.dr, a - sp)
-            x,y = ra2xy(self.r, a*i)
+            x, y = ra2xy(self.r, a*i)
             wdg.setGeometry(segment.geometry(c.x() + x, c.y() - y))
             wdg.gPath = segment.path()
             wdg.gText = segment.text_bbox_scr()

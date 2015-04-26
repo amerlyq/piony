@@ -42,7 +42,7 @@ Ring
 	< PieLayout (Fan)
 		segment
 		spacer
-			space-filler is simply button w/o text and events
+			space-filler is simply button w/o text and events (maybe Cancel only)
 
 Sector
 	button
@@ -67,11 +67,12 @@ Button
 		[_] inward edge offset by border linewidth (or half of it?)
 
 Action
-	system command
-		emulate key
-		launch script
-	ui event
-		open/close submenu or widget
+	[_] Separate independent class for actions -- pattern Command
+		system commands
+			emulate key
+			launch script
+		ui events
+			open/close submenu or widget
 	<Flags>
 	[_] -p : toggle action print/execute
 		[_] simulate action due to it's field 'type' in config

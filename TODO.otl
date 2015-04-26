@@ -23,7 +23,7 @@ STYLE
 	[_] If possible, use styles instead my own vehicle:
 		: http://wiki.qt.io/Main_Page
 		: http://doc.qt.io/qt-4.8/style-reference.html
-	[_] for selection by <Tab> use different highlight than for hover
+	[_] (v1.1) for selection by <Tab> use different highlight than for hover
 		thin red-thansparent gradient lines as outer contour to current yellow.
 		they will cover only half-length of one petal, fading out with distance
 	[_] replace filling with gradient (radial?) to add volume
@@ -40,9 +40,14 @@ STYLE
 		: https://pythonhosted.org/kitchen/unicode-frustrations.html
 		: https://docs.python.org/2/tutorial/introduction.html#tut-unicodestrings
 	2015-04-23 [X] Basic config support in json
+	Format for configs
+		2015-04-24 [X] name
+		2015-04-24 [X] action
+		2015-04-26 [X] tooltip
 	[_] Gradual config complexity
-		[_] plain 1D list of keys : 1-ring
-		[_] dict for some items
+		[_] plain 1D list of actions : 1-ring
+		[_] list for some items (fixed order -- for shorter string)
+		[_] dict for some items (more detailed, more options, but more space)
 		[_] list of N lists : N-ring
 		: ... air-widgets, etc...
 		[_] specify all slices separately in json, and then insert transition
@@ -50,6 +55,7 @@ STYLE
 	[_] Separate settings file
 		[_] <krita...>.json
 			| it can be merged with Qt style file, written in CSS (QSS?)
+			[_] include directives to reuse slices from another files
 		[_] style.js or style.css
 			: default style, if not specified one in <...>.json
 			: colors, spacings, curveness, etc
@@ -60,6 +66,8 @@ STYLE
 	[_] -c /{-/<path>}: path to configs
 		[_] - : read config from stdin
 		[_] <path> : relative in ./cfgs/ or absolute in ~/.piony/
+		[_] can be specified multiple times -- one file for each Slice
+		: allows to combine several different slices on fly!
 	[_] -e "[...]" : setup layout directly on cmdline
 		[_] can be specified multiple times -- one for each Slice
 	INFO
@@ -161,6 +169,8 @@ IDEAS
 		of course they can be rotated, changing their slope
 	[_] icons instead of / under text (applied by blending) in segments
 		| maybe I will be OK simply with hieroglyphs? (image from StyleSheet)
+	[_] Get vars values from krita to display onto piony buttons
+		: like pressed/released state, brush size, etc
 
 
 > BUGS
