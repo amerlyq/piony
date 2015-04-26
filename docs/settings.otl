@@ -1,0 +1,69 @@
+>>> SETTINGS >>>
+
+GENERAL
+	2015-04-26 [X] Implement draft profiles '<krita...>.json'
+	2015-04-27 [X] Implement general settings 'config.ini'
+	[_] style.js or style.css
+		: default style, if not specified one in <...>.json
+		: colors, spacings, curveness, etc
+	[_] keymap.json
+		: general kbd/mse/wst keys to control menu
+
+
+ARGUMENTS
+	[_] Command line arguments support
+		: https://docs.python.org/3/library/argparse.html
+		: https://pythonhosted.org/kitchen/unicode-frustrations.html
+		: https://docs.python.org/2/tutorial/introduction.html#tut-unicodestrings
+		[_] Hide debug options
+			http://stackoverflow.com/questions/11114589/creating-hidden-arguments-with-python-argparse
+		Uniqueness
+			http://stackoverflow.com/questions/23032514/argparse-disable-same-argument-occurences
+
+
+CONFIG
+	[_] Duplicate all arguments to config.ini
+	[_] Merge all args to cfg before pass to Window
+
+	<Flags>
+	[_] -c <path>: path to config.ini
+
+
+PROFILES
+	2015-04-23 [X] Basic profile support in json
+	[_] Gradual profile complexity
+		[_] plain 1D list of actions : 1-ring
+		[_] list for some items (fixed order -- for shorter string)
+		[_] dict for some items (more detailed, more options, but more space)
+		[_] list of N lists : N-ring
+		: ... air-widgets, etc...
+		[_] specify all slices separately in json, and then insert transition
+		    links in action keys
+	| it can be merged with Qt style file, written in CSS (QSS?)
+	2015-04-27 [X] Format for entry
+		2015-04-24 [X] name
+		2015-04-24 [X] action
+		2015-04-26 [X] tooltip
+	[_] include directives to reuse slices from another files
+
+	<Flags>
+	[_] -i /{-/<path>}: input json or path for profile
+		[_] "[...]" : setup layout directly on cmdline
+		[_] - : read config from stdin
+		[_] <path> : relative in ./cfgs/ or absolute in ~/.piony/
+		[_] can be specified multiple times -- one file for each Slice
+			: allows to combine several different slices on fly!
+
+INFO
+	Dirty fast
+	: http://martin-thoma.com/configuration-files-in-python/
+	Species
+	: https://docs.python.org/3.4/library/configparser.html
+	: http://www.voidspace.org.uk/python/configobj.html
+	: https://docs.python.org/3.4/library/shlex.html#module-shlex
+	: https://docs.python.org/2/library/json.html#module-json
+	: http://pyyaml.org/wiki/PyYAMLDocumentation
+	OR: use regular python files!
+	Use vars in .ini : Extended Interpolation
+		https://wiki.python.org/moin/ConfigParserExamples
+		http://www.blog.pythonlibrary.org/2013/10/25/python-101-an-intro-to-configparser/

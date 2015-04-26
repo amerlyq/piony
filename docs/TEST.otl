@@ -3,8 +3,12 @@
 > UNIT
 
 Cfgs
+	[_] Cmdline args
 	[_] for each file format or cmdline test that created objects has correct
 		names, actions and positions
+	[_] Interaction between config.ini and cmdline args
+	[_] Gradual profiles
+		: cfg = [ c for c in char_range('a','m') ]
 
 
 > SYSTEM

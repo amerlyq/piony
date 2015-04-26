@@ -1,24 +1,20 @@
 #!/usr/bin/env python3
 # vim: fileencoding=utf-8
 
-import argparse
-
 import piony
+from piony import gvars
 
 
-def cmd_args():
-    ps = argparse.ArgumentParser(prog=piony.__appname__,
-                                 formatter_class=argparse.RawDescriptionHelpFormatter,
-                                 description=piony.__doc__,
-                                 epilog="Enjoy!!!")
-    farg = ps.add_argument
-
+def G_ARGUMENTS_DEFAULT_F(farg):  # @par1 = Method to add arguments into parser
     ## Configuration
     farg('-c', '--config',
-         default='cfgs/map.json',
-         help="Config file for buttons layout.")
-    farg('-e', '--entry',
-         help="Setup layout directly on cmdline.")
+         default=gvars.G_CONFIG_PATH,
+         help="Config file with default settings.")
+    farg('-i', '--input',
+         default=[gvars.G_PROFILE_PATH], action='append',
+         help="Setup profile layout in json directly on cmdline. "
+              "Can be specified several times -- one for each slice. "
+              "Or use pathes to files with slices inside.")
     farg('-p', '--print',
          help="Toggle action print/execute to use as frontend only.")
 
@@ -26,7 +22,7 @@ def cmd_args():
     farg('-s', '--size',
          type=int, default=360,
          help="Sets window size WxH=NxN to derive all rings sizes from it.")
-    farg('-f', '--fullscreen', action='store_true',
+    farg('-F', '--fullscreen', action='store_true',
          help="Overlay fullscreen/local")
     farg('-T', '--no-tooltip', action='store_true',
          # nargs='?', const='', default='y', choices=[''],
@@ -40,6 +36,4 @@ def cmd_args():
     farg('-v', '--version', action='version',
          version="%(prog)s {0}".format(piony.__version__),
          help="Version of program.")
-
-    return ps.parse_args()
 

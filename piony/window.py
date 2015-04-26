@@ -12,8 +12,10 @@ from piony import gvars
 
 
 class Window(QtWidgets.QWidget, HGEvent):
-    def __init__(self, bud, args):
+    def __init__(self, cfg, bud, args):
         super().__init__()
+        self.cfg = cfg
+        self.opts = self.cfg['Window']
         self.bM3 = False
         self.ppos = QtCore.QPoint()
         self.size_w = args.size
@@ -21,7 +23,7 @@ class Window(QtWidgets.QWidget, HGEvent):
         self.dr = (0.7 * self.size_w) // 2
 
         self.setWnd()
-        self.setContent(bud, args.no_tooltip)
+        self.setContent(bud, not args.no_tooltip)
         self.resize(self.sizeHint())
         self.centerOnCursor()
 
@@ -46,16 +48,17 @@ class Window(QtWidgets.QWidget, HGEvent):
         self.addAction(aQuit)
         self.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
 
-    def setContent(self, bud, no_tooltip):
-        if no_tooltip == False:
+    def setContent(self, bud, has_tooltip):
+        if has_tooltip:
             QtWidgets.QToolTip.setFont(QtGui.QFont('Ubuntu', 12))
             self.setToolTip('Slice No=1 <i>Click at any empty space to close.</i>')
 
         playout = lpie.PieLayout(self.r, self.dr, 0)
         for segment in bud:
-            btn = segbtn.SegmentButton(None, segment.name)
-            if no_tooltip == False:
+            btn = segbtn.SegmentButton(self.cfg['Button'], segment.name)
+            if has_tooltip:
                 btn.setToolTip(segment.tooltip)
+
             btn.clicked.connect(lambda b: sendKey(segment.action))
             playout.addWidget(btn)
         self.setLayout(playout)

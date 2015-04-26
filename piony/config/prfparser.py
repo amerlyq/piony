@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 # vim: fileencoding=utf-8
 
+import json
 import collections
 
+from piony import gvars
 
-class CfgParse:
+
+class ProfileParser:
     segment = collections.namedtuple('SegmentCfg', ['name', 'action', 'tooltip'])
 
     def tooltip(self, action):
@@ -24,8 +27,13 @@ class CfgParse:
             name = action
             tooltip = self.tooltip(action)
 
-        return CfgParse.segment(name, action, tooltip)
+        return ProfileParser.segment(name, action, tooltip)
 
     def parse(self, cfg):
         return map(self.parseEntry, cfg)
+
+    def read_file(self, path=gvars.G_PROFILE_PATH):
+        with open(path) as prof_file:
+            prof = json.load(prof_file)
+        return self.parse(prof)
 

@@ -7,6 +7,7 @@ TODO
 		:> in which case I will try prototype w/o layout to check smoothiness
 	2015-04-22 [X] FIX text 'krita' in the center of ring
 	[_] Compare performance for individual pathes and QTransform rotated.
+	[_] Add extracting git log messages to changelog
 
 FLOW
 	2015-04-20 [X] RingSegment class (draft version)
@@ -33,53 +34,6 @@ STYLE
 		[_] different tint colors for buttons in different groups (like Excel)
 		[_] ? add 'group' property to button, or use direct color?
 
-
-> CONFIGS
-	[_] Command line arguments support
-		: https://docs.python.org/3/library/argparse.html
-		: https://pythonhosted.org/kitchen/unicode-frustrations.html
-		: https://docs.python.org/2/tutorial/introduction.html#tut-unicodestrings
-	2015-04-23 [X] Basic config support in json
-	Format for configs
-		2015-04-24 [X] name
-		2015-04-24 [X] action
-		2015-04-26 [X] tooltip
-	[_] Gradual config complexity
-		[_] plain 1D list of actions : 1-ring
-		[_] list for some items (fixed order -- for shorter string)
-		[_] dict for some items (more detailed, more options, but more space)
-		[_] list of N lists : N-ring
-		: ... air-widgets, etc...
-		[_] specify all slices separately in json, and then insert transition
-		    links in action keys
-	[_] Separate settings file
-		[_] <krita...>.json
-			| it can be merged with Qt style file, written in CSS (QSS?)
-			[_] include directives to reuse slices from another files
-		[_] style.js or style.css
-			: default style, if not specified one in <...>.json
-			: colors, spacings, curveness, etc
-		[_] keymap.json
-			: general kbd/mse/wst keys to control menu
-		[_] settings.ini
-	<Flags>
-	[_] -c /{-/<path>}: path to configs
-		[_] - : read config from stdin
-		[_] <path> : relative in ./cfgs/ or absolute in ~/.piony/
-		[_] can be specified multiple times -- one file for each Slice
-		: allows to combine several different slices on fly!
-	[_] -e "[...]" : setup layout directly on cmdline
-		[_] can be specified multiple times -- one for each Slice
-	INFO
-		Dirty fast
-		: http://martin-thoma.com/configuration-files-in-python/
-		Species
-		: https://docs.python.org/3.4/library/configparser.html
-		: http://www.voidspace.org.uk/python/configobj.html
-		: https://docs.python.org/3.4/library/shlex.html#module-shlex
-		: https://docs.python.org/2/library/json.html#module-json
-		: http://pyyaml.org/wiki/PyYAMLDocumentation
-		OR: use regular python files!
 
 CONTROLS
 	[_] Extract key mappings into separate 'keymap.json' file
@@ -133,6 +87,7 @@ SYSTEM
 		: or you can simply unfocuse current before sending keystrokes
 	[_] Maybe, make on close() teleport mouse back to starting position?
 		:= it's convenient for mouse, but has not much sense for Wacom
+	2015-04-27 [X] React to Ctrl-C from console
 	<Flags>
 	[_] -d : start as background daemon  # OR: '-D','--no-daemon'
 		[_] toggle show/hide instead of creating each time
@@ -145,6 +100,7 @@ SYSTEM
 
 	[_] -f : overlay fullscreen/local
 		[_] local : close window on LeaveEvent for QRegion : slice bbox
+			[_] settings: toggle 'close on LeaveEvent'
 		[_] full  : whole screen to intercept clicks from drawing in krita
 	2015-04-25 [X] -v <v/a>: verbose (debug) {all/{visuals/actions}}
 		2015-04-25 [X] activates several global variables from common.py
@@ -189,6 +145,7 @@ IDEAS
 	[_] BUG: exception when list is empty -> must show only ring bkgr
 	[_] BUG: if size of window =40 visualisation is wrong: window don't want be more small than some size.
 		: Calculate radius only after window will be shown.
+	[_] BUG: on resize must update petals and text sizes
 	[_] ???: Button tooltip changes color to yellow if you fast move cursor over it
 
 

@@ -3,42 +3,32 @@
 
 import os
 import sys
-import json
+import signal
 from PyQt5.QtWidgets import QApplication
 
 import piony
-from piony import gvars
 
-
-def apply_args(args):
-    if args.verbose == 'l':
-        gvars.G_DEBUG_VISUALS = True
-        gvars.G_DEBUG_ACTIONS = True
-    elif args.verbose == 'v':
-        gvars.G_DEBUG_VISUALS = True
-        gvars.G_DEBUG_ACTIONS = False
-    elif args.verbose == 'a':
-        gvars.G_DEBUG_VISUALS = False
-        gvars.G_DEBUG_ACTIONS = True
 
 if __name__ == '__main__':
     cdir = os.path.dirname(os.path.abspath(__file__))
-    args = piony.cmd_args()
+    Cfg_Ps = piony.ConfigParser()
+    Arg_Ps = piony.ArgsParser()
+
+    cfg = Cfg_Ps.read_file()
+    args = Arg_Ps.parse()
+    Arg_Ps.apply(args)
+    bud = piony.ProfileParser().read_file()
 
     # mmc.read(os.path.abspath(args.input))
     # for f_out in args.output:
     #     mmc.write(os.path.abspath(f_out))
     # mmc.write('out.stdio', type=None if 'auto' == args.oftype else args.oftype)
 
-    # cfg = [ c for c in char_range('a','m') ]
-    with open('cfgs/map.json') as cfg_file:
-        cfg = json.load(cfg_file)
-    bud = piony.CfgParse().parse(cfg)
-
-    apply_args(args)
+    ## Close on 'Ctrl-C' system signal
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
 
     app = QApplication(sys.argv)
-    wnd = piony.Window(bud, args)
+    wnd = piony.Window(cfg, bud, args)
     wnd.setWindowTitle(piony.__appname__)
     wnd.show()
     sys.exit(app.exec_())

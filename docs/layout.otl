@@ -70,6 +70,8 @@ Action
 	[_] Separate independent class for actions -- pattern Command
 		system commands
 			emulate key
+				[_] Try direct xtest
+					https://pypi.python.org/pypi/xtest/1.21
 			launch script
 		ui events
 			open/close submenu or widget

@@ -22,8 +22,10 @@ class PetalStyle():
 
 
 class SegmentButton(QtWidgets.QToolButton):
-    def __init__(self, parent=None, name=""):
+    def __init__(self, opts, name="", parent=None):
         super().__init__(parent)
+        self.opts = opts
+        self.text_scale = self.opts.getfloat('text_scale')
         self.setText(name)
         self.setMouseTracking(True)
 
@@ -86,7 +88,7 @@ class SegmentButton(QtWidgets.QToolButton):
 
     def drawSegmentText(self, p):
         p.setPen(self._clr("cText"))
-        sz = int(self.gText.height() / gvars.G_TEXT_SCALE)
+        sz = int(self.gText.height() * self.text_scale)
         p.setFont(QtGui.QFont('Ubuntu', sz))
         if __debug__ and gvars.G_DEBUG_VISUALS:
             p.drawRect(self.gText)

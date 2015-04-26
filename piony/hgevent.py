@@ -31,7 +31,8 @@ class HGEvent():
 
     def mouseReleaseEvent(self, e):
         if e.button() == Qt.LeftButton and not _hasModCtrl():
-            self.close()
+            # self.close()
+            pass
         self.bM3 = False  # must drop flag on any mouse button
         # elif e.button() == Qt.MidButton:
         #     e.accept()
@@ -67,4 +68,5 @@ class HGEvent():
         qr = QtCore.QRect(self.width()/2 - side/2, self.height()/2 - side/2, side, side)
         rgn = QtGui.QRegion(qr, QtGui.QRegion.Ellipse)
         self.setMask(rgn)
+        self.updateGeometry()
 
