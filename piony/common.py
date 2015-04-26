@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # vim: fileencoding=utf-8
 
-## ----------
 
 def xstr(s):  # Returns empty string even if None
     return '' if s is None else str(s)

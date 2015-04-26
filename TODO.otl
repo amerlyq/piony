@@ -189,6 +189,7 @@ IDEAS
 	[_] BUG: exception when list is empty -> must show only ring bkgr
 	[_] BUG: if size of window =40 visualisation is wrong: window don't want be more small than some size.
 		: Calculate radius only after window will be shown.
+	[_] ???: Button tooltip changes color to yellow if you fast move cursor over it
 
 
 

@@ -52,14 +52,9 @@ class Window(QtWidgets.QWidget, HGEvent):
 
         playout = lpie.PieLayout(self.r, self.dr, 0)
         for segment in bud:
-            if isinstance(segment, dict):
-                action = segment.get('action', None)
-                name = segment.get('name', action)
-            else:
-                name = segment
-            btn = segbtn.SegmentButton(None, name)
-            btn.setToolTip(name + ' -> <b>' + action + '</b>')
-            btn.clicked.connect(lambda b: sendKey(name))
+            btn = segbtn.SegmentButton(None, segment.name)
+            btn.setToolTip(segment.tooltip)
+            btn.clicked.connect(lambda b: sendKey(segment.action))
             playout.addWidget(btn)
         self.setLayout(playout)
 

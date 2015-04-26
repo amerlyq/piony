@@ -1,5 +1,5 @@
 [
-    {"name":"All", "action":"Ctrl+a"},
+    {"name":"VA", "action":"Ctrl+a", "tooltip":"Select all"},
     "b",
     {"action":"c", "type":"key"},
     "p"

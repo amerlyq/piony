@@ -30,9 +30,10 @@ if __name__ == '__main__':
     #     mmc.write(os.path.abspath(f_out))
     # mmc.write('out.stdio', type=None if 'auto' == args.oftype else args.oftype)
 
-    # bud = [ c for c in char_range('a','m') ]
-    with open('cfgs/map.json') as bud_file:
-        bud = json.load(bud_file)
+    # cfg = [ c for c in char_range('a','m') ]
+    with open('cfgs/map.json') as cfg_file:
+        cfg = json.load(cfg_file)
+    bud = piony.CfgParse().parse(cfg)
 
     apply_args(args)
 
