@@ -17,7 +17,7 @@ RFC
 		[_] coord-systems conversion code
 		[_] segment contour shrinking
 	[_] Try extract R() as single separate function instead defining in each class
-	[_] Replace all imports with full versions
+	2015-04-25 [X] Replace all imports with full versions
 
 STYLE
 	[_] If possible, use styles instead my own vehicle:
@@ -140,10 +140,11 @@ SYSTEM
 		[_] full  : whole screen to intercept clicks from drawing in krita
 	2015-04-25 [X] -v <v/a>: verbose (debug) {all/{visuals/actions}}
 		2015-04-25 [X] activates several global variables from common.py
-	[_] Cover debug code in if __debug__ statement in manner of C #ifdef
+	2015-04-25 [X] Cover debug code in if __debug__ statement in manner of C #ifdef
 		? Use __debug__ variable to enclose defining and launch 'python -O'?
 		http://stackoverflow.com/questions/12524570/how-do-you-implement-ifdef-in-python
 	[_] Extract global vars to __builtin__.py and access them as builtins.foo
+	[_] Place all global variables into gvars.py (not common.py)
 
 
 IDEAS
