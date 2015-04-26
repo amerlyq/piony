@@ -38,7 +38,7 @@ if __name__ == '__main__':
     apply_args(args)
 
     app = QApplication(sys.argv)
-    wnd = piony.Window(bud, args.size)
+    wnd = piony.Window(bud, args)
     wnd.setWindowTitle(piony.__appname__)
     wnd.show()
     sys.exit(app.exec_())

@@ -28,7 +28,8 @@ def cmd_args():
          help="Sets window size WxH=NxN to derive all rings sizes from it.")
     farg('-f', '--fullscreen', action='store_true',
          help="Overlay fullscreen/local")
-    farg('-T', '--no-tooltip',
+    farg('-T', '--no-tooltip', action='store_true',
+         # nargs='?', const='', default='y', choices=[''],
          help="Disable pop-up items, for those who is irritated.")
 
     ## Process

@@ -9,7 +9,7 @@ Window
 		: dynamic placeholders for all available smart widgets
 		2015-04-11 [X] Slices placed at current cursor position
 	<Flags>
-	[_] -P : disable QToolTip items
+	2015-04-26 [X] -T : disable QToolTip items
 		: for those who are distracted and irritated by text hints
 
 Slice
