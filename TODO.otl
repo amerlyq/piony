@@ -144,7 +144,7 @@ SYSTEM
 		? Use __debug__ variable to enclose defining and launch 'python -O'?
 		http://stackoverflow.com/questions/12524570/how-do-you-implement-ifdef-in-python
 	[_] Extract global vars to __builtin__.py and access them as builtins.foo
-	[_] Place all global variables into gvars.py (not common.py)
+	2015-04-26 [X] Place all global variables into gvars.py (not common.py)
 
 
 IDEAS

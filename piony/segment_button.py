@@ -3,7 +3,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from piony import common
+from piony import gvars
 
 
 class PetalStyle():
@@ -87,13 +87,13 @@ class SegmentButton(QtWidgets.QToolButton):
     def drawSegmentText(self, p):
         p.setPen(self._clr("cText"))
         p.setFont(QtGui.QFont('Ubuntu', 16))
-        if __debug__ and common.G_DEBUG_VISUALS:
+        if __debug__ and gvars.G_DEBUG_VISUALS:
             p.drawRect(self.gText)
         p.drawText(self.gText, QtCore.Qt.AlignCenter, self.text())
 
     def paintEvent(self, e):
         p = self.createPainter()
-        if __debug__ and common.G_DEBUG_VISUALS:
+        if __debug__ and gvars.G_DEBUG_VISUALS:
             self.drawSegmentRegion(p)
         self.drawSegment(p)
         self.drawSegmentText(p)

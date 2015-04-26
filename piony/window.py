@@ -8,7 +8,7 @@ import piony.layout.pie as lpie
 import piony.segment_button as segbtn
 from piony.action import sendKey
 from piony.hgevent import HGEvent
-from piony import common
+from piony import gvars
 
 
 class Window(QtWidgets.QWidget, HGEvent):
@@ -73,7 +73,7 @@ class Window(QtWidgets.QWidget, HGEvent):
 
     def paintEvent(self, e):
         p = QtWidgets.QStylePainter(self)  # p.begin(self)
-        if __debug__ and common.G_DEBUG_VISUALS:
+        if __debug__ and gvars.G_DEBUG_VISUALS:
             self.drawBkgr(p)
         # self.drawName(p)  # temporarily disabled
         p.end()

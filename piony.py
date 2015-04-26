@@ -7,19 +7,19 @@ import json
 from PyQt5.QtWidgets import QApplication
 
 import piony
-from piony import common
+from piony import gvars
 
 
 def apply_args(args):
     if args.verbose == 'l':
-        common.G_DEBUG_VISUALS = True
-        common.G_DEBUG_ACTIONS = True
+        gvars.G_DEBUG_VISUALS = True
+        gvars.G_DEBUG_ACTIONS = True
     elif args.verbose == 'v':
-        common.G_DEBUG_VISUALS = True
-        common.G_DEBUG_ACTIONS = False
+        gvars.G_DEBUG_VISUALS = True
+        gvars.G_DEBUG_ACTIONS = False
     elif args.verbose == 'a':
-        common.G_DEBUG_VISUALS = False
-        common.G_DEBUG_ACTIONS = True
+        gvars.G_DEBUG_VISUALS = False
+        gvars.G_DEBUG_ACTIONS = True
 
 if __name__ == '__main__':
     cdir = os.path.dirname(os.path.abspath(__file__))
