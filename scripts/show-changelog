@@ -8,14 +8,24 @@ cd "$PROJ"
 FL=${1:-./TODO.otl}
 VERFL=./piony/__init__.py
 
+usort() { gawk '{ if(!a[$2] || $1 < a[$2]) a[$2]=$1 }
+    END{ for(k in a){printf("%s --- version %s --- \n",a[k],k)}
+}';}
+
+gsort() { gawk '/---/{a[$0]=0; next} {a[$0]=1}
+    function cmp_key(i,v,j,w){return (i != j) \
+    ? (i>j ? -1 : 1) : (v>w ? -1 : (v!=w)) }
+    END{ PROCINFO["sorted_in"]="cmp_key"; for(k in a){print k}
+}';}
+
 {
     git rev-list --all  -- "$VERFL" | while read line; do
         dt=$(git show -s --format=%ci $line | awk '{printf $1}')
         ver=$(git cat-file -p $line:"$VERFL" \
             | sed -rn '/.*__version__\s*=\s*"(\S+)"/s//\1/p')
-        echo "$dt --- version $ver ---"
-    done | sort -uk2
+        echo "$dt $ver"
+    done | usort
 
     find "$PROJ" -name '*.otl' -exec cat {} \; | sed -rn '/(\s*)(.*)(\[[X$~]\]\s.*)/s//\2\1\3/p'
 
-} | sort -rn | sed -r '/.*(--- version.*)/s//\n\1/' | less
+} | gsort | sed -r '/.*(--- version.*)/s//\n\1/' | less
