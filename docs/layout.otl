@@ -56,7 +56,7 @@ Button
 	Behaviour
 		[_] emit action on press
 	Appearance
-		[_] font size must be derived from gText size
+		2015-04-26 [X] font size must be derived from gText size
 		[_] long text must wrap and scale font size accordingly (as PowerPoint)
 			: wouldn't became too small? Must I specify minimal font size?
 	[_] Shape by parametric equation, using Bezier/Spline curves (cubicTo?)

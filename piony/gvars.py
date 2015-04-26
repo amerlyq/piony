@@ -3,3 +3,4 @@
 
 G_DEBUG_ACTIONS = True
 G_DEBUG_VISUALS = False  # True
+G_TEXT_SCALE = 1.6

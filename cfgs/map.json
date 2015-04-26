@@ -2,5 +2,5 @@
     {"name":"All", "action":"Ctrl+a"},
     "b",
     {"action":"c", "type":"key"},
-    "d"
+    "p"
 ]

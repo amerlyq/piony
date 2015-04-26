@@ -86,7 +86,8 @@ class SegmentButton(QtWidgets.QToolButton):
 
     def drawSegmentText(self, p):
         p.setPen(self._clr("cText"))
-        p.setFont(QtGui.QFont('Ubuntu', 16))
+        sz = int(self.gText.height() / gvars.G_TEXT_SCALE)
+        p.setFont(QtGui.QFont('Ubuntu', sz))
         if __debug__ and gvars.G_DEBUG_VISUALS:
             p.drawRect(self.gText)
         p.drawText(self.gText, QtCore.Qt.AlignCenter, self.text())
