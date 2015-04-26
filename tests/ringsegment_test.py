@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 # vim: fileencoding=utf-8
 
-from piony.ringsegment import *
 from PyQt5.QtCore import *
+
+from piony.common import *
+from piony.ringsegment import *
 
 class TestRingSegment():
     def test_points_ra_n90(self):

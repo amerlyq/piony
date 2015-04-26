@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 # vim: fileencoding=utf-8
 
-from PyQt5.QtCore import *
-from PyQt5 import QtGui,QtWidgets
+from PyQt5.QtCore import Qt, QEvent
+from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 def _hasModCtrl():
     modifiers = QtWidgets.QApplication.keyboardModifiers()
     return modifiers == Qt.ControlModifier
+
 
 class HGEvent():
     def _dragStart(self, e):
@@ -16,7 +18,7 @@ class HGEvent():
 
     def keyPressEvent(self, e):
         # Tab, Space -- out of questions as used to choose/press UI elements
-        k_ex = [ Qt.Key_Escape, Qt.Key_Return ]
+        k_ex = [Qt.Key_Escape, Qt.Key_Return]
         if e.key() in k_ex:
             self.close()
             e.accept()
@@ -44,7 +46,7 @@ class HGEvent():
         print(e.delta())
 
     def eventFilter(self, obj, e):
-        e_ex = [ QEvent.WindowDeactivate, QEvent.Leave ]
+        e_ex = [QEvent.WindowDeactivate, QEvent.Leave]
         # print(e.type())
         # print(self.underMouse())
         if e.type() in e_ex:
@@ -56,12 +58,13 @@ class HGEvent():
         #         print("Widget click", obj)
 
         # return super().eventFilter(obj, e)  # default
-        return False  # True -- event will be filtered and not reach the obj,
-                        # meaning that I decided to handle it myself
+        return False
+        # True -- event will be filtered and not reach the obj, meaning that I
+        # decided to handle it myself
 
     def resizeEvent(self, e):
         side = min(self.width(), self.height())
-        qr = QRect(self.width()/2 - side/2, self.height()/2 - side/2, side, side)
+        qr = QtCore.QRect(self.width()/2 - side/2, self.height()/2 - side/2, side, side)
         rgn = QtGui.QRegion(qr, QtGui.QRegion.Ellipse)
-        # self.setMask(rgn)
+        self.setMask(rgn)
 

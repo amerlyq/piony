@@ -1,10 +1,14 @@
 PR := piony
 
-all: test app
+all: test debug
 
 ### MAIN ###
 app:
-	@./$(PR).py
+	@python3 -O $(PR).py
+debug:
+	@./$(PR).py -V a
+debug-all:
+	@./$(PR).py -V
 
 
 ### TESTS ###
@@ -15,12 +19,13 @@ list-tests:
 	py.test --collect-only
 
 style-lint:
-	pylint $(PR) | less
+	pylint --disable=C0111 $(PR) | less
 
 style-pep8-info: PEP8=--show-source --show-pep8
 style-pep8-info: style-pep8
 style-pep8:
 	pep8 --first --format=pylint #--statistics
+
 
 ### SETUP ###
 keys:
@@ -36,5 +41,5 @@ deploy:
 changelog:
 	@./scripts/show-changelog
 
-
-.PHONY: all app changelog collect deploy keys test
+#:.!cat % | sed -n '/^\([-a-z0-9]\+\):.*/s//\1/p' | sort -u | xargs
+.PHONY: all app changelog debug deploy keys list-tests style-lint style-pep8 style-pep8-info test

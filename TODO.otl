@@ -17,6 +17,7 @@ RFC
 		[_] coord-systems conversion code
 		[_] segment contour shrinking
 	[_] Try extract R() as single separate function instead defining in each class
+	[_] Replace all imports with full versions
 
 STYLE
 	[_] If possible, use styles instead my own vehicle:
@@ -60,7 +61,7 @@ STYLE
 		[_] - : read config from stdin
 		[_] <path> : relative in ./cfgs/ or absolute in ~/.piony/
 	[_] -e "[...]" : setup layout directly on cmdline
-		[_] can be specified several times -- one for each Slice
+		[_] can be specified multiple times -- one for each Slice
 	INFO
 		Dirty fast
 		: http://martin-thoma.com/configuration-files-in-python/
@@ -125,11 +126,15 @@ SYSTEM
 	[_] Maybe, make on close() teleport mouse back to starting position?
 		:= it's convenient for mouse, but has not much sense for Wacom
 	<Flags>
-	[_] -d : start as background demon
+	[_] -d : start as background daemon  # OR: '-D','--no-daemon'
 		[_] toggle show/hide instead of creating each time
 			| check self.hide() functional -- does it hide from i3wm?
+			[_] -S : show -- "Show menu at current cursor position, or at 'x,y' coords", default='auto'
+			[_] -H : hide -- "Hide and if has argument '1' click last hovered before it.", default='auto'
 		[_] use only one instance (now old autocloses on focus lost when new created)
 			: https://pythonadventures.wordpress.com/2013/01/10/launch-just-one-instance-of-a-qt-application/
+		[_] -k : kill -- "Kill demon."
+
 	[_] -f : overlay fullscreen/local
 		[_] local : close window on LeaveEvent for QRegion : slice bbox
 		[_] full  : whole screen to intercept clicks from drawing in krita

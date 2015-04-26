@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 # Extract changelog from completed tasks
 
-cd ..
+SDIR="$(readlink -m ${0%/*})"
+PROJ="${SDIR%/*/*}"
+cd "$PROJ"
+
 FL=${1:-./TODO.otl}
 VERFL=./piony/__init__.py
 

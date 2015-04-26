@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
 # python-pip pyqt5-dev
-sudo apt-get install python3-dev python3-pip python3-pyqt5 pylint
+sudo apt-get install python3-dev python3-pip python3-pyqt5
 sudo pip3 install -U pytest pep8
+sudo pip3 install -U pylint
 
 # python3-sip
 # SIP is a tool for quickly writing Python modules that interface with C++ and C libraries
