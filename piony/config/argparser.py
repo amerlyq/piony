@@ -20,7 +20,14 @@ class ArgsParser:
                       epilog="Enjoy!!!")
 
         argdefaults.G_ARGUMENTS_DEFAULT_F(ps.add_argument)
-        self.args = ps.parse_args()
+
+        # self.args = ps.parse_args()
+        # if line and isinstance(line, basestring):
+        if line and isinstance(line, str):
+            self.args = ps.parse_args(line.split())
+        else:
+            self.args = ps.parse_args()
+
         return self.args
 
     def apply(self, args=None):
