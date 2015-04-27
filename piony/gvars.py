@@ -6,6 +6,6 @@ if __debug__:
     G_DEBUG_VISUALS = False
 
 
+G_ACTIVE_WINDOW = "%1"
 G_CONFIG_PATH = "./cfgs/config.ini"
 G_PROFILE_PATH = "./cfgs/krita.json"
-

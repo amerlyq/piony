@@ -3,7 +3,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from piony import gvars
+from piony import gvars, action
 
 
 class PetalStyle():
@@ -22,18 +22,22 @@ class PetalStyle():
 
 
 class SegmentButton(QtWidgets.QToolButton):
-    def __init__(self, opts, name="", parent=None):
+    def __init__(self, opts, name="", act=None, parent=None):
         super().__init__(parent)
+
         self.opts = opts
-        self.text_scale = self.opts.getfloat('text_scale')
         self.setText(name)
-        self.setMouseTracking(True)
+        self.action = act
+
+        self.text_scale = self.opts.getfloat('text_scale')
 
         self.bHover = False
         self.bHold = False
         self.gPath = None
         self.gText = QtCore.QRect(0, 0, 20, 20)
         self.pstyle = PetalStyle()
+
+        self.setMouseTracking(True)
         self.resize(self.sizeHint())
         # self.setMask(QtGui.QRegion(rct))
 
@@ -60,7 +64,8 @@ class SegmentButton(QtWidgets.QToolButton):
         # if e.button() == QtCore.Qt.LeftButton and not _hasModCtrl():
         self.bHold = False
         self.update()
-        # QtGui.qApp.close()
+        self.action()
+        # action.sysClose()
 
     ## --------------
 
@@ -110,4 +115,3 @@ class SegmentButton(QtWidgets.QToolButton):
             p.setBrush(grd)
             p.setPen(QtGui.QPen(QtCore.Qt.NoPen))
             p.drawRect(QtCore.QRect(QtCore.QPoint(2, 2), self.size() - QtCore.QSize(4, 4)))
-

@@ -24,6 +24,8 @@ STYLE
 	[_] If possible, use styles instead of my own vehicle:
 		: http://wiki.qt.io/Main_Page
 		: http://doc.qt.io/qt-4.8/style-reference.html
+		2015-04-27 [$] remove my overload for mouseDown/Up for btn.connect work again
+			:> I will need overloading for future air-menu, so NO.
 	[_] (v1.1) for selection by <Tab> use different highlight than for hover
 		thin red-thansparent gradient lines as outer contour to current yellow.
 		they will cover only half-length of one petal, fading out with distance
@@ -127,6 +129,7 @@ IDEAS
 		| maybe I will be OK simply with hieroglyphs? (image from StyleSheet)
 	[_] Get vars values from krita to display onto piony buttons
 		: like pressed/released state, brush size, etc
+	[_] Profile: make 4-ring virt keyboard with frequences from colemac
 
 
 > BUGS
@@ -138,6 +141,7 @@ IDEAS
 	2015-04-21 [X] inner petal's half-ellipses must cover arc (180-a), outer=(180+a)
 		: http://en.wikipedia.org/wiki/Ellipse
 	2015-04-22 [X] BUG: replace items order CW -> CCW
+	2015-04-27 [X] BUG: keys aren't printed or emulated on action
 	[_] BUG: petal bHold isn't released if you click on ContextMenu
 		: https://wiki.python.org/moin/PyQt/Handling%20context%20menus
 	[_] BUG: resets geometry position to 0,0 when cursor at screen border
@@ -155,14 +159,17 @@ IDEAS
 	[_] Optimize event calls with caching and restructuring
 		: e.g. setGeometry called three times on launch!
 		>> FAQ: https://docs.python.org/2/faq/programming.html#id14
-	[_] multithreading to accelerate air-layouts pre-creation and launch time
-		: http://stackoverflow.com/questions/2846653/python-multithreading-for-dummies
-		: http://www.tutorialspoint.com/python/python_multithreading.htm
+	[_] multithreading
+	: http://stackoverflow.com/questions/2846653/python-multithreading-for-dummies
+	: http://www.tutorialspoint.com/python/python_multithreading.htm
+		[_] to accelerate air-layouts pre-creation and launch time
+		[_] sendKeys in separate thread, launched simultaneously with app
 	[_] For layout-on-cmdline use shared button style to start-up much faster
 	[_] Edit menu loads only on demand, when you toggle option in M2 menu
 
 	[_] https://wiki.python.org/moin/PythonSpeed/PerformanceTips
-
+	[_] Reduce startup time
+		http://draketo.de/light/english/politics-and-free-software/reducing-python-startup-time
 	Compile to fast binary (also can be useful for Windows distribution)
 		[_] Freeze tool
 			std : is included in the Python source tree as Tools/freeze

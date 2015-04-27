@@ -4,6 +4,8 @@
 from PyQt5.QtCore import Qt, QEvent
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from piony import action
+
 
 def _hasModCtrl():
     modifiers = QtWidgets.QApplication.keyboardModifiers()
@@ -31,8 +33,7 @@ class HGEvent():
 
     def mouseReleaseEvent(self, e):
         if e.button() == Qt.LeftButton and not _hasModCtrl():
-            # self.close()
-            pass
+            action.sysClose()
         self.bM3 = False  # must drop flag on any mouse button
         # elif e.button() == Qt.MidButton:
         #     e.accept()
@@ -48,12 +49,10 @@ class HGEvent():
 
     def eventFilter(self, obj, e):
         e_ex = [QEvent.WindowDeactivate, QEvent.Leave]
-        # print(e.type())
-        # print(self.underMouse())
         if e.type() in e_ex:
             if not self.mask().contains(QtGui.QCursor.pos()):
-                # self.close()
-                pass
+                action.sysClose()
+
         # if self.layout().indexOf(obj) != -1:
         #     if event.type() == event.MouseButtonPress:
         #         print("Widget click", obj)
@@ -69,4 +68,3 @@ class HGEvent():
         rgn = QtGui.QRegion(qr, QtGui.QRegion.Ellipse)
         self.setMask(rgn)
         self.updateGeometry()
-

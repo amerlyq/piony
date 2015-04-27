@@ -7,6 +7,7 @@ DEVELOPMENT
 		: https://testrun.org/tox/latest/
 	[_] Profiling
 		http://www.pyvmmonitor.com/
+		https://www.python.org/dev/peps/pep-0318/
 	[_] Debugging
 		> https://zapier.com/engineering/debugging-python-boss/
 		https://pythonconquerstheuniverse.wordpress.com/2009/09/10/debugging-in-python/
@@ -82,4 +83,11 @@ TESTING
 
 	PyQt
 		https://wiki.python.org/moin/PyQt/Tutorials
-		http://johnnado.com/pyqt-qtest-example/
+		https://wiki.python.org/moin/PyQt/GUI_Testing
+		> http://johnnado.com/pyqt-qtest-example/
+
+	Stubs and Mocks
+		http://www.mypy-lang.org/wiki/CreatingStubsForPythonModules
+
+CROSSPLATFORM
+	http://pythonthusiast.pythonblogs.com/230_pythonthusiast/archive/1354_developing_cross_platform_application_using_qt_pyqt_and_pyside__test_driven_development_and_unit_testing-part_3_of_7.html

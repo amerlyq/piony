@@ -2,7 +2,8 @@
 # vim: fileencoding=utf-8
 
 import math
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtGui, QtWidgets
+from PyQt5.QtCore import Qt, QPoint, QSize, QRect
 
 import piony.layout.pie as lpie
 import piony.segment_button as segbtn
@@ -17,7 +18,7 @@ class Window(QtWidgets.QWidget, HGEvent):
         self.cfg = cfg
         self.opts = self.cfg['Window']
         self.bM3 = False
-        self.ppos = QtCore.QPoint()
+        self.ppos = QPoint()
         self.size_w = args.size
         self.r = (0.3 * self.size_w) // 2
         self.dr = (0.7 * self.size_w) // 2
@@ -31,14 +32,14 @@ class Window(QtWidgets.QWidget, HGEvent):
         return self.r + self.dr
 
     def sizeHint(self):
-        return QtCore.QSize(self.size_w, self.size_w)
+        return QSize(self.size_w, self.size_w)
 
     def setWnd(self):
-        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
-        self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint
-                            | QtCore.Qt.FramelessWindowHint
-                            # | QtCore.Qt.X11BypassWindowManagerHint
-                            )
+        self.setAttribute(Qt.WA_TranslucentBackground)
+        wflags = Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint
+        # if not __debug__:
+        #     wflags |= Qt.X11BypassWindowManagerHint
+        self.setWindowFlags(wflags)
         self.installEventFilter(self)
         self.setMouseTracking(True)
 
@@ -46,7 +47,7 @@ class Window(QtWidgets.QWidget, HGEvent):
         aQuit = QtWidgets.QAction("E&xit", self, shortcut="Ctrl+Q",
                                   triggered=QtWidgets.QApplication.instance().quit)
         self.addAction(aQuit)
-        self.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+        self.setContextMenuPolicy(Qt.ActionsContextMenu)
 
     def setContent(self, bud, has_tooltip):
         if has_tooltip:
@@ -55,11 +56,10 @@ class Window(QtWidgets.QWidget, HGEvent):
 
         playout = lpie.PieLayout(self.r, self.dr, 0)
         for segment in bud:
-            btn = segbtn.SegmentButton(self.cfg['Button'], segment.name)
+            btn = segbtn.SegmentButton(self.cfg['Button'], segment.name,
+                                       lambda a=segment.action: sendKey(a))
             if has_tooltip:
                 btn.setToolTip(segment.tooltip)
-
-            btn.clicked.connect(lambda b: sendKey(segment.action))
             playout.addWidget(btn)
         self.setLayout(playout)
 
@@ -68,8 +68,8 @@ class Window(QtWidgets.QWidget, HGEvent):
         p.setPen(QtGui.QColor(100, 100, 100, 200))
         sz = self.frameGeometry().size()
         r = self.r / math.sqrt(2)
-        tq = QtCore.QRect(sz.width()/2 - r, sz.height()/2 - r, 2*r, 2*r)
-        p.drawText(tq, QtCore.Qt.AlignCenter, "krita")
+        tq = QRect(sz.width()/2 - r, sz.height()/2 - r, 2*r, 2*r)
+        p.drawText(tq, Qt.AlignCenter, "krita")
 
     def paintEvent(self, e):
         p = QtWidgets.QStylePainter(self)  # p.begin(self)
@@ -93,7 +93,6 @@ class Window(QtWidgets.QWidget, HGEvent):
 
     if __debug__:
         def drawBkgr(self, p):
-            p.setPen(QtCore.Qt.NoPen)
+            p.setPen(Qt.NoPen)
             p.setBrush(QtGui.QColor(255, 255, 0, 50))
             p.drawEllipse(self.rect())
-

@@ -2,8 +2,13 @@
 
 ## Go to project dir
 SDIR="$(readlink -m ${0%/*})"
-PROJ="${SDIR%/*/*}"
+PROJ="${SDIR%/*}"
 cd "$PROJ"
+
+if [ "$1" == "-k" ]; then
+    killall -q xbindkeys
+    exit
+fi
 
 die() { echo "Install '$1' by [sudo apt-get install $1] (on Ubuntu/Debian/LinuxMint)"; exit 1; }
 
@@ -20,7 +25,7 @@ cat - << EOT > "$FL"
     Mod4 + q
 
 # Launch piony menu
-"$PWD/piony.py"
+"python3 -O $PWD/piony.py"
     F8
 "$PWD/piony.py"
     Mod4 + F7+Release

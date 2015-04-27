@@ -1,6 +1,6 @@
 [
-    {"name":"VA", "action":"Ctrl+a", "tooltip":"Select all"},
+    {"name": "VA", "action": "ctrl+a", "tooltip": "Select all"},
     "b",
-    {"action":"c", "type":"key"},
-    "p"
+    {"action": "c", "type": "key"},
+    {"action": "Left", "tooltip": "left arrow"}
 ]

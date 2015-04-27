@@ -4,15 +4,23 @@
 import os
 import sys
 import signal
+from subprocess import check_output
 from PyQt5.QtWidgets import QApplication
 
 import piony
+from piony import gvars
 
+
+def search_dst_window():
+    out = check_output(['xdotool', 'getactivewindow'])
+    idwnd = out[:-1].decode('ascii')
+    return idwnd
 
 if __name__ == '__main__':
     cdir = os.path.dirname(os.path.abspath(__file__))
     Cfg_Ps = piony.ConfigParser()
     Arg_Ps = piony.ArgsParser()
+    gvars.G_ACTIVE_WINDOW = search_dst_window()
 
     cfg = Cfg_Ps.read_file()
     args = Arg_Ps.parse()
