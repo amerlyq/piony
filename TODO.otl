@@ -21,7 +21,7 @@ RFC
 	2015-04-25 [X] Replace all imports with full versions
 
 STYLE
-	[_] If possible, use styles instead my own vehicle:
+	[_] If possible, use styles instead of my own vehicle:
 		: http://wiki.qt.io/Main_Page
 		: http://doc.qt.io/qt-4.8/style-reference.html
 	[_] (v1.1) for selection by <Tab> use different highlight than for hover
@@ -145,6 +145,7 @@ IDEAS
 	[_] BUG: exception when list is empty -> must show only ring bkgr
 	[_] BUG: if size of window =40 visualisation is wrong: window don't want be more small than some size.
 		: Calculate radius only after window will be shown.
+		:> Linked to update on resize -- then setting up in __init__ will be unnecessary
 	[_] BUG: on resize must update petals and text sizes
 	[_] ???: Button tooltip changes color to yellow if you fast move cursor over it
 
