@@ -36,4 +36,3 @@ def G_ARGUMENTS_DEFAULT_F(farg):  # @par1 = Method to add arguments into parser
     farg('-v', '--version', action='version',
          version="%(prog)s {0}".format(piony.__version__),
          help="Version of program.")
-

@@ -7,6 +7,7 @@ from collections import OrderedDict
 G_CONFIG_DEFAULT = OrderedDict((
     ('Window', OrderedDict((
         ('text_scale', 0.64),
+        ('size', 360),
     ))
     ),
     ('Button', OrderedDict((
@@ -14,4 +15,3 @@ G_CONFIG_DEFAULT = OrderedDict((
     ))
     ),
 ))
-

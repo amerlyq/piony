@@ -69,6 +69,10 @@ CONTROLS
 		[_] try to select by absolute wacom-wheel value, not relative
 	[_] W-Wheel | ALT: scroll through available slices and wheels
 
+	Keyboard
+		Choose action by keyboard -- click button
+			Show small index letter (mapped) in topLeft corner of gText bbox
+
 
 SYSTEM
 	2015-04-23 [X] Port to PyQt5 and python3
@@ -84,7 +88,7 @@ SYSTEM
 		: http://www.qtcentre.org/threads/40241-PyQt-QGraphicsItem-not-recieving-mouse-events
 	[_] try set my window as 'modal' -- to intercept all input events
 		: but this possible only for subwindows, or not?
-	[_] find last active window to send keystrokes
+	2015-04-27 [X] find last active window to send keystrokes
 		: https://github.com/Mte90/QAsana/blob/master/qasana.py
 		: or you can simply unfocuse current before sending keystrokes
 	[_] Maybe, make on close() teleport mouse back to starting position?
@@ -144,6 +148,7 @@ IDEAS
 	2015-04-27 [X] BUG: keys aren't printed or emulated on action
 	[_] BUG: petal bHold isn't released if you click on ContextMenu
 		: https://wiki.python.org/moin/PyQt/Handling%20context%20menus
+		:> use Window.eventFilter and on mouseUp, leaveEvent send reset to all buttons
 	[_] BUG: resets geometry position to 0,0 when cursor at screen border
 	[_] BUG: no text when only 1 element in ring list -- must show at farthest
 	[_] BUG: exception when list is empty -> must show only ring bkgr
@@ -164,6 +169,8 @@ IDEAS
 	: http://www.tutorialspoint.com/python/python_multithreading.htm
 		[_] to accelerate air-layouts pre-creation and launch time
 		[_] sendKeys in separate thread, launched simultaneously with app
+	[_] Direct key emulation -- use libxtest.so (or what used by xdotool internally?)
+		[_] ALT: use udev LKM and registered device for full control
 	[_] For layout-on-cmdline use shared button style to start-up much faster
 	[_] Edit menu loads only on demand, when you toggle option in M2 menu
 
