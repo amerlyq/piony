@@ -3,21 +3,34 @@
 
 import pytest
 from piony.config.argparser import ArgsParser
+from piony import gvars
 
 def args_check(cmdline, opts={}):
    argdic = vars(ArgsParser().parse(cmdline))
    return all(item in argdic for item in opts)
 
+def args_check_exit(cmdline):
+    with pytest.raises(SystemExit):
+        args_check(cmdline)
+
 class TestArgDefault():
     def test_default(self):
-        assert args_check("", {'no_tooltip':False, 'size':360,
-            'verbose':'', 'fullscreen':''})
+        assert args_check("", {
+            'config':gvars.G_CONFIG_PATH,
+            'input':[gvars.G_PROFILE_PATH],
+            'print':False,
+            # 'size':360,
+            'fullscreen':False,
+            'no_tooltip':False,
+            'verbose':'',
+            })
 
 #==========================================
+    def test_config(self):
+        assert args_check("-c ./cfgs/conf.ini", {'config':"./cfgs/conf.ini"})
+
     def test_size(self):
         assert args_check("-s 300", {'size':300})
-        # assert args_check("-s 300 400", {'size':300})
-        # assert args_check("-s", {'size':None})
 
     def test_fullscreen(self):
         assert args_check("-F", {'fullscreen':True})
@@ -29,8 +42,6 @@ class TestArgDefault():
         assert args_check("-V", {'verbose':'l'})
         assert args_check("-V v", {'verbose':'v'})
         assert args_check("-V a", {'verbose':'a'})
-        # assert args_check("-r", {})
-        # assert args_check("-V s", {})
 #==========================================
     def test_combination(self):
         assert args_check("-s 300 -V", {'size':300, 'verbose':'l'})
@@ -40,13 +51,33 @@ class TestArgDefault():
             , 'fullscreen':True, 'verbose':'l'})
         assert args_check("-TFV v", {'no_tooltip':True
             , 'fullscreen':True, 'verbose':'v'})
-        assert args_check("-TFV a", {'no_tooltip':True
-            , 'fullscreen':True, 'verbose':'a'})
         assert args_check("-TFs 400", {'no_tooltip':True
+            , 'fullscreen':True, 'size':400})
+        assert args_check("-T -s 400 -F ", {'no_tooltip':True
             , 'fullscreen':True, 'size':400})
 
 #==========================================
-    def test_mytest(self):
-        with pytest.raises(SystemExit):
-            args_check("-O")
+## Test situation when program should exit
+    def test_wrong_argument(self):
+        args_check_exit("-O")
 
+    def test_help(self):
+        args_check_exit("-h")
+
+    def test_version(self):
+        args_check_exit("-v")
+        args_check_exit("-Tv")
+
+    def test_e_fullscreen(self):
+        args_check_exit("-F w")
+
+    def test_e_no_tooltip(self):
+        args_check_exit("-T j")
+
+    def test_e_size(self):
+        args_check_exit("-s j")
+        args_check_exit("-s 300 j")
+
+    def test_e_verbose(self):
+        args_check_exit("-V j")
+        args_check_exit("-V v k")
