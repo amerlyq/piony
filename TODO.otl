@@ -175,6 +175,8 @@ IDEAS
 		[_] ALT: use udev LKM and registered device for full control
 	[_] For layout-on-cmdline use shared button style to start-up much faster
 	[_] Edit menu loads only on demand, when you toggle option in M2 menu
+	[_] Flags to enable/disable config.ini support
+		:? but then default values from cfgdefaults must migrate to argsdefault?
 
 	[_] https://wiki.python.org/moin/PythonSpeed/PerformanceTips
 	[_] Reduce startup time

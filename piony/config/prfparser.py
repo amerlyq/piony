@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # vim: fileencoding=utf-8
 
-import json
+import yaml
 import collections
 
 from piony import gvars
@@ -34,5 +34,5 @@ class ProfileParser:
 
     def read_file(self, path=gvars.G_PROFILE_PATH):
         with open(path) as prof_file:
-            prof = json.load(prof_file)
+            prof = yaml.load(prof_file)
         return self.parseRing(prof)

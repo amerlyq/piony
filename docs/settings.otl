@@ -29,15 +29,25 @@ CONFIG
 	[_] -c <path>: path to config.ini
 
 
-PROFILES
+PROFILES   :>>> All syntax is yaml-compatible
 	2015-04-23 [X] Basic profile support in json
-	[_] ? Use rich input preparsing to construct valid json. Use Yaml?
+	2015-04-29 [X] Port profile parser to yaml as less clumber
+	2015-04-29 [$] ? Use rich input preparsing to construct valid json.
 		:= using tuples for fixed order items and slices instead of dicts
-	[_] Preparse cmdline json to add quotes on items, which lack of it
+		:= add quotes on items, which lack of it
+		:> Yaml had satisfied requirements
 	2015-04-27 [X] -i /{-/<path>/[...]/{...}}: input json or path for profile
-	[_] Instead of -i use positional parameters to combine slices
+	2015-04-29 [X] Instead of -i use positional parameters to combine slices
 		:= ./piony.py -s 360 ./cfg/krita.json - "[...]" "{...}"
-		[_] check that '-' used *only_once* through _all_ arguments
+	[_] check that '-' used *only_once* through _all_ arguments
+	2015-04-27 [X] Full format for each entry
+	| it can be merged with Qt style file, written in CSS (QSS?)
+		2015-04-24 [X] name
+		2015-04-24 [X] action
+		2015-04-26 [X] tooltip
+		[_] type
+		[_] include directives to reuse slices from another files
+			: {import:./cfgs/krita.json, ring:2, segment:3}
 	[_] Bud primitives
 	| -      | slice from stdin
 	| <file> | slice from file (search in pwd/, pwd/cfgs/, ~/.piony/, /etc/piony/)
@@ -59,14 +69,6 @@ PROFILES
 	[_] specify all slices separately in json, and then insert transition links in action keys
 		allows to combine several different slices on fly!
 	[_] ... air-widgets, etc... -- need similar list to list in --input
-	| it can be merged with Qt style file, written in CSS (QSS?)
-	2015-04-27 [X] Format for entry
-		2015-04-24 [X] name
-		2015-04-24 [X] action
-		2015-04-26 [X] tooltip
-		[_] type
-		[_] include directives to reuse slices from another files
-			: {import:./cfgs/krita.json, ring:2, segment:3}
 
 
 INFO
@@ -81,16 +83,13 @@ INFO
 		2015-04-29 [$] https://docs.python.org/3/library/shlex.html#module-shlex
 		:Cons: only splits strings to lexems, as shell do. No more.
 		:Sums: for custom parsers with sh syntaxes
-		2015-04-23 [X] https://docs.python.org/3/library/json.html#module-json
+		2015-04-29 [$] https://docs.python.org/3/library/json.html#module-json
 		:Proc: standard, any amount of spaces between items
-		:Cons: need quotes on each string key and value
-		[?] http://pyyaml.org/wiki/PyYAMLDocumentation
-		:Proc: allow plain text w/o quotes for items
-		:Cons: need fixed delimiters with space for values like ': ' and '- '
-		:	>>> import yaml
-		:	>>> s = '{value: "82363549923gnyh49c9djl239pjm01223", id: 17893}'
-		:	>>> yaml.load(s)
-		:	{'id': 17893, 'value': '82363549923gnyh49c9djl239pjm01223'}
+		:Cons: need quotes on each string key and value, clumber on cmdline
+		2015-04-29 [X] http://pyyaml.org/wiki/PyYAMLDocumentation
+		:Proc: allow plain text w/o quotes for items!
+		:Cons: non-standard, for _unquoted_ keys, needs fixed delimiters with
+			 : space for values like ': ' and '- '
 		2015-04-29 [$] regular python files
 		:Cons: can't prevent code from execution to use declarative syntax
 		[_] https://docs.python.org/3/library/ast.html

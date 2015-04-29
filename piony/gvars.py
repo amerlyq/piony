@@ -8,4 +8,4 @@ if __debug__:
 
 G_ACTIVE_WINDOW = "%1"
 G_CONFIG_PATH = "./cfgs/config.ini"
-G_PROFILE_PATH = "./cfgs/krita.json"
+G_PROFILE_PATH = "./cfgs/krita.yaml"

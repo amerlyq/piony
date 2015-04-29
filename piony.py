@@ -28,14 +28,17 @@ if __name__ == '__main__':
     Arg_Ps.apply(args)
 
     prfs = []
-    # print(args.input)
-    # for entry in args.input:
-    #     if isinstance(entry, str):
-    #         prfs.append(Prf_Ps.read_str(entry))
-    #     else:
-    #         prfs.append(Prf_Ps.read_file(entry))
+    print(args.buds)
+    for entry in args.buds:
+        if isinstance(entry, str):
+            # prfs.append(Prf_Ps.read_str(entry))
+            print("str:", entry)
+        else:
+            print("file:", entry)
 
-    bud = prfs[0] if args.input else Prf_Ps.read_file()
+    # sys.exit(1)
+
+    bud = prfs[0] if args.buds else Prf_Ps.read_file()
 
     ## Close on 'Ctrl-C' system signal
     signal.signal(signal.SIGINT, signal.SIG_DFL)

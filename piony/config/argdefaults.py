@@ -7,20 +7,18 @@ from piony import gvars
 
 def G_ARGUMENTS_DEFAULT_F(farg):  # @par1 = Method to add arguments into parser
     ## Configuration
-    farg('-c', '--config',
-         default=gvars.G_CONFIG_PATH,
-         help="Config file with default settings.")
-    farg('-i', '--input',
-         default=[], action='append',
+    farg('buds', metavar='bud', nargs='*', type=str,
          help="Setup profile layout in json directly on cmdline. "
               "Can be specified several times -- one for each slice. "
               "Or use pathes to files with slices inside.")
+    farg('-c', '--config',
+         default=gvars.G_CONFIG_PATH,
+         help="Config file with default settings.")
     farg('-p', '--print',
          help="Toggle action print/execute to use as frontend only.")
 
     ## Appearance
-    farg('-s', '--size',
-         type=int, default=360,
+    farg('-s', '--size', type=int, default=360,
          help="Sets window size WxH=NxN to derive all rings sizes from it.")
     farg('-F', '--fullscreen', action='store_true',
          help="Overlay fullscreen/local")
