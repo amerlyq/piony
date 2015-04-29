@@ -11,7 +11,7 @@ def G_ARGUMENTS_DEFAULT_F(farg):  # @par1 = Method to add arguments into parser
          default=gvars.G_CONFIG_PATH,
          help="Config file with default settings.")
     farg('-i', '--input',
-         default=[gvars.G_PROFILE_PATH], action='append',
+         default=[], action='append',
          help="Setup profile layout in json directly on cmdline. "
               "Can be specified several times -- one for each slice. "
               "Or use pathes to files with slices inside.")

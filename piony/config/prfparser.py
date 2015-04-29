@@ -29,11 +29,10 @@ class ProfileParser:
 
         return ProfileParser.segment(name, action, tooltip)
 
-    def parse(self, cfg):
+    def parseRing(self, cfg):
         return map(self.parseEntry, cfg)
 
     def read_file(self, path=gvars.G_PROFILE_PATH):
         with open(path) as prof_file:
             prof = json.load(prof_file)
-        return self.parse(prof)
-
+        return self.parseRing(prof)

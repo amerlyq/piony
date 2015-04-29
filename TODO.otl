@@ -134,6 +134,7 @@ IDEAS
 	[_] Get vars values from krita to display onto piony buttons
 		: like pressed/released state, brush size, etc
 	[_] Profile: make 4-ring virt keyboard with frequences from colemac
+	[_] Undo for symmetrical commands: store last commands and by widget apply mirrored
 
 
 > BUGS
@@ -170,6 +171,7 @@ IDEAS
 		[_] to accelerate air-layouts pre-creation and launch time
 		[_] sendKeys in separate thread, launched simultaneously with app
 	[_] Direct key emulation -- use libxtest.so (or what used by xdotool internally?)
+	: https://github.com/pimoroni/skywriter-hat/tree/master/python/examples
 		[_] ALT: use udev LKM and registered device for full control
 	[_] For layout-on-cmdline use shared button style to start-up much faster
 	[_] Edit menu loads only on demand, when you toggle option in M2 menu

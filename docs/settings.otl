@@ -31,39 +31,73 @@ CONFIG
 
 PROFILES
 	2015-04-23 [X] Basic profile support in json
-	[_] Gradual profile complexity
-		[_] plain 1D list of actions : 1-ring
-		[_] list for some items (fixed order -- for shorter string)
-		[_] dict for some items (more detailed, more options, but more space)
-		[_] list of N lists : N-ring
-		: ... air-widgets, etc...
-		[_] specify all slices separately in json, and then insert transition
-		    links in action keys
+	[_] ? Use rich input preparsing to construct valid json. Use Yaml?
+		:= using tuples for fixed order items and slices instead of dicts
+	[_] Preparse cmdline json to add quotes on items, which lack of it
+	2015-04-27 [X] -i /{-/<path>/[...]/{...}}: input json or path for profile
+	[_] Instead of -i use positional parameters to combine slices
+		:= ./piony.py -s 360 ./cfg/krita.json - "[...]" "{...}"
+		[_] check that '-' used *only_once* through _all_ arguments
+	[_] Bud primitives
+	| -      | slice from stdin
+	| <file> | slice from file (search in pwd/, pwd/cfgs/, ~/.piony/, /etc/piony/)
+	| [...]  | rings (one or several) for one slice. One button only: [k1]
+	| {...}  | slices for one bud (complete format)
+	[_] Rings format
+	| [k1,k2,...]            | simple list of keys for 1-ring directly on cmdline
+>	| [k1,(k2,nm2,tip2),...] | fixed order properties (cmdline only)
+	| [k1,{action:k1,*},...] | entry as dict with parameters
+	[_] Slices format
+	| [[k1...],[m1...]...]      | short slice with entries for N rings
+	| {rings:[[k1...]...],*}    | full format slice with corners
+	| {slices:[{rings:*}...],*} | full format multiple slices for one bud
+	[_] Combinations
+	| [...] [[...]]        | one-ring slice with short format slice
+	| {rings:*} {slices:*} | full slice with full bud
+	| <file1> <file2>      | buds from different files
+	| - <file2> [...]      | different input sources
+	[_] specify all slices separately in json, and then insert transition links in action keys
+		allows to combine several different slices on fly!
+	[_] ... air-widgets, etc... -- need similar list to list in --input
 	| it can be merged with Qt style file, written in CSS (QSS?)
 	2015-04-27 [X] Format for entry
 		2015-04-24 [X] name
 		2015-04-24 [X] action
 		2015-04-26 [X] tooltip
-	[_] include directives to reuse slices from another files
+		[_] type
+		[_] include directives to reuse slices from another files
+			: {import:./cfgs/krita.json, ring:2, segment:3}
 
-	<Flags>
-	[_] -i /{-/<path>}: input json or path for profile
-		[_] "[...]" : setup layout directly on cmdline
-		[_] - : read config from stdin
-		[_] <path> : relative in ./cfgs/ or absolute in ~/.piony/
-		[_] can be specified multiple times -- one file for each Slice
-			: allows to combine several different slices on fly!
 
 INFO
 	Dirty fast
 	: http://martin-thoma.com/configuration-files-in-python/
 	Species
-	: https://docs.python.org/3.4/library/configparser.html
-	: http://www.voidspace.org.uk/python/configobj.html
-	: https://docs.python.org/3.4/library/shlex.html#module-shlex
-	: https://docs.python.org/2/library/json.html#module-json
-	: http://pyyaml.org/wiki/PyYAMLDocumentation
-	OR: use regular python files!
+		2015-04-23 [X] https://docs.python.org/3/library/configparser.html
+		:Sum: use for settings, as it is good only for plain sections.
+		2015-04-29 [$] http://www.voidspace.org.uk/python/configobj.html
+		:Proc: superset to configparser
+		:Cons: non-standard
+		2015-04-29 [$] https://docs.python.org/3/library/shlex.html#module-shlex
+		:Cons: only splits strings to lexems, as shell do. No more.
+		:Sums: for custom parsers with sh syntaxes
+		2015-04-23 [X] https://docs.python.org/3/library/json.html#module-json
+		:Proc: standard, any amount of spaces between items
+		:Cons: need quotes on each string key and value
+		[?] http://pyyaml.org/wiki/PyYAMLDocumentation
+		:Proc: allow plain text w/o quotes for items
+		:Cons: need fixed delimiters with space for values like ': ' and '- '
+		:	>>> import yaml
+		:	>>> s = '{value: "82363549923gnyh49c9djl239pjm01223", id: 17893}'
+		:	>>> yaml.load(s)
+		:	{'id': 17893, 'value': '82363549923gnyh49c9djl239pjm01223'}
+		2015-04-29 [$] regular python files
+		:Cons: can't prevent code from execution to use declarative syntax
+		[_] https://docs.python.org/3/library/ast.html
+		2015-04-29 [$] Flex&Bison: http://habrahabr.ru/post/141756/
+		:Cons: unix only
+
 	Use vars in .ini : Extended Interpolation
 		https://wiki.python.org/moin/ConfigParserExamples
 		http://www.blog.pythonlibrary.org/2013/10/25/python-101-an-intro-to-configparser/
+

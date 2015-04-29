@@ -20,17 +20,22 @@ if __name__ == '__main__':
     cdir = os.path.dirname(os.path.abspath(__file__))
     Cfg_Ps = piony.ConfigParser()
     Arg_Ps = piony.ArgsParser()
+    Prf_Ps = piony.ProfileParser()
     gvars.G_ACTIVE_WINDOW = search_dst_window()
 
     cfg = Cfg_Ps.read_file()
     args = Arg_Ps.parse()
     Arg_Ps.apply(args)
-    bud = piony.ProfileParser().read_file()
 
-    # mmc.read(os.path.abspath(args.input))
-    # for f_out in args.output:
-    #     mmc.write(os.path.abspath(f_out))
-    # mmc.write('out.stdio', type=None if 'auto' == args.oftype else args.oftype)
+    prfs = []
+    # print(args.input)
+    # for entry in args.input:
+    #     if isinstance(entry, str):
+    #         prfs.append(Prf_Ps.read_str(entry))
+    #     else:
+    #         prfs.append(Prf_Ps.read_file(entry))
+
+    bud = prfs[0] if args.input else Prf_Ps.read_file()
 
     ## Close on 'Ctrl-C' system signal
     signal.signal(signal.SIGINT, signal.SIG_DFL)

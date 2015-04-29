@@ -2,15 +2,18 @@
 : KISS : each level can accept only ones below it for now
 
 Window
-	[_] list of independent slices
 	2015-04-25 [X] -s <N> : sets window size WxH=NxN to derive all rings sizes from it
+	[_] pointer to bud
+	<Flags>
+	2015-04-26 [X] -T : disable QToolTip items
+		: for those who are distracted and irritated by text hints
+
+Bud
+	[_] list of independent slices
 	[_] insert new segments by Add(btn, pos=[Slice_n, Ring_n, Sector_ccw_n])
 	< (v2.2) InstrumentalLayout
 		: dynamic placeholders for all available smart widgets
 		2015-04-11 [X] Slices placed at current cursor position
-	<Flags>
-	2015-04-26 [X] -T : disable QToolTip items
-		: for those who are distracted and irritated by text hints
 
 Slice
 	[_] style (common) -- applied to all unstyled segments in slice
