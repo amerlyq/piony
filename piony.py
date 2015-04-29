@@ -30,13 +30,13 @@ if __name__ == '__main__':
     prfs = []
     print(args.buds)
     for entry in args.buds:
-        if isinstance(entry, str):
-            # prfs.append(Prf_Ps.read_str(entry))
-            print("str:", entry)
-        else:
-            print("file:", entry)
-
-    # sys.exit(1)
+        if '-' == entry:
+            entry = sys.stdin.read()
+        elif os.path.exists(entry):
+            # os.path.isabs(PATH)
+            with open(entry, 'r') as f:
+                entry = f.read()
+        # prfs.append(Prf_Ps.read_str(entry))
 
     bud = prfs[0] if args.buds else Prf_Ps.read_file()
 

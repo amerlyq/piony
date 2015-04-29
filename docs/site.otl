@@ -1,0 +1,53 @@
+>>> SITE >>>
+
+CI
+	Build Status
+		https://travis-ci.org/
+	Dependency
+		https://david-dm.org/
+	npm version
+		http://badge.fury.io/
+	build status
+		https://ci.appveyor.com/
+
+> Cool site, where you find tips on infrastructure
+	http://elementalselenium.com/tips/38-headless
+
+Auto-generating layout previews
+	[_] Capture rendered qt window to image without X
+		[_] optionally disable Mask to produce clear window bkgr
+		[_] extract all instant variables, bound to window state
+			:~ like current active button, air menu states, etc
+			:= to be able to show more lively images of layout
+		: http://stackoverflow.com/questions/17146747/capture-qml-drawing-buffer-without-displaying
+		[_] create virtual X -- and batch processing with Xvfb as a background rendering engine
+			http://www.xfree86.org/4.0.1/Xvfb.1.html
+			http://en.wikipedia.org/wiki/Xvfb
+			: the only option is to use Xvfb to provide a virtual Xserver to render the GUI.
+			:	sudo apt-get install xvfb
+			:	xvfb-run python render.py
+			ALT : attach to terminal on specific port (until you kill it)
+			:	Xvfb :99 & && export DISPLAY=:99	# Use port == build number
+			:	./piony.py							# to build simultaneously
+			:	import -display :99 -window root image.png
+		[_] screenshot with overlaying context menus
+			xwd -id 0x2c435b4 -screen -out window-with-menu.xwd
+			convert window-with-menu.xwd window.png
+	[_] Native window capturing
+		screen = QtWidgets.QApplication.primaryScreen()
+		screen.grabWindow(
+			QtWidgets.QApplication.activeWindow().winId()  # desctop()
+		).save("/tmp/piony.png")
+
+Web-scrapping
+	Webkit in Qt with JavaScript
+		http://webscraping.com/blog/Scraping-JavaScript-webpages-with-webkit/
+		: url = 'http://example.com'
+		: print Render(url).frame.toHtml()
+		: Python WebKit lets you do querys on the page (CSS2-like selectors),
+		: execute JavaScript, etc. You could do what I want with the HTML and
+		: BeuatifulSoup but I like the completeness.
+
+	Get html content of page
+		: import urllib
+		: urllib.urlopen('http://example.com').read()

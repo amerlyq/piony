@@ -16,6 +16,9 @@ Size distribute
 	qgridlayout.cpp:917
 		void QGridLayoutPrivate::distribute(QRect r, int hSpacing, int vSpacing)
 
+if os.access(os.path.dirname(s), os.R_OK):
+	print("Wrong permissions")
+
 Create layout
 : see when creating nested layouts
 	http://doc.qt.io/qt-4.8/layout.html
