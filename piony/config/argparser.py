@@ -19,7 +19,7 @@ class ArgsParser:
                       description=piony.__doc__,
                       epilog="Enjoy!!!")
 
-        argdefaults.G_ARGUMENTS_DEFAULT_F(ps.add_argument)
+        argdefaults.G_ARGUMENTS_DEFAULT_F(ps)
 
         # self.args = ps.parse_args()
         # if line and isinstance(line, basestring):

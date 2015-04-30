@@ -8,6 +8,7 @@ G_CONFIG_DEFAULT = OrderedDict((
     ('Window', OrderedDict((
         ('text_scale', 0.64),
         ('size', 360),
+        ('no_tooltip', False),
     ))
     ),
     ('Button', OrderedDict((

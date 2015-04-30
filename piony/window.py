@@ -13,18 +13,18 @@ from piony import gvars
 
 
 class Window(QtWidgets.QWidget, HGEvent):
-    def __init__(self, cfg, bud, args):
+    def __init__(self, cfg, bud):
         super().__init__()
         self.cfg = cfg
         self.opts = self.cfg['Window']
         self.bM3 = False
         self.ppos = QPoint()
-        self.size_w = args.size
+        self.size_w = cfg['Window'].getint('size')
         self.r = (0.3 * self.size_w) // 2
         self.dr = (0.7 * self.size_w) // 2
 
         self.setWnd()
-        self.setContent(bud, not args.no_tooltip)
+        self.setContent(bud, not self.cfg['Window'].getboolean('no_tooltip'))
         self.resize(self.sizeHint())
         self.centerOnCursor()
 

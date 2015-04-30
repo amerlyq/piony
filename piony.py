@@ -9,12 +9,34 @@ from PyQt5.QtWidgets import QApplication
 
 import piony
 from piony import gvars
+from piony.config import cfgdefaults
 
 
 def search_dst_window():
     out = check_output(['xdotool', 'getactivewindow'])
     idwnd = out[:-1].decode('ascii')
     return idwnd
+
+def set_args_from_command_line(cfg, args):
+    # print(vars(args))
+    # print(getattr(args,'buds', None))
+    cd = cfgdefaults.G_CONFIG_DEFAULT
+
+    ar = {k:v for k,v in vars(args).items() if v}
+
+    for section, opts in cd.items():
+        for name_arg in list(ar):
+            for name_arg_of_section in list(opts):
+                if name_arg == name_arg_of_section:
+                    cfg.set(section, name_arg, str(ar[name_arg]))
+                    break
+
+    # di = {'Window':{'size':88, 'aa':'bb'}}
+    # cfg.read_dict(di)
+    #
+    # for s in cfg.sections():
+    #     for o in cfg.options(s):
+    #         print(s, o, cfg[s][o])
 
 if __name__ == '__main__':
     cdir = os.path.dirname(os.path.abspath(__file__))
@@ -25,10 +47,11 @@ if __name__ == '__main__':
 
     cfg = Cfg_Ps.read_file()
     args = Arg_Ps.parse()
+    set_args_from_command_line(cfg, args)
     Arg_Ps.apply(args)
 
     prfs = []
-    print(args.buds)
+    # print(args.buds)
     for entry in args.buds:
         if '-' == entry:
             entry = sys.stdin.read()
@@ -44,7 +67,7 @@ if __name__ == '__main__':
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
     app = QApplication(sys.argv)
-    wnd = piony.Window(cfg, bud, args)
+    wnd = piony.Window(cfg, bud)
     wnd.setWindowTitle(piony.__appname__)
     wnd.show()
     sys.exit(app.exec_())
