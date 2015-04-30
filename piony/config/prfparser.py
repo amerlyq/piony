@@ -2,13 +2,11 @@
 # vim: fileencoding=utf-8
 
 import yaml
-import collections
-
-from piony import gvars
+from collections import namedtuple
 
 
 class ProfileParser:
-    segment = collections.namedtuple('SegmentCfg', ['name', 'action', 'tooltip'])
+    segment = namedtuple('SegmentCfg', ['name', 'action', 'tooltip'])
 
     def tooltip(self, action):
         return '<b>' + action + '</b>'
@@ -32,7 +30,7 @@ class ProfileParser:
     def parseRing(self, cfg):
         return map(self.parseEntry, cfg)
 
-    def read_file(self, path=gvars.G_PROFILE_PATH):
+    def read_file(self, path):
         with open(path) as prof_file:
-            prof = yaml.load(prof_file)
+            prof = yaml.safe_load(prof_file)
         return self.parseRing(prof)

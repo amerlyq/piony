@@ -1,5 +1,9 @@
 >>> SITE >>>
 
+DEVELOP
+	Keep in separate branch from master, and use from script when generating
+	items for site pages.
+
 CI
 	Build Status
 		https://travis-ci.org/
@@ -38,6 +42,11 @@ Auto-generating layout previews
 		screen.grabWindow(
 			QtWidgets.QApplication.activeWindow().winId()  # desctop()
 		).save("/tmp/piony.png")
+
+SEE
+	http://stackoverflow.com/questions/14347286/headless-qt4-opengl-application
+	http://linuxboxadmin.com/micro-howtos/userland/screenshots-through-xvfb.html
+	https://bugzilla.redhat.com/show_bug.cgi?id=904851
 
 Web-scrapping
 	Webkit in Qt with JavaScript

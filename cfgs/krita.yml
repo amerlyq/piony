@@ -1,6 +1,6 @@
 [
     {name: VA, action: ctrl+a, tooltip: "Select all"},
-    "b",
+    b,f,
     {action: c, type: key},
     {action: Left, tooltip: "left arrow"}
 ]

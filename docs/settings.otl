@@ -36,7 +36,7 @@ PROFILES   :>>> All syntax is yaml-compatible
 		:= using tuples for fixed order items and slices instead of dicts
 		:= add quotes on items, which lack of it
 		:> Yaml had satisfied requirements
-	2015-04-27 [X] -i /{-/<path>/[...]/{...}}: input json or path for profile
+	2015-04-27 [X] -i /{-/<path>/[...]/{...}}: input str or path for profile
 	2015-04-29 [X] Instead of -i use positional parameters to combine slices
 		:= ./piony.py -s 360 ./cfg/krita.json - "[...]" "{...}"
 	[_] check that '-' used *only_once* through _all_ arguments
@@ -46,27 +46,32 @@ PROFILES   :>>> All syntax is yaml-compatible
 		2015-04-24 [X] action
 		2015-04-26 [X] tooltip
 		[_] type
-		[_] include directives to reuse slices from another files
-			: {import:./cfgs/krita.json, ring:2, segment:3}
+	[_] Import directives to reuse parts from another files
+	: {import: ./cfgs/krita.yml, ring: 2, segment: 3}
+	| [k1,{import: ./cfgs/krita.yml}
+	[_] Confidently determine if string is path or part of yaml
+	|   |
 	[_] Bud primitives
 	| -      | slice from stdin
 	| <file> | slice from file (search in pwd/, pwd/cfgs/, ~/.piony/, /etc/piony/)
 	| [...]  | rings (one or several) for one slice. One button only: [k1]
 	| {...}  | slices for one bud (complete format)
 	[_] Rings format
-	| [k1,k2,...]            | simple list of keys for 1-ring directly on cmdline
->	| [k1,(k2,nm2,tip2),...] | fixed order properties (cmdline only)
-	| [k1,{action:k1,*},...] | entry as dict with parameters
+	| [k1,k2,...]             | simple list of keys for 1-ring directly on cmdline
+>	| [k1,(k2,nm2,tip2),...]  | fixed order properties (cmdline only)
+	| [k1,{action: k1,*},...] | entry as dict with parameters
 	[_] Slices format
-	| [[k1...],[m1...]...]      | short slice with entries for N rings
-	| {rings:[[k1...]...],*}    | full format slice with corners
-	| {slices:[{rings:*}...],*} | full format multiple slices for one bud
+	| [[k1...],[m1...]...]       | short slice with entries for N rings
+	| {rings: [[k1...]...],*}    | full format one slice with corners
+	| {slices: [{rings:*}...],*} | full format multiple slices for one bud
 	[_] Combinations
 	| [...] [[...]]        | one-ring slice with short format slice
 	| {rings:*} {slices:*} | full slice with full bud
 	| <file1> <file2>      | buds from different files
 	| - <file2> [...]      | different input sources
-	[_] specify all slices separately in json, and then insert transition links in action keys
+	[_] Errors
+	| [k1,[m1...]...] | Mixed segments and rings in one slice
+	[_] specify all slices separate file, and then insert transition links in action keys
 		allows to combine several different slices on fly!
 	[_] ... air-widgets, etc... -- need similar list to list in --input
 

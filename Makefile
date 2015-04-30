@@ -9,6 +9,8 @@ debug:
 	@./$(PR).py -V a
 debug-all:
 	@./$(PR).py -V
+clean:
+	find . -name "*.pyc" -exec rm {} \;
 
 
 ### TESTS ###
