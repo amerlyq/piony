@@ -102,4 +102,3 @@ class PieLayout(QLayout):
             wdg.gPath = segment.path()
             wdg.gText = segment.text_bbox_scr()
             wdg.setMask(segment.region())
-

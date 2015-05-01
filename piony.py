@@ -51,24 +51,15 @@ if __name__ == '__main__':
     set_args_from_command_line(cfg, args)
     Arg_Ps.apply(args)
 
-    prfs = []
-    for entry in args.buds:
-        print(entry)
-        if '-' == entry:
-            entry = sys.stdin.read()
-        elif os.path.isfile(entry):
-            # os.path.isabs(PATH)
-            with open(entry, 'r') as f:
-                entry = f.read()
-        # prfs.append(Prf_Ps.read_str(entry))
-
-    bud = prfs[0] if prfs else Prf_Ps.read_file(cfg['Bud']['default'])
+    entries = args.buds if args.buds else cfg['Bud']['default']
+    bud = Prf_Ps.read_args(entries)
+    ring = bud['slices'][0]['rings'][0]
 
     ## Close on 'Ctrl-C' system signal
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
     app = QApplication(sys.argv)
-    wnd = piony.Window(cfg, bud)
+    wnd = piony.Window(cfg, ring)
     wnd.setWindowTitle(piony.__appname__)
     wnd.show()
     sys.exit(app.exec_())

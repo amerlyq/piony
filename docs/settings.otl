@@ -60,6 +60,7 @@ PROFILES   :>>> All syntax is yaml-compatible
 	| [k1,k2,...]             | simple list of keys for 1-ring directly on cmdline
 >	| [k1,(k2,nm2,tip2),...]  | fixed order properties (cmdline only)
 	| [k1,{action: k1,*},...] | entry as dict with parameters
+	| {segments:[k1...],*}    | ring with params, like style and initial rotation
 	[_] Slices format
 	| [[k1...],[m1...]...]       | short slice with entries for N rings
 	| {rings: [[k1...]...],*}    | full format one slice with corners

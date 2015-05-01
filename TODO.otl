@@ -157,8 +157,11 @@ IDEAS
 		: Calculate radius only after window will be shown.
 		:> Linked to update on resize -- then setting up in __init__ will be unnecessary
 	[_] BUG: on resize must update petals and text sizes
-	[_] ???: Button tooltip changes color to yellow if you fast move cursor over it
-	2015-04-30 [X] BUG: config options duplicates :> wrong specifying defaults
+	2015-05-30 [X] BUG: Button tooltip changes color to yellow if you fast move cursor over it
+		:> It's all due to self.setStyleSheet("background-color:yellow;") inside btn.leaveEvent
+	2015-04-30 [X] BUG: config options duplicates :> wrong way of applying defaults
+	[_] BUG: double click M1 for Mod_i3+drag generates Qt.close()
+		: probably Qt treats double click as separate events
 
 
 > OPTIMIZATION
@@ -179,6 +182,10 @@ IDEAS
 	[_] Edit menu loads only on demand, when you toggle option in M2 menu
 	[_] Flags to enable/disable config.ini support
 		:? but then default values from cfgdefaults must migrate to argsdefault?
+	[_] Flags to enable/disable pre-parsing of buds
+		: if you specify whole profile in file, there is no need to fill or
+		: extend entries to full format, no need to check if entries are
+		: imported files or stdin.
 
 	[_] https://wiki.python.org/moin/PythonSpeed/PerformanceTips
 	[_] Reduce startup time
