@@ -97,6 +97,7 @@ INFO
 		:Cons: non-standard, for _unquoted_ keys, needs fixed delimiters with
 			 : space for values like ': ' and '- '
 		2015-04-29 [$] regular python files
+		:	http://asvetlov.blogspot.com/2011/03/importconfig.html
 		:Cons: can't prevent code from execution to use declarative syntax
 		[_] https://docs.python.org/3/library/ast.html
 		2015-04-29 [$] Flex&Bison: http://habrahabr.ru/post/141756/

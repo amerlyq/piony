@@ -5,18 +5,13 @@ DEVELOPMENT
 		: http://habrahabr.ru/post/248189/
 		: http://www.fig.sh/
 		: https://testrun.org/tox/latest/
+		Tox
+			https://gist.github.com/danverbraganza/1680113
 	[_] Profiling
 		http://www.pyvmmonitor.com/
 		https://www.python.org/dev/peps/pep-0318/
+		https://python.g-node.org/python-summerschool-2009/_media/cheat_sheets.pdf
 	[_] Debugging
-		> https://zapier.com/engineering/debugging-python-boss/
-		https://pythonconquerstheuniverse.wordpress.com/2009/09/10/debugging-in-python/
-		pdb rc setup
-			> http://stackoverflow.com/questions/1623039/python-debugging-tips
-		http://habrahabr.ru/post/104086/
-		http://pymotw.com/2/pdb/
-		Complex workflow
-			> http://scipy-lectures.github.io/advanced/debugging/
 	[_] Logging
 		http://stackoverflow.com/questions/1623039/python-debugging-tips
 		https://docs.python.org/3.4/library/logging.html
@@ -27,8 +22,22 @@ DEVELOPMENT
 	[_] Preprocessing, macroses
 		http://www.swig.org/Doc1.3/Preprocessor.html
 
+	Complete-system
+		http://habrahabr.ru/post/114745/
+		http://supervisord.org/
+		http://www.ianbicking.org/blog/2008/06/my-experience-writing-a-build-system.html
+
+	Recipes
+		http://code.activestate.com/recipes/langs/python/
+		http://pymotw.com/2/
 
 QA
+	UIX -- проблемы интерфейсов
+		http://asvetlov.blogspot.com/2011/02/blog-post_05.html
+		http://asvetlov.blogspot.com/2011/02/blog-post_07.html
+		http://asvetlov.blogspot.com/2011/02/blog-post_08.html
+		http://martinfowler.com/eaaDev/uiArchs.html
+
 	[_] Docstrings, make documentation -- add docs extraction
 		: https://www.python.org/dev/peps/pep-0257/
 		http://sphinx-doc.org/
@@ -38,6 +47,9 @@ QA
 	[_] Style guideline -- add script with autochecking
 		: https://code.google.com/p/rad2py/wiki/CodingStandard
 		: http://docs.python-guide.org/en/latest/writing/style/
+
+	Info on package structure
+		https://docs.python.org/2/tutorial/modules.html#packages
 
 		PyLint
 			http://www.pylint.org/
@@ -61,8 +73,9 @@ QA
 	[_] Do check on git hooks
 		https://seanmckaybeck.com/2014/08/20/pep8-git-hooks/
 
-
 TESTING
+	[_] Regression tests
+		http://asvetlov.blogspot.com/2011/02/regression-tests.html
 	DocTest
 		http://johnnado.com/test-xml-using-python-doctest/
 
@@ -70,6 +83,9 @@ TESTING
 		https://pytest.org/latest/goodpractises.html
 
 	PyTest
+		2015-05-02 [X] Remove delay of showing logs (use python3 -u)
+		:! When launching :make inside vim all logs are postponed nevertheless!
+			http://pythontesting.net/framework/pytest/pytest-logging-real-time/
 		http://pythontesting.net/framework/pytest/pytest-introduction/
 		http://pytest.org/latest/apiref.html#apiref
 		http://pytest.org/latest/usage.html#cmdline

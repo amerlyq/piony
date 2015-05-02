@@ -2,6 +2,7 @@
 
 < [_] Maybe, test under Windows too? It will expand users.
 	http://habrahabr.ru/post/248189/
+	http://skramm.blogspot.com/2013/04/writing-portable-makefiles.html
 
 Python
 	[_] setup.py
@@ -28,6 +29,11 @@ Python
 	путь распространения пакетов для Linux это deb/rpm.
 	FPM делает создание пакетов тривиальным.
 	Мы даже не используем virtualenv — вполне достаточно установить PYTHONPATH.
+
+	A dependency check is certainly not the type of thing I would put in
+	__init__.py (or probably anywhere, to be honest). Experience has also
+	taught me to avoid importing into setup.py from within the package
+	directory if at all possible (which it has been so far).
 
 pre-setup-script
 	Switch for several platforms

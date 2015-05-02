@@ -2,6 +2,24 @@
 	https://github.com/vinta/awesome-python
 > Awesome framework http://ipython.org/
 
+hack with import (for pylint to ignore __init__.py unused imports)
+	https://github.com/celery/kombu/blob/master/kombu/__init__.py#L24-L35
+	https://github.com/mitsuhiko/werkzeug/blob/master/werkzeug/__init__.py
+
+	Version
+		from collections import namedtuple
+		version_info_t = namedtuple('version_info_t',
+			('major', 'minor', 'micro', 'releaselevel', 'serial'))
+		VERSION = version_info_t(3, 1, 0, 'a1', '')
+		__version__ = '{0.major}.{0.minor}.{0.micro}{0.releaselevel}'.format(VERSION)
+
+	Скрипт запускать каждый раз ужасно лениво, поэтому небольшая оболочка на
+	inotifywait стала запускать тесты и проверки после каждого сохранения:
+		while true; do
+		inotifywait -e modify project/*.py -qq; clear
+		./do_tests
+		done
+
 See
 	http://pyqt.sourceforge.net/Docs/PyQt4/qmouseevent.html
 
