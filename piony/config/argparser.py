@@ -37,4 +37,3 @@ class ArgsParser:
         dbg = {'l': (True, True), 'v': (True, False), 'a': (False, True)}
         if args.verbose:
             gvars.G_DEBUG_VISUALS, gvars.G_DEBUG_ACTIONS = dbg[args.verbose]
-

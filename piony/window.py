@@ -5,14 +5,14 @@ import math
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import Qt, QPoint, QSize, QRect
 
-import piony.layout.pie as lpie
-import piony.segment_button as segbtn
+from piony.layout.pie import PieLayout
+from piony.segment_button import SegmentButton
 from piony.action import sendKey
-from piony.hgevent import HGEvent
+from piony.hgevent import HGEventMixin
 from piony import gvars
 
 
-class Window(QtWidgets.QWidget, HGEvent):
+class Window(QtWidgets.QWidget, HGEventMixin):
     def __init__(self, cfg, bud):
         super().__init__()
         self.cfg = cfg
@@ -54,10 +54,10 @@ class Window(QtWidgets.QWidget, HGEvent):
             QtWidgets.QToolTip.setFont(QtGui.QFont('Ubuntu', 12))
             self.setToolTip('Slice No=1 <i>Click at any empty space to close.</i>')
 
-        playout = lpie.PieLayout(self.r, self.dr, 0)
+        playout = PieLayout(self.r, self.dr, 0)
         for segment in bud:
-            btn = segbtn.SegmentButton(self.cfg['Button'], segment.name,
-                                       lambda a=segment.action: sendKey(a))
+            btn = SegmentButton(self.cfg['Button'], segment.name,
+                                lambda a=segment.action: sendKey(a))
             if has_tooltip:
                 btn.setToolTip(segment.tooltip)
             playout.addWidget(btn)
@@ -78,10 +78,6 @@ class Window(QtWidgets.QWidget, HGEvent):
         # self.drawName(p)  # temporarily disabled
         p.end()
 
-    """
-    For i3wm in dual monitor mode will create window _only_ on active monitor.
-    Even if mouse is hovering on another monitor now.
-    """
     def centerOnCursor(self):
         fg = self.frameGeometry()
         cp = QtGui.QCursor.pos()

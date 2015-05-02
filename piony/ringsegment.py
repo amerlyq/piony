@@ -8,7 +8,8 @@ from PyQt5.QtCore import Qt, QRect, QRectF
 from piony.common import ra2xy, arcContains, lrotate
 
 
-class RingSegment(object):
+class RingSegment:
+
     def __init__(self, r, a, dr, da):     # 4 -- 3
         self.a = a                        # )    )
         self.r = r                        # 1 -- 2
@@ -24,7 +25,8 @@ class RingSegment(object):
 
     def arcFixes(self, lw=0):
         # count separate shift to replace angle spacer on line spacer in between
-        def afix(r): return math.degrees(math.asin(float(lw) / r)) if r else 0
+        def afix(r):
+            return math.degrees(math.asin(float(lw) / r)) if r else 0
         return [afix(self.r), afix(self.r + self.dr)]
 
     def points_ra(self, lw=0):
@@ -80,11 +82,12 @@ class RingSegment(object):
     def text_bbox_scr(self, lw=0):
         ## Text: get inscribed circle center tr, and size of inscribed square in it
         R = self.R()
-        ha = self.da/2
-        tr = min((R-self.r)/2, R - R/(1 + math.sin(math.radians(ha))) - lw)
+        ha = self.da / 2
+        tr = min((R-self.r)/2, R - R/(1 + math.sin(math.radians(ha))))  # - lw
         ta = tr / math.sqrt(2)
         l, t = self.topLeft_ra()
-        cx, cy = ra2xy(R-tr,  ha+self.a)
+        cx, cy = ra2xy(R-tr, ha+self.a)
+        # print("ha, tr : [", ha, tr, "]; cx, cy : [", cx, cy, "]")
         qr = QRect(cx-ta-l, t-cy-ta, 2*ta, 2*ta)
         return qr
 
@@ -110,4 +113,3 @@ class RingSegment(object):
             path = self.path(0)
         pg = path.toFillPolygon(QtGui.QTransform()).toPolygon()
         return QtGui.QRegion(pg, Qt.WindingFill)
-

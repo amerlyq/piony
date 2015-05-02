@@ -59,3 +59,7 @@ Custom Environment
   shadow-exclude = [ "class_g = 'piony.py'" ];
 ```
 
+Bugs
+----
+ * For i3wm in dual monitor mode will create window _only_ on active monitor.
+   Even if mouse is hovering on another monitor now.

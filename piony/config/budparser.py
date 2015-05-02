@@ -7,7 +7,7 @@ from collections import namedtuple
 import yaml
 
 
-class ProfileParser:
+class BudParser:
     segment = namedtuple('SegmentCfg', ['name', 'action', 'tooltip'])
 
     def __init__(self):
@@ -32,7 +32,7 @@ class ProfileParser:
             name = action
             tooltip = self.tooltip(action)
 
-        return ProfileParser.segment(name, action, tooltip)
+        return BudParser.segment(name, action, tooltip)
 
     def addRing(self, ring):
         return map(self.addSegment, ring)

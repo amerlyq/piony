@@ -41,18 +41,16 @@ def set_args_from_command_line(cfg, args):
 
 if __name__ == '__main__':
     cdir = os.path.dirname(os.path.abspath(__file__))
-    Cfg_Ps = piony.ConfigParser()
     Arg_Ps = piony.ArgsParser()
-    Prf_Ps = piony.ProfileParser()
     gvars.G_ACTIVE_WINDOW = search_dst_window()
 
-    cfg = Cfg_Ps.read_file()
+    cfg = piony.ConfigParser().read_file()
     args = Arg_Ps.parse()
     set_args_from_command_line(cfg, args)
     Arg_Ps.apply(args)
 
     entries = args.buds if args.buds else cfg['Bud']['default']
-    bud = Prf_Ps.read_args(entries)
+    bud = piony.BudParser().read_args(entries)
     ring = bud['slices'][0]['rings'][0]
 
     ## Close on 'Ctrl-C' system signal

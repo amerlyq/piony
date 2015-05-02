@@ -12,7 +12,7 @@ def _hasModCtrl():
     return modifiers == Qt.ControlModifier
 
 
-class HGEvent():
+class HGEventMixin:
     def _dragStart(self, e):
         self.ppos = e.pos()
         self.bM3 = True

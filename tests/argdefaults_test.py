@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# vim: fileencoding=utf-8
-
 import pytest
 from piony.config.argparser import ArgsParser
 from piony import gvars
@@ -25,7 +22,7 @@ class TestArgDefault():
             'fullscreen': False,
             'no_tooltip': False,
             'verbose': '',
-            })
+        })
 
 # ==========================================
     def test_config(self):

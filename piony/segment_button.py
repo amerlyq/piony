@@ -71,10 +71,10 @@ class SegmentButton(QtWidgets.QToolButton):
 
     def createPainter(self):
         p = QtWidgets.QStylePainter(self)
-        p.setRenderHints(QtGui.QPainter.Antialiasing
-                         | QtGui.QPainter.TextAntialiasing
-                         | QtGui.QPainter.SmoothPixmapTransform
-                         | QtGui.QPainter.HighQualityAntialiasing, True)
+        p.setRenderHints(QtGui.QPainter.Antialiasing |
+                         QtGui.QPainter.TextAntialiasing |
+                         QtGui.QPainter.SmoothPixmapTransform |
+                         QtGui.QPainter.HighQualityAntialiasing, True)
         return p
 
     def _clr(self, nm):
