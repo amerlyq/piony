@@ -1,17 +1,36 @@
 >>> Configuration Management >>>
 
 DEVELOPMENT
+	https://docs.python.org/3.4/library/debug.html
+	https://docs.python.org/3.4/library/development.html
+
 	[_] Isolated environment -- several reprodusable testing environments
 		: http://habrahabr.ru/post/248189/
 		: http://www.fig.sh/
 		: https://testrun.org/tox/latest/
 		Tox
 			https://gist.github.com/danverbraganza/1680113
-	[_] Profiling
+	2015-05-03 [X] Profiling
 		http://www.pyvmmonitor.com/
 		https://www.python.org/dev/peps/pep-0318/
 		https://python.g-node.org/python-summerschool-2009/_media/cheat_sheets.pdf
-	[_] Debugging
+		http://habrahabr.ru/company/mailru/blog/202832/
+		http://pynash.org/2013/03/06/timing-and-profiling.html
+
+		2015-05-03 [X] https://github.com/vpelletier/pprofile
+		2015-05-03 [X] https://github.com/rkern/line_profiler
+		позволяет построчно отпрофилировать нужные участки кода: pip install line_profiler
+		: @profile
+		: def some_slow_function():
+		: 	...
+		2015-05-03 [X] memory profiling
+			https://github.com/fabianp/memory_profiler
+
+		[_] objgraph
+			http://www.huyng.com/posts/python-performance-analysis/
+
+	2015-05-03 [X] Debugging
+		http://habrahabr.ru/company/mailru/blog/205426/
 	[_] Logging
 		http://stackoverflow.com/questions/1623039/python-debugging-tips
 		https://docs.python.org/3.4/library/logging.html
@@ -78,6 +97,7 @@ TESTING
 		http://asvetlov.blogspot.com/2011/02/regression-tests.html
 	DocTest
 		http://johnnado.com/test-xml-using-python-doctest/
+		https://docs.python.org/3.4/library/doctest.html
 
 	Infrastructure
 		https://pytest.org/latest/goodpractises.html

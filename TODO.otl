@@ -111,6 +111,8 @@ SYSTEM
 		[_] use only one instance (now old autocloses on focus lost when new created)
 			: https://pythonadventures.wordpress.com/2013/01/10/launch-just-one-instance-of-a-qt-application/
 		[_] -k : kill -- "Kill demon."
+		Start on log-in
+			http://stackoverflow.com/questions/6186091/pyqt-best-way-to-do-the-trick-start-at-boot-for-my-program-in-windows
 
 	[_] -f : overlay fullscreen/local
 		[_] local : close window on LeaveEvent for QRegion : slice bbox
@@ -163,6 +165,7 @@ IDEAS
 	2015-05-02 [X] BUG: no text when only 1 element in ring list -- must show at farthest
 	2015-05-02 [X] BUG: exception when list is empty
 	2015-05-02 [X] BUG: on resize must update petals and text sizes
+		:> setting up it in __init__ will be unnecessary
 	2015-05-03 [X] BUG: double click M1 for Mod_i3+drag generates Qt.close()
 		:> problem was with empty mask in eventFilter
 	2015-05-03 [X] Trash inside transparent region of Qt window
@@ -170,13 +173,14 @@ IDEAS
 		:> fill window bkgr in paintEvent, and draw bud over in separate widget
 	2015-05-03 [X] BUG: clipped border on left and top sides of pie. Wrong centering?
 		:> wrong QRect.center() : for 300x300 shows center at 149x149
+	2015-05-03 [$] BUG: window size can't be smaller then 100x80 :> look at ~/.i3/config
+	2015-05-03 [X] CRITICAL: pie.setGeometry has circular infinite calling
+		:	 base.adjustFontSize(self, self.text(), self.gText.size())
+		:> self -> p  -- always use 'p' in paintEvent and 'self' in setGeometry
 	[_] BUG: petal bHold isn't released if you click on ContextMenu
 		: https://wiki.python.org/moin/PyQt/Handling%20context%20menus
 		:> use Window.eventFilter and on mouseUp, leaveEvent send reset to all buttons
 		[_] After that leaveEvent is sent not always
-	[_] BUG: if size of window =40 visualisation is wrong: window won't be smaller than some size.
-		: Calculate radius only after window will be shown.
-		:> Linked to update on resize -- then setting up in __init__ will be unnecessary
 
 
 > OPTIMIZATION
@@ -186,9 +190,11 @@ IDEAS
 	[_] multithreading
 	: http://stackoverflow.com/questions/2846653/python-multithreading-for-dummies
 	: http://www.tutorialspoint.com/python/python_multithreading.htm
+	: http://stackoverflow.com/questions/6783194/background-thread-with-qthread-in-pyqt
 		[_] to accelerate air-layouts pre-creation and launch time
 		[_] sendKeys in separate thread, launched simultaneously with app
 		[_] instead of global var 'G_CONFIG_DEFAULT' use function def cfgDefaults(): return ((...))
+		[_] show active Slice as fast as it loaded, load others in background
 		: more thread-safe, as it creates own copy of dictionary for each thread
 	[_] Direct key emulation -- use libxtest.so (or what used by xdotool internally?)
 	: https://github.com/pimoroni/skywriter-hat/tree/master/python/examples

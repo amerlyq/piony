@@ -9,6 +9,7 @@ def R(self):
     return self.r + self.dr
 
 
+# always use 'p' in paintEvent and 'self' in setGeometry
 def adjustFontSize(self, text, sz):
     family = self.font().family()
     rw = sz.width()

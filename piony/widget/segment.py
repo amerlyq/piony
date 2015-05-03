@@ -98,8 +98,8 @@ class SegmentWidget(QtWidgets.QToolButton):
         p.drawPath(self.gPath)
 
     def drawSegmentText(self, p):
-        ## RFC: Move to setGeometry
-        base.adjustFontSize(self, self.text(), self.gText.size())
+        ## RFC: Move to setGeometry. BUG: 'self' instead 'p' causes circular call
+        base.adjustFontSize(p, self.text(), self.gText.size())
 
         p.setPen(self._clr("cText"))
         if __debug__ and gvars.G_DEBUG_VISUALS:

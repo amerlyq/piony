@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # vim: fileencoding=utf-8
 
-import math
+from math import degrees, asin, sin, radians, sqrt
 from PyQt5 import QtGui
 from PyQt5.QtCore import Qt, QRect, QRectF
 
@@ -26,7 +26,7 @@ class RingSegment:
     def arcFixes(self, lw=0):
         # count separate shift to replace angle spacer on line spacer in between
         def afix(r):
-            return math.degrees(math.asin(float(lw) / r)) if r else 0
+            return degrees(asin(float(lw) / r)) if r else 0
         return [afix(self.r), afix(self.r + self.dr)]
 
     def points_ra(self, lw=0):
@@ -84,10 +84,10 @@ class RingSegment:
         R = self.R()
         ha = self.da/2
         hr = self.dr/2
-        hra = R - R/(1 + math.sin(math.radians(ha)))
+        hra = R - R/(1 + sin(radians(ha)))
         tr = min(hr, hra) if ha < 90 else hr
         tr -= lw
-        ta = tr / math.sqrt(2)
+        ta = tr / sqrt(2)
         l, t = self.topLeft_ra()
         cx, cy = ra2xy(R-tr, ha+self.a)
         qr = QRect(cx-ta-l, t-cy-ta, 2*ta, 2*ta)

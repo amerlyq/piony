@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # vim: fileencoding=utf-8
 
-import os
-import sys
-import signal
+# import os
+from sys import argv, exit
+from signal import signal, SIGINT, SIG_DFL
+
 from subprocess import check_output
 from PyQt5.QtWidgets import QApplication
 
@@ -40,7 +41,7 @@ def set_args_from_command_line(cfg, args):
     #         print(s, o, cfg[s][o])
 
 if __name__ == '__main__':
-    cdir = os.path.dirname(os.path.abspath(__file__))
+    # cdir = os.path.dirname(os.path.abspath(__file__))
     Arg_Ps = piony.ArgsParser()
     gvars.G_ACTIVE_WINDOW = search_dst_window()
 
@@ -53,10 +54,10 @@ if __name__ == '__main__':
     bud = piony.BudParser().read_args(entries)
 
     ## Close on 'Ctrl-C' system signal
-    signal.signal(signal.SIGINT, signal.SIG_DFL)
+    signal(SIGINT, SIG_DFL)
 
-    app = QApplication(sys.argv)
+    app = QApplication(argv)
     wnd = piony.Window(cfg, bud)
     wnd.setWindowTitle(piony.__appname__)
     wnd.show()
-    sys.exit(app.exec_())
+    exit(app.exec_())

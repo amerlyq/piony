@@ -19,7 +19,7 @@ class Window(QtWidgets.QWidget, HGEventMixin):
         self.bFirstMove = False
         self.ppos = QPoint()
         self.setWnd()
-        self.setContent(bud)
+        self.setContent()
         self.resize(self.sizeHint())
         self.centerOnCursor()
 
@@ -33,7 +33,7 @@ class Window(QtWidgets.QWidget, HGEventMixin):
         self.installEventFilter(self)
         self.setMouseTracking(True)
 
-    def setContent(self, bud):
+    def setContent(self):
         if not self.cfg['Window'].getboolean('no_tooltip'):
             QtWidgets.QToolTip.setFont(QtGui.QFont('Ubuntu', 12))
             self.setToolTip('Slice No=1 <i>Click at any empty space to close.</i>')

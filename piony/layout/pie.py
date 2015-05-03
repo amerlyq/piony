@@ -72,6 +72,7 @@ class PieLayout(QLayout):
     def heightForWidth(self, w):
         return w
 
+    # @profile
     def setGeometry(self, rect):     # rect -- w/o margin
         super().setGeometry(rect)
         a = min(rect.width(), rect.height())

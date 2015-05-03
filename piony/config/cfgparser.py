@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # vim: fileencoding=utf-8
 
-import collections
+from collections import OrderedDict
 from configparser import ConfigParser as Cfg_Pars
 
 from piony import gvars
@@ -13,7 +13,7 @@ class ConfigParser:
         self.config = self.default()
 
     def default(self):
-        cp = Cfg_Pars(dict_type=collections.OrderedDict,
+        cp = Cfg_Pars(dict_type=OrderedDict,
                       allow_no_value=False, delimiters=('=', ':'),
                       comment_prefixes=('#', ';'),
                       inline_comment_prefixes=('#', ';'),

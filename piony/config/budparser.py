@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # vim: fileencoding=utf-8
 
-import os
-import sys
+from os.path import isfile
+from sys import stdin
 from collections import namedtuple
-import yaml
+from yaml import safe_load
 
 
 class BudParser:
@@ -58,12 +58,12 @@ class BudParser:
 
     def read_entry(self, entry):
         if '-' == entry:
-            layer = yaml.safe_load(sys.stdin)  # entry = sys.stdin.read()
-        elif os.path.isfile(entry):            # && os.path.isabs(PATH)
+            layer = safe_load(stdin)  # entry = sys.stdin.read()
+        elif isfile(entry):            # && os.path.isabs(PATH)
             with open(entry, 'r') as f:
-                layer = yaml.safe_load(f)      # entry = f.read()
+                layer = safe_load(f)      # entry = f.read()
         else:
-            layer = yaml.safe_load(entry)
+            layer = safe_load(entry)
         self.addEntry(layer)
 
     def read_args(self, args):

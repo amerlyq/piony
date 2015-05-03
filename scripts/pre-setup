@@ -12,6 +12,16 @@ sudo pip3 install -U readline ipython ipdb pudb
 # ipdb     # pretty debugger for IPython
 
 
+### PROFILING ###
+sudo apt-get install kcachegrind graphviz #python-matplotlib
+# kcachegrind        # to see profile results in GUI
+# graphviz           # for gprof2dot
+# python3-matplotlib # for memory_profiler
+sudo pip3 install -U pyprof2calltree gprof2dot
+sudo pip3 install -U line_profiler pprofile
+sudo pip3 install -U psutil memory_profiler matplotlib
+
+
 # python3-sip
 #   SIP is a tool for quickly writing Python modules that interface with C++ and C libraries
 #       http://riverbankcomputing.co.uk/software/sip/intro

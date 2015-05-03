@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # vim: fileencoding=utf-8
 
-import math
+from math import sqrt
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt, QSize, QRect
@@ -72,7 +72,7 @@ class BudWidget(QtWidgets.QWidget):
         p.end()
 
     def drawName(self, p):
-        a = self.r * math.sqrt(2)
+        a = self.r * sqrt(2)
         sz = self.frameGeometry().size()
         tq = QRect(sz.width()/2 - a/2, sz.height()/2 - a/2, a, a)
 

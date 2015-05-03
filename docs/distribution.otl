@@ -4,6 +4,9 @@
 	http://habrahabr.ru/post/248189/
 	http://skramm.blogspot.com/2013/04/writing-portable-makefiles.html
 
+Store setting files in appropriate directories
+	http://stackoverflow.com/questions/1024114/location-of-ini-config-files-in-linux-unix
+
 Python
 	[_] setup.py
 		http://www.vascop.com/simple-guide-to-packaging-python-applications.html

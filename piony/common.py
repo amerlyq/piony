@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # vim: fileencoding=utf-8
 
-import math
+from math import degrees, acos, cos, sin, radians, sqrt, fmod
 
 
 def xstr(s):  # Returns empty string even if None
@@ -33,7 +33,7 @@ def char_range(c1, c2):
 
 ## ----------
 def degreeNorm(a):  # angle -> [0,360)
-    return math.fmod((math.fmod(a, 360) + 360), 360)
+    return fmod((fmod(a, 360) + 360), 360)
 
 
 def arcContains(a, da, c):  # angle := [a, a+da]
@@ -41,12 +41,12 @@ def arcContains(a, da, c):  # angle := [a, a+da]
 
 
 def ra2xy(r, angle):  # Polar to cartesian:
-    x = r * math.cos(math.radians(angle))
-    y = r * math.sin(math.radians(angle))
+    x = r * cos(radians(angle))
+    y = r * sin(radians(angle))
     return [x, y]
 
 
 def xy2ra(x, y):  # Cartesian to polar:
-    r = math.sqrt(x*x + y*y)
-    a = math.degrees(math.acos(x/r)) + (0 if y >= 0 else 180)
+    r = sqrt(x*x + y*y)
+    a = degrees(acos(x/r)) + (0 if y >= 0 else 180)
     return [r, a]

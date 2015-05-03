@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # vim: fileencoding=utf-8
 
-import argparse
-from argparse import ArgumentParser as Arg_Pars
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 import piony
 from piony import gvars
@@ -14,10 +13,10 @@ class ArgsParser:
         self.args = None
 
     def parse(self, line=None):
-        ps = Arg_Pars(prog=piony.__appname__,
-                      formatter_class=argparse.RawDescriptionHelpFormatter,
-                      description=piony.__doc__,
-                      epilog="Enjoy!!!")
+        ps = ArgumentParser(prog=piony.__appname__,
+                            formatter_class=RawDescriptionHelpFormatter,
+                            description=piony.__doc__,
+                            epilog="Enjoy!!!")
 
         argdefaults.G_ARGUMENTS_DEFAULT_F(ps)
 
