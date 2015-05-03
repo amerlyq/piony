@@ -2,7 +2,7 @@
 # vim: fileencoding=utf-8
 
 from PyQt5.QtWidgets import QLayout, QWidgetItem
-from PyQt5.QtCore import QSize
+from PyQt5.QtCore import QPoint, QSize
 
 from piony.common import ra2xy
 from piony.ringsegment import RingSegment
@@ -17,8 +17,9 @@ class SegmentWrapper(object):
 
 # Rather SectorStrip, or SectorRing
 class PieLayout(QLayout):
-    def __init__(self, r, dr, spacing=0, margin=0, parent=None):
+    def __init__(self, cfg, r, dr, spacing=0, margin=0, parent=None):
         super().__init__(parent)
+        self.cfg = cfg
         if parent is not None:
             self.setMargin(margin)
         self.r = r
@@ -76,7 +77,7 @@ class PieLayout(QLayout):
         a = min(rect.width(), rect.height())
         self.r = (0.3 * a) // 2
         self.dr = (0.7 * a) // 2
-        self.doLayout(rect)
+        self.doLayout(QPoint(rect.width()/2, rect.height()/2))
 
     def sizeHint(self):
         return QSize(self.R(), self.R)
@@ -89,8 +90,7 @@ class PieLayout(QLayout):
         # return size
         return QSize(10, 10)
 
-    def doLayout(self, rect):
-        c = rect.center()
+    def doLayout(self, center):
         # WARNING: case of empty list -- len([]) == 0
         a = float(360) / max(1, len(self.sectors))
 
@@ -101,7 +101,7 @@ class PieLayout(QLayout):
 
             segment = RingSegment(self.r, a*i + sp/2., self.dr, a - sp)
             x, y = ra2xy(self.r, a*i)
-            wdg.setGeometry(segment.geometry(c.x() + x, c.y() - y))
+            wdg.setGeometry(segment.geometry(center.x() + x, center.y() - y))
             wdg.gPath = segment.path()
             wdg.gText = segment.text_bbox_scr()
             wdg.setMask(segment.region())

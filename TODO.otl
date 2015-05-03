@@ -20,6 +20,9 @@ RFC
 	[_] Try extract R() as single separate function instead defining in each class
 	2015-04-25 [X] Replace all imports with full versions
 	[_] -V l -- strictly unnecessary key
+	[_] -T --no-tooltip=no change to --show-tooltip=yes
+	[_] Calculate text size to fit into rect in one pass (find Qt Api)
+	[_] Rename all config options to format 'fTextScale' with type letter
 
 STYLE
 	[_] If possible, use styles instead of my own vehicle:
@@ -49,6 +52,7 @@ CONTROLS
 		: to adapt icons towards hand's anisotropy
 		: to group instruments for current task from different rings
 	[_] CS+M3+drag | rotates all rings as whole
+	[_]  +/-, =/_  | Resize anchoring ring center
 
 	Slices
 		[_] -l <No>  | current active slice
@@ -81,6 +85,7 @@ SYSTEM
 	2015-04-23 [X] Port to PyQt5 and python3
 		2015-04-23 [X] : http://pyqt.sourceforge.net/Docs/PyQt5/pyqt4_differences.html
 		2015-04-23 [X] Complete current dev stage and only then port
+	[_] Port all text info to QStaticText + drawStaticText
 	[_] Port layouts to QGraphicsLayout and QGraphicsWidget (for QRectF support)
 		: http://pyqt.sourceforge.net/Docs/PyQt4/qgraphicslayoutitem.html
 		: A top-level item's style defaults to QGraphicsScene.style
@@ -150,25 +155,28 @@ IDEAS
 		: http://en.wikipedia.org/wiki/Ellipse
 	2015-04-22 [X] BUG: replace items order CW -> CCW
 	2015-04-27 [X] BUG: keys aren't printed or emulated on action
-	[_] BUG: petal bHold isn't released if you click on ContextMenu
-		: https://wiki.python.org/moin/PyQt/Handling%20context%20menus
-		:> use Window.eventFilter and on mouseUp, leaveEvent send reset to all buttons
+	2015-04-30 [X] BUG: Button tooltip changes color to yellow if you fast move cursor over it
+		:> It's all due to self.setStyleSheet("background-color:yellow;") inside btn.leaveEvent
+	2015-04-30 [X] BUG: config options duplicates :> wrong way of applying defaults
 	2015-05-02 [X] BUG: resets geometry position to 0,0 when cursor at screen border
 		:> I suggest that trouble is related to i3wm -- repositioning all windows on showEvent.
 	2015-05-02 [X] BUG: no text when only 1 element in ring list -- must show at farthest
 	2015-05-02 [X] BUG: exception when list is empty
-	[_] BUG: if size of window =40 visualisation is wrong: window don't want be more small than some size.
+	2015-05-02 [X] BUG: on resize must update petals and text sizes
+	2015-05-03 [X] BUG: double click M1 for Mod_i3+drag generates Qt.close()
+		:> problem was with empty mask in eventFilter
+	2015-05-03 [X] Trash inside transparent region of Qt window
+		: maybe utilize QWidgets.QWidget.IgnoreMask
+		:> fill window bkgr in paintEvent, and draw bud over in separate widget
+	2015-05-03 [X] BUG: clipped border on left and top sides of pie. Wrong centering?
+		:> wrong QRect.center() : for 300x300 shows center at 149x149
+	[_] BUG: petal bHold isn't released if you click on ContextMenu
+		: https://wiki.python.org/moin/PyQt/Handling%20context%20menus
+		:> use Window.eventFilter and on mouseUp, leaveEvent send reset to all buttons
+		[_] After that leaveEvent is sent not always
+	[_] BUG: if size of window =40 visualisation is wrong: window won't be smaller than some size.
 		: Calculate radius only after window will be shown.
 		:> Linked to update on resize -- then setting up in __init__ will be unnecessary
-	2015-05-02 [X] BUG: on resize must update petals and text sizes
-	2015-04-30 [X] BUG: Button tooltip changes color to yellow if you fast move cursor over it
-		:> It's all due to self.setStyleSheet("background-color:yellow;") inside btn.leaveEvent
-	2015-04-30 [X] BUG: config options duplicates :> wrong way of applying defaults
-	[_] BUG: double click M1 for Mod_i3+drag generates Qt.close()
-		: probably Qt treats double click as separate events
-		:> check eventFilter mouseDown with holded Mod_i3
-	[_] Trash inside transparent region of Qt window
-		: QWidgets.QWidget.IgnoreMask
 
 
 > OPTIMIZATION

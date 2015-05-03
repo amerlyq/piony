@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 # vim: fileencoding=utf-8
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtGui, QtWidgets
+from PyQt5.QtCore import Qt, QPoint, QSize, QRect
 
 from piony import gvars
+from piony.widget import base
 
 
 class PetalStyle():
@@ -21,7 +23,7 @@ class PetalStyle():
                       "normal": [100, 255, 0, 255]}
 
 
-class SegmentButton(QtWidgets.QToolButton):
+class SegmentWidget(QtWidgets.QToolButton):
     def __init__(self, opts, name="", act=None, parent=None):
         super().__init__(parent)
 
@@ -34,17 +36,21 @@ class SegmentButton(QtWidgets.QToolButton):
         self.bHover = False
         self.bHold = False
         self.gPath = None
-        self.gText = QtCore.QRect(0, 0, 20, 20)
+        self.gText = QRect(0, 0, 20, 20)
         self.pstyle = PetalStyle()
 
+        self.setFont(QtGui.QFont('Ubuntu', 16))
         self.setMouseTracking(True)
         self.resize(self.sizeHint())
         # self.setMask(QtGui.QRegion(rct))
 
     ## --------------
 
+    def minimalSize(self):
+        return QSize(10, 10)
+
     def sizeHint(self):
-        return QtCore.QSize(80, 80)
+        return QSize(80, 80)
 
     def enterEvent(self, e):
         # self.setStyleSheet("background-color:#45b545;")
@@ -56,12 +62,12 @@ class SegmentButton(QtWidgets.QToolButton):
         self.bHold = False
 
     def mousePressEvent(self, e):
-        # if e.button() == QtCore.Qt.LeftButton and _hasModCtrl():
+        # if e.button() == Qt.LeftButton and _hasModCtrl():
         self.bHold = True
         self.update()
 
     def mouseReleaseEvent(self, e):
-        # if e.button() == QtCore.Qt.LeftButton and not _hasModCtrl():
+        # if e.button() == Qt.LeftButton and not _hasModCtrl():
         self.bHold = False
         self.update()
         self.action()
@@ -88,16 +94,17 @@ class SegmentButton(QtWidgets.QToolButton):
 
     def drawSegment(self, p):
         p.setBrush(self._clr("cFiller"))
-        p.setPen(QtGui.QPen(self._clr("cBorder"), PetalStyle.wLine, QtCore.Qt.SolidLine))
+        p.setPen(QtGui.QPen(self._clr("cBorder"), PetalStyle.wLine, Qt.SolidLine))
         p.drawPath(self.gPath)
 
     def drawSegmentText(self, p):
+        ## RFC: Move to setGeometry
+        base.adjustFontSize(self, self.text(), self.gText.size())
+
         p.setPen(self._clr("cText"))
-        sz = int(self.gText.height() * self.text_scale)
-        p.setFont(QtGui.QFont('Ubuntu', sz))
         if __debug__ and gvars.G_DEBUG_VISUALS:
             p.drawRect(self.gText)
-        p.drawText(self.gText, QtCore.Qt.AlignCenter, self.text())
+        p.drawText(self.gText, Qt.AlignCenter, self.text())
 
     def paintEvent(self, e):
         p = self.createPainter()
@@ -113,5 +120,5 @@ class SegmentButton(QtWidgets.QToolButton):
             grd.setColorAt(0.0, QtGui.QColor(0, 0, 0, 40))
             grd.setColorAt(1.0, QtGui.QColor(0, 0, 0, 40))
             p.setBrush(grd)
-            p.setPen(QtGui.QPen(QtCore.Qt.NoPen))
-            p.drawRect(QtCore.QRect(QtCore.QPoint(2, 2), self.size() - QtCore.QSize(4, 4)))
+            p.setPen(QtGui.QPen(Qt.NoPen))
+            p.drawRect(QRect(QPoint(2, 2), self.size() - QSize(4, 4)))

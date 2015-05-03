@@ -50,7 +50,9 @@ class HGEventMixin:
     def eventFilter(self, obj, e):
         e_ex = [QEvent.WindowDeactivate, QEvent.Leave]
         if e.type() in e_ex:
-            if not self.mask().contains(QtGui.QCursor.pos()):
+            # NOTE: rgn object must be derived only once at initialization.
+            rgn = self.frameGeometry() if self.mask().isEmpty() else self.mask()
+            if not rgn.contains(QtGui.QCursor.pos()):
                 action.sysClose()
 
         ## Move window in specified position again, to deal with i3wm workspace.
@@ -71,9 +73,4 @@ class HGEventMixin:
         # decided to handle it myself
 
     def resizeEvent(self, e):
-        side = min(self.width(), self.height())
-        qr = QtCore.QRect(self.width()/2 - side/2, self.height()/2 - side/2, side, side)
-        rgn = QtGui.QRegion(qr, QtGui.QRegion.Ellipse)
-        # self.setMask(rgn)
-        self.layout().setGeometry(QtCore.QRect(QtCore.QPoint(0, 0), self.size()))
-        # self.updateGeometry()
+        self.bud.setGeometry(QtCore.QRect(QtCore.QPoint(0, 0), e.size()))

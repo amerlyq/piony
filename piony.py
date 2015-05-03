@@ -51,13 +51,12 @@ if __name__ == '__main__':
 
     entries = args.buds if args.buds else cfg['Bud']['default']
     bud = piony.BudParser().read_args(entries)
-    ring = bud['slices'][0]['rings'][0]
 
     ## Close on 'Ctrl-C' system signal
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
     app = QApplication(sys.argv)
-    wnd = piony.Window(cfg, ring)
+    wnd = piony.Window(cfg, bud)
     wnd.setWindowTitle(piony.__appname__)
     wnd.show()
     sys.exit(app.exec_())
