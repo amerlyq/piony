@@ -31,9 +31,12 @@ class ArgsParser:
         return self.args
 
     def apply(self, args=None):
+        from operator import xor
         if not args:
             args = self.args
-
-        dbg = {'l': (True, True), 'v': (True, False), 'a': (False, True)}
+        res = (False, False)
+        dbg = {'a': (True, True), 'v': (True, False), 'k': (False, True)}
         if args.verbose:
-            gvars.G_DEBUG_VISUALS, gvars.G_DEBUG_ACTIONS = dbg[args.verbose]
+            for entry in args.verbose:
+                res = map(xor, res, dbg[entry])
+            gvars.G_DEBUG_VISUALS, gvars.G_DEBUG_ACTIONS = res

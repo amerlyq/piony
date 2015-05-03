@@ -19,6 +19,7 @@ RFC
 		[_] segment contour shrinking
 	[_] Try extract R() as single separate function instead defining in each class
 	2015-04-25 [X] Replace all imports with full versions
+	[_] -V l -- strictly unnecessary key
 
 STYLE
 	[_] If possible, use styles instead of my own vehicle:
@@ -31,6 +32,8 @@ STYLE
 		they will cover only half-length of one petal, fading out with distance
 	[_] replace filling with gradient (radial?) to add volume
 		: http://doc.qt.digia.com/4.6/painting-painterpaths.html
+	[_] When resizing, spacing between segments and central area must change proportionally
+		:> Possible implementation only after porting to QGraphicsWidget
 
 	(v1.4) Groups
 		[_] different tint colors for buttons in different groups (like Excel)
@@ -150,18 +153,22 @@ IDEAS
 	[_] BUG: petal bHold isn't released if you click on ContextMenu
 		: https://wiki.python.org/moin/PyQt/Handling%20context%20menus
 		:> use Window.eventFilter and on mouseUp, leaveEvent send reset to all buttons
-	[_] BUG: resets geometry position to 0,0 when cursor at screen border
-	[_] BUG: no text when only 1 element in ring list -- must show at farthest
-	[_] BUG: exception when list is empty -> must show only ring bkgr
+	2015-05-02 [X] BUG: resets geometry position to 0,0 when cursor at screen border
+		:> I suggest that trouble is related to i3wm -- repositioning all windows on showEvent.
+	2015-05-02 [X] BUG: no text when only 1 element in ring list -- must show at farthest
+	2015-05-02 [X] BUG: exception when list is empty
 	[_] BUG: if size of window =40 visualisation is wrong: window don't want be more small than some size.
 		: Calculate radius only after window will be shown.
 		:> Linked to update on resize -- then setting up in __init__ will be unnecessary
-	[_] BUG: on resize must update petals and text sizes
-	2015-05-30 [X] BUG: Button tooltip changes color to yellow if you fast move cursor over it
+	2015-05-02 [X] BUG: on resize must update petals and text sizes
+	2015-04-30 [X] BUG: Button tooltip changes color to yellow if you fast move cursor over it
 		:> It's all due to self.setStyleSheet("background-color:yellow;") inside btn.leaveEvent
 	2015-04-30 [X] BUG: config options duplicates :> wrong way of applying defaults
 	[_] BUG: double click M1 for Mod_i3+drag generates Qt.close()
 		: probably Qt treats double click as separate events
+		:> check eventFilter mouseDown with holded Mod_i3
+	[_] Trash inside transparent region of Qt window
+		: QWidgets.QWidget.IgnoreMask
 
 
 > OPTIMIZATION

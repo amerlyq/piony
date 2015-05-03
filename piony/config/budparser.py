@@ -57,7 +57,6 @@ class BudParser:
             raise SyntaxError('Bad slice format. Expected keys: ...')
 
     def read_entry(self, entry):
-        print(entry)
         if '-' == entry:
             layer = yaml.safe_load(sys.stdin)  # entry = sys.stdin.read()
         elif os.path.isfile(entry):            # && os.path.isabs(PATH)
@@ -73,4 +72,6 @@ class BudParser:
         else:
             for arg in args:  # BUG: Why map don't works ?!
                 self.read_entry(arg)
+        if not self.bud['slices'][-1]['rings']:
+            self.bud['slices'][-1]['rings'].append([])
         return self.bud

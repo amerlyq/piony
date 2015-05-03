@@ -35,6 +35,6 @@ def G_ARGUMENTS_DEFAULT_F(ps):
     ## Process
     gr_general = ps.add_argument_group('General')
     garg = gr_general.add_argument
-    garg('-V', '--verbose', nargs='?', const='l',
-         choices=['l', 'v', 'a'], default=None,
-         help="Verbose (debug): all (default), or visuals / actions.")
+    garg('-V', '--verbose', nargs='?', type=str,
+         const='a', choices=['a', 'v', 'k'], default=None,
+         help="Verbose (debug): [a]ll (default), [v]isuals, [k]eys.")

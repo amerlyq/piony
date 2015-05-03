@@ -18,11 +18,11 @@ class Window(QtWidgets.QWidget, HGEventMixin):
         self.cfg = cfg
         self.opts = self.cfg['Window']
         self.bM3 = False
+        self.bFirstMove = False
         self.ppos = QPoint()
         self.size_w = cfg['Window'].getint('size')
         self.r = (0.3 * self.size_w) // 2
         self.dr = (0.7 * self.size_w) // 2
-
         self.setWnd()
         self.setContent(bud, not self.cfg['Window'].getboolean('no_tooltip'))
         self.resize(self.sizeHint())
@@ -32,7 +32,10 @@ class Window(QtWidgets.QWidget, HGEventMixin):
         return self.r + self.dr
 
     def sizeHint(self):
-        return QSize(self.size_w, self.size_w)
+        return QSize(2*self.R(), 2*self.R())
+
+    def minimumSize(self):
+        return QSize(10, 10)
 
     def setWnd(self):
         self.setAttribute(Qt.WA_TranslucentBackground)
@@ -54,14 +57,14 @@ class Window(QtWidgets.QWidget, HGEventMixin):
             QtWidgets.QToolTip.setFont(QtGui.QFont('Ubuntu', 12))
             self.setToolTip('Slice No=1 <i>Click at any empty space to close.</i>')
 
-        playout = PieLayout(self.r, self.dr, 0)
+        pie = PieLayout(self.r, self.dr, 0)
         for segment in bud:
             btn = SegmentButton(self.cfg['Button'], segment.name,
                                 lambda a=segment.action: sendKey(a))
             if has_tooltip:
                 btn.setToolTip(segment.tooltip)
-            playout.addWidget(btn)
-        self.setLayout(playout)
+            pie.addWidget(btn)
+        self.setLayout(pie)
 
     def drawName(self, p):
         p.setFont(QtGui.QFont('Ubuntu', 16))
@@ -73,8 +76,9 @@ class Window(QtWidgets.QWidget, HGEventMixin):
 
     def paintEvent(self, e):
         p = QtWidgets.QStylePainter(self)  # p.begin(self)
+        self.drawBkgr(p)
         if __debug__ and gvars.G_DEBUG_VISUALS:
-            self.drawBkgr(p)
+            self.drawMask(p)
         # self.drawName(p)  # temporarily disabled
         p.end()
 
@@ -87,8 +91,13 @@ class Window(QtWidgets.QWidget, HGEventMixin):
         fg.moveCenter(cp)
         self.move(fg.topLeft())  # self.setGeometry(fg)
 
+    def drawBkgr(self, p):
+        p.setPen(Qt.NoPen)
+        p.setBrush(QtGui.QColor(0, 0, 0, 0))
+        p.drawRect(self.rect())
+
     if __debug__:
-        def drawBkgr(self, p):
+        def drawMask(self, p):
             p.setPen(Qt.NoPen)
             p.setBrush(QtGui.QColor(255, 255, 0, 50))
             p.drawEllipse(self.rect())

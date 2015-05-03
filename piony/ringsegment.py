@@ -82,12 +82,14 @@ class RingSegment:
     def text_bbox_scr(self, lw=0):
         ## Text: get inscribed circle center tr, and size of inscribed square in it
         R = self.R()
-        ha = self.da / 2
-        tr = min((R-self.r)/2, R - R/(1 + math.sin(math.radians(ha))))  # - lw
+        ha = self.da/2
+        hr = self.dr/2
+        hra = R - R/(1 + math.sin(math.radians(ha)))
+        tr = min(hr, hra) if ha < 90 else hr
+        tr -= lw
         ta = tr / math.sqrt(2)
         l, t = self.topLeft_ra()
         cx, cy = ra2xy(R-tr, ha+self.a)
-        # print("ha, tr : [", ha, tr, "]; cx, cy : [", cx, cy, "]")
         qr = QRect(cx-ta-l, t-cy-ta, 2*ta, 2*ta)
         return qr
 

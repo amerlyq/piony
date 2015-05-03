@@ -46,6 +46,7 @@ Ring
 		segment
 		spacer
 			space-filler is simply button w/o text and events (maybe Cancel only)
+	[_] For empty ring/slice, bud must show ring placeholder (or set of spacers for fixed layer)
 
 Sector
 	button

@@ -53,6 +53,14 @@ class HGEventMixin:
             if not self.mask().contains(QtGui.QCursor.pos()):
                 action.sysClose()
 
+        ## Move window in specified position again, to deal with i3wm workspace.
+        if e.type() == QEvent.Show:
+            self.bFirstMove = True
+        if self.bFirstMove and e.type() == QEvent.Move:
+            self.centerOnCursor()
+            self.bFirstMove = False
+            # print(e.type(), self.geometry())
+
         # if self.layout().indexOf(obj) != -1:
         #     if event.type() == event.MouseButtonPress:
         #         print("Widget click", obj)
@@ -66,5 +74,6 @@ class HGEventMixin:
         side = min(self.width(), self.height())
         qr = QtCore.QRect(self.width()/2 - side/2, self.height()/2 - side/2, side, side)
         rgn = QtGui.QRegion(qr, QtGui.QRegion.Ellipse)
-        self.setMask(rgn)
-        self.updateGeometry()
+        # self.setMask(rgn)
+        self.layout().setGeometry(QtCore.QRect(QtCore.QPoint(0, 0), self.size()))
+        # self.updateGeometry()

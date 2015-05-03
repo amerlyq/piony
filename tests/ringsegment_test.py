@@ -79,7 +79,7 @@ class TestRingSegment():
 
     def test_text_bbox_src(self):
         assert QRect(16, 1, 7, 7) == RingSegment(10, 0, 10, 180).text_bbox_scr()
-        # assert QRect(16, 1, 7, 7) == RingSegment(10, 0, 10, 322).text_bbox_scr()
+        assert QRect(1, 16, 7, 7) == RingSegment(10, 0, 10, 358).text_bbox_scr()
 
     # def test_points_src(self):
         # assert similar([[11, 20], [19, 20], [0, 1], [0, 9]], RingSegment(10, 0, 10, 90).points_scr(1))

@@ -73,10 +73,13 @@ class PieLayout(QLayout):
 
     def setGeometry(self, rect):     # rect -- w/o margin
         super().setGeometry(rect)
+        a = min(rect.width(), rect.height())
+        self.r = (0.3 * a) // 2
+        self.dr = (0.7 * a) // 2
         self.doLayout(rect)
 
     def sizeHint(self):
-        return self.minimumSize()
+        return QSize(self.R(), self.R)
 
     def minimumSize(self):
         # size = QSize()
@@ -84,12 +87,12 @@ class PieLayout(QLayout):
         #     size = size.expandedTo(item.minimumSize())
         # size += QSize(2 * self.margin(), 2 * self.margin())
         # return size
-        return QSize(self.R(), self.R())
+        return QSize(10, 10)
 
     def doLayout(self, rect):
         c = rect.center()
         # WARNING: case of empty list -- len([]) == 0
-        a = float(360) / len(self.sectors)
+        a = float(360) / max(1, len(self.sectors))
 
         for i, wrapper in enumerate(self.sectors):
             item = wrapper.item

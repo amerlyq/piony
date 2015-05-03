@@ -97,7 +97,6 @@ class SegmentButton(QtWidgets.QToolButton):
         p.setFont(QtGui.QFont('Ubuntu', sz))
         if __debug__ and gvars.G_DEBUG_VISUALS:
             p.drawRect(self.gText)
-            print(self.gText)
         p.drawText(self.gText, QtCore.Qt.AlignCenter, self.text())
 
     def paintEvent(self, e):
