@@ -85,6 +85,7 @@ SYSTEM
 	2015-04-23 [X] Port to PyQt5 and python3
 		2015-04-23 [X] : http://pyqt.sourceforge.net/Docs/PyQt5/pyqt4_differences.html
 		2015-04-23 [X] Complete current dev stage and only then port
+	[_] Port IPC to Qt
 	[_] Port all text info to QStaticText + drawStaticText
 	[_] Port layouts to QGraphicsLayout and QGraphicsWidget (for QRectF support)
 		: http://pyqt.sourceforge.net/Docs/PyQt4/qgraphicslayoutitem.html
@@ -104,6 +105,9 @@ SYSTEM
 	2015-04-27 [X] React to Ctrl-C from console
 	<Flags>
 	[_] -d : start as background daemon  # OR: '-D','--no-daemon'
+	>> http://www.utilities-online.info/articles/Create-a-PyQt-tray-icon-to-send-UDP-Datagram/
+	> http://pymotw.com/2/multiprocessing/communication.html
+	> https://wiki.qt.io/Threads_Events_QObjects
 	: http://www.jejik.com/articles/2007/02/a_simple_unix_linux_daemon_in_python/
 	: https://gist.github.com/Jd007/5573672
 	: http://codereview.stackexchange.com/questions/54348/handling-signals-in-python-inside-a-function

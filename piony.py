@@ -4,10 +4,10 @@
 from sys import argv, exit
 from signal import signal, SIGINT, SIG_DFL
 from subprocess import check_output
-from multiprocessing import Process, Value
 from multiprocessing.connection import Listener, Client
 
 from PyQt5.QtWidgets import QApplication
+from PyQt5.QtCore import QObject, QThread, pyqtSignal, pyqtSlot
 
 import piony
 from piony.config import cfgdefaults
@@ -41,23 +41,6 @@ def set_args_from_command_line(cfg, args):
     #         print(s, o, cfg[s][o])
 
 
-def listenArguments(bListen, listener, wnd):
-    # = ['kill'] & ['no-daemon']
-    while bListen.value:
-        with listener.accept() as conn:
-            msg = conn.recv()
-            if isinstance(msg, str):
-                if msg == "-k":
-                    bListen.value = 0
-                    break
-            elif isinstance(msg, list) and len(msg) > 1:
-                print(msg)
-                if msg[1] == "-k":
-                    bListen.value = 0
-                    wnd.close()
-    print("s",bListen.value)
-
-
 def sendArguments(path, auth):
     try:
         conn = Client(path, 'AF_UNIX', authkey=auth)
@@ -69,6 +52,41 @@ def sendArguments(path, auth):
     else:
         conn.send(argv)
         exit(0)
+
+
+class Worker(QObject):
+    finished = pyqtSignal()
+    cfgChange = pyqtSignal()
+
+    def __init__(self, path, auth):
+        super().__init__()
+        self.listener = Listener(path, 'AF_UNIX', authkey=auth)
+
+    @pyqtSlot()
+    def listenArguments(self):
+        print("Listener")
+        bListen = True
+        while bListen:
+            print("start")
+            with self.listener.accept() as conn:
+                print("conn")
+                msg = conn.recv()
+                if isinstance(msg, str):
+                    if msg == "-k":
+                        bListen = False
+                        break
+                elif isinstance(msg, list) and len(msg) > 1:
+                    print(msg)
+                    if msg[1] == "-k":
+                        bListen = False
+                    else:
+                        self.cfgChange.emit()
+        self.finished.emit()
+
+
+def onCfgChange():
+    print('cfgChange')
+    # QApplication.instance().quit()
 
 
 def loadConfig():
@@ -99,23 +117,20 @@ if __name__ == '__main__':
 
     ## Create window and main loop
     app = QApplication(argv)
+
+    thread = QThread()
+    obj = Worker(path, auth)
+    obj.cfgChange.connect(onCfgChange)
+    obj.moveToThread(thread)
+    obj.finished.connect(thread.quit)
+
+    thread.started.connect(obj.listenArguments)
+    thread.finished.connect(app.exit)
+    thread.start()
+
     wnd = piony.Window(*loadConfig())
     wnd.setWindowTitle("{} {}".format(piony.__appname__, piony.__version__))
     wnd.show()
 
-    bListen = Value('i', 1)
-    listener = Listener(path, 'AF_UNIX', authkey=auth)
-    pr = Process(target=listenArguments, args=(bListen, listener, wnd))
-    pr.start()
-
     ret = app.exec_()
-
-    print("hi", bListen.value)
-
-    ## Close listener
-    if bListen.value:
-        print("ipc")
-        with Client(path, 'AF_UNIX', authkey=auth) as conn:
-            conn.send("-k")
-    pr.join()
     exit(ret)
