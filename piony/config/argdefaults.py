@@ -35,6 +35,8 @@ def G_ARGUMENTS_DEFAULT_F(ps):
     ## Process
     gr_general = ps.add_argument_group('General')
     garg = gr_general.add_argument
+    garg('-k', '--kill', default=None,
+         help="Kill running daemonized program.")
     garg('-V', '--verbose', nargs='?', type=str,
          const='a', choices=['a', 'v', 'k'], default=None,
          help="Verbose (debug): [a]ll (default), [v]isuals, [k]eys.")

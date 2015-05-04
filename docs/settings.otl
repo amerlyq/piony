@@ -40,6 +40,8 @@ PROFILES   :>>> All syntax is yaml-compatible
 	2015-04-29 [X] Instead of -i use positional parameters to combine slices
 		:= ./piony.py -s 360 ./cfg/krita.json - "[...]" "{...}"
 	[_] check that '-' used *only_once* through _all_ arguments
+	[_] get 'name' from filename if not specified
+	[_] own exceptions for parsing errors
 	2015-04-27 [X] Full format for each entry
 	| it can be merged with Qt style file, written in CSS (QSS?)
 		2015-04-24 [X] name

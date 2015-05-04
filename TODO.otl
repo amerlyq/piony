@@ -104,13 +104,25 @@ SYSTEM
 	2015-04-27 [X] React to Ctrl-C from console
 	<Flags>
 	[_] -d : start as background daemon  # OR: '-D','--no-daemon'
+	: http://www.jejik.com/articles/2007/02/a_simple_unix_linux_daemon_in_python/
+	: https://gist.github.com/Jd007/5573672
+	: http://codereview.stackexchange.com/questions/54348/handling-signals-in-python-inside-a-function
+	: http://stackoverflow.com/questions/2080660/python-multiprocessing-and-a-shared-counter
+	: https://docs.python.org/3.4/library/multiprocessing.html
+	: https://www.safaribooksonline.com/library/view/python-cookbook/0596001673/ch06s09.html
+	: http://eli.thegreenplace.net/2012/01/04/shared-counter-with-pythons-multiprocessing
 		[_] toggle show/hide instead of creating each time
 			| check self.hide() functional -- does it hide from i3wm?
 			[_] -S : show -- "Show menu at current cursor position, or at 'x,y' coords", default='auto'
 			[_] -H : hide -- "Hide and if has argument '1' click last hovered before it.", default='auto'
 		[_] use only one instance (now old autocloses on focus lost when new created)
 			: https://pythonadventures.wordpress.com/2013/01/10/launch-just-one-instance-of-a-qt-application/
+		[_] on leaveEvent activate current action -- close/hide
+			[_] -C : close -- preferably close or hide window
+		[_] tray icon and menu
 		[_] -k : kill -- "Kill demon."
+		Multiprocessing
+			: http://pymotw.com/2/multiprocessing/basics.html#daemon-processes
 		Start on log-in
 			http://stackoverflow.com/questions/6186091/pyqt-best-way-to-do-the-trick-start-at-boot-for-my-program-in-windows
 
@@ -125,6 +137,7 @@ SYSTEM
 		http://stackoverflow.com/questions/12524570/how-do-you-implement-ifdef-in-python
 	[_] Extract global vars to __builtin__.py and access them as builtins.foo
 	2015-04-26 [X] Place all global variables into gvars.py (not common.py)
+	2015-05-04 [$] Setup custom WM_CLASS :> not possible, qt uses filename with extension.
 
 
 IDEAS
@@ -177,6 +190,8 @@ IDEAS
 	2015-05-03 [X] CRITICAL: pie.setGeometry has circular infinite calling
 		:	 base.adjustFontSize(self, self.text(), self.gText.size())
 		:> self -> p  -- always use 'p' in paintEvent and 'self' in setGeometry
+	2015-05-04 [$] BUG: Ctrl-C works only after Qt window focused again :> only SIG_DFL works
+		: http://www.mail-archive.com/pyqt@riverbankcomputing.com/msg13757.html
 	[_] BUG: petal bHold isn't released if you click on ContextMenu
 		: https://wiki.python.org/moin/PyQt/Handling%20context%20menus
 		:> use Window.eventFilter and on mouseUp, leaveEvent send reset to all buttons
@@ -191,6 +206,8 @@ IDEAS
 	: http://stackoverflow.com/questions/2846653/python-multithreading-for-dummies
 	: http://www.tutorialspoint.com/python/python_multithreading.htm
 	: http://stackoverflow.com/questions/6783194/background-thread-with-qthread-in-pyqt
+	: http://effbot.org/zone/thread-synchronization.htm
+	: http://www.python-course.eu/threads.php
 		[_] to accelerate air-layouts pre-creation and launch time
 		[_] sendKeys in separate thread, launched simultaneously with app
 		[_] instead of global var 'G_CONFIG_DEFAULT' use function def cfgDefaults(): return ((...))

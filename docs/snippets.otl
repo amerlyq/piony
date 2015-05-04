@@ -95,3 +95,35 @@ profiling results
 		: 1 loops, best of 3: 139 ms per loop
 		%timeit [sum(x) for x in zip(list1, list2)]
 		: 1 loops, best of 3: 177 ms per loop
+
+Random bytestring for auth in IPC
+	key = bytes(random.getrandbits(8) for _ in range(8))
+
+IPC
+	from subprocess import check_output, call, CalledProcessError
+	: Bring window to front
+	def visibilityHandler(signum, frame):
+		print 'Signal handler called with signal', signum
+
+	if __name__ == '__main__':
+		wid = None
+		try:
+			wid = check_output(['xdotool', 'search', '--class', 'piony.py'],
+							universal_newlines=True)
+		except CalledProcessError:
+			signal(SIGUSR1, visibilityHandler)
+		exit(call(['xdotool', 'windowactivate', wid]))
+
+ipdb on exception
+	from ipdb import launch_ipdb_on_exception
+	with launch_ipdb_on_exception():
+		[...]
+
+import sys, ipdb, traceback
+
+def info(type, value, tb):
+    traceback.print_exception(type, value, tb)
+    print
+    ipdb.pm()
+
+sys.excepthook = info
