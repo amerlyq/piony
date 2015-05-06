@@ -85,7 +85,6 @@ SYSTEM
 	2015-04-23 [X] Port to PyQt5 and python3
 		2015-04-23 [X] : http://pyqt.sourceforge.net/Docs/PyQt5/pyqt4_differences.html
 		2015-04-23 [X] Complete current dev stage and only then port
-	[_] Port IPC to Qt
 	[_] Port all text info to QStaticText + drawStaticText
 	[_] Port layouts to QGraphicsLayout and QGraphicsWidget (for QRectF support)
 		: http://pyqt.sourceforge.net/Docs/PyQt4/qgraphicslayoutitem.html
@@ -102,34 +101,6 @@ SYSTEM
 		: or you can simply unfocuse current before sending keystrokes
 	[_] Maybe, make on close() teleport mouse back to starting position?
 		:= it's convenient for mouse, but has not much sense for Wacom
-	2015-04-27 [X] React to Ctrl-C from console
-	<Flags>
-	[_] -d : start as background daemon  # OR: '-D','--no-daemon'
-	>> http://www.utilities-online.info/articles/Create-a-PyQt-tray-icon-to-send-UDP-Datagram/
-	> http://pymotw.com/2/multiprocessing/communication.html
-	> https://wiki.qt.io/Threads_Events_QObjects
-	: http://www.jejik.com/articles/2007/02/a_simple_unix_linux_daemon_in_python/
-	: https://gist.github.com/Jd007/5573672
-	: http://codereview.stackexchange.com/questions/54348/handling-signals-in-python-inside-a-function
-	: http://stackoverflow.com/questions/2080660/python-multiprocessing-and-a-shared-counter
-	: https://docs.python.org/3.4/library/multiprocessing.html
-	: https://www.safaribooksonline.com/library/view/python-cookbook/0596001673/ch06s09.html
-	: http://eli.thegreenplace.net/2012/01/04/shared-counter-with-pythons-multiprocessing
-		[_] toggle show/hide instead of creating each time
-			| check self.hide() functional -- does it hide from i3wm?
-			[_] -S : show -- "Show menu at current cursor position, or at 'x,y' coords", default='auto'
-			[_] -H : hide -- "Hide and if has argument '1' click last hovered before it.", default='auto'
-		[_] use only one instance (now old autocloses on focus lost when new created)
-			: https://pythonadventures.wordpress.com/2013/01/10/launch-just-one-instance-of-a-qt-application/
-		[_] on leaveEvent activate current action -- close/hide
-			[_] -C : close -- preferably close or hide window
-		[_] tray icon and menu
-		[_] -k : kill -- "Kill demon."
-		Multiprocessing
-			: http://pymotw.com/2/multiprocessing/basics.html#daemon-processes
-		Start on log-in
-			http://stackoverflow.com/questions/6186091/pyqt-best-way-to-do-the-trick-start-at-boot-for-my-program-in-windows
-
 	[_] -f : overlay fullscreen/local
 		[_] local : close window on LeaveEvent for QRegion : slice bbox
 			[_] settings: toggle 'close on LeaveEvent'
@@ -142,6 +113,59 @@ SYSTEM
 	[_] Extract global vars to __builtin__.py and access them as builtins.foo
 	2015-04-26 [X] Place all global variables into gvars.py (not common.py)
 	2015-05-04 [$] Setup custom WM_CLASS :> not possible, qt uses filename with extension.
+
+
+THREADS
+	Signals
+		2015-04-27 [X] React to Ctrl-C from console
+		: http://codereview.stackexchange.com/questions/54348/handling-signals-in-python-inside-a-function
+
+	IPC
+		> http://pymotw.com/2/multiprocessing/communication.html
+		> https://wiki.qt.io/Threads_Events_QObjects
+		2015-05-05 [X] Port IPC to QLocalSocket
+		: http://doc.qt.io/qt-5/examples-ipc.html
+		[_] Server's Listener must only be used as dispatcher
+		[_] Process arguments and configs inside Client thread
+		[_] Send to Server readied cfg dict to use 'read_dict' instantly
+
+	Tray
+		[_] tray icon and menu
+		> http://www.utilities-online.info/articles/Create-a-PyQt-tray-icon-to-send-UDP-Datagram/
+
+	Start on log-in
+		http://stackoverflow.com/questions/6186091/pyqt-best-way-to-do-the-trick-start-at-boot-for-my-program-in-windows
+
+	<Flags>
+	[_] -d : start as background daemon  # OR: '-D','--no-daemon'
+	: https://www.safaribooksonline.com/library/view/python-cookbook/0596001673/ch06s09.html
+		[_] toggle show/hide instead of creating each time
+			| check self.hide() functional -- does it hide from i3wm?
+			[_] -S : show -- "Show menu at current cursor position, or at 'x,y' coords", default='auto'
+			[_] -H : hide -- "Hide and if has argument '1' click last hovered before it.", default='auto'
+		[_] use only one instance (now old autocloses on focus lost when new created)
+			: https://pythonadventures.wordpress.com/2013/01/10/launch-just-one-instance-of-a-qt-application/
+		[_] on leaveEvent activate current action -- close/hide
+			[_] -C : close -- preferably close or hide window
+		[_] -k : kill -- "Kill demon."
+	Multiprocessing
+		: http://pymotw.com/2/multiprocessing/basics.html#daemon-processes
+		: https://docs.python.org/3.4/library/multiprocessing.html
+		: http://eli.thegreenplace.net/2012/01/04/shared-counter-with-pythons-multiprocessing
+		: http://stackoverflow.com/questions/2080660/python-multiprocessing-and-a-shared-counter
+	Daemons
+		: http://www.jejik.com/articles/2007/02/a_simple_unix_linux_daemon_in_python/
+		: https://gist.github.com/Jd007/5573672
+	[_] multithreading
+	: http://stackoverflow.com/questions/2846653/python-multithreading-for-dummies
+	: http://www.tutorialspoint.com/python/python_multithreading.htm
+	: http://stackoverflow.com/questions/6783194/background-thread-with-qthread-in-pyqt
+	: http://effbot.org/zone/thread-synchronization.htm
+	: http://www.python-course.eu/threads.php
+		[_] show active Slice as fast as it loaded, load others in background
+			:= to accelerate air-layouts pre-creation and launch time
+		[_] sendKeys in separate thread, launched simultaneously with app
+			:> But then there will be delay between pressing and sending!
 
 
 IDEAS
@@ -206,17 +230,6 @@ IDEAS
 	[_] Optimize event calls with caching and restructuring
 		: e.g. setGeometry called three times on launch!
 		>> FAQ: https://docs.python.org/2/faq/programming.html#id14
-	[_] multithreading
-	: http://stackoverflow.com/questions/2846653/python-multithreading-for-dummies
-	: http://www.tutorialspoint.com/python/python_multithreading.htm
-	: http://stackoverflow.com/questions/6783194/background-thread-with-qthread-in-pyqt
-	: http://effbot.org/zone/thread-synchronization.htm
-	: http://www.python-course.eu/threads.php
-		[_] to accelerate air-layouts pre-creation and launch time
-		[_] sendKeys in separate thread, launched simultaneously with app
-		[_] instead of global var 'G_CONFIG_DEFAULT' use function def cfgDefaults(): return ((...))
-		[_] show active Slice as fast as it loaded, load others in background
-		: more thread-safe, as it creates own copy of dictionary for each thread
 	[_] Direct key emulation -- use libxtest.so (or what used by xdotool internally?)
 	: https://github.com/pimoroni/skywriter-hat/tree/master/python/examples
 		[_] ALT: use udev LKM and registered device for full control

@@ -4,7 +4,7 @@
 from collections import OrderedDict
 from configparser import ConfigParser as Cfg_Pars
 
-from piony import gvars
+from piony.config import gvars
 from piony.config import cfgdefaults
 
 

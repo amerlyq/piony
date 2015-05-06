@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # vim: fileencoding=utf-8
 
-import piony
-# from piony import gvars
+from piony import __version__
+# from piony.config import gvars
 
 
 def G_ARGUMENTS_DEFAULT_F(ps):
@@ -14,7 +14,7 @@ def G_ARGUMENTS_DEFAULT_F(ps):
               "Can be specified several times -- one for each slice. "
               "Or use pathes to files with slices inside.")
     farg('-v', '--version', action='version', default=None,
-         version="%(prog)s {0}".format(piony.__version__),
+         version="%(prog)s {0}".format(__version__),
          help="Version of program.")
 
     gr_window = ps.add_argument_group('Window')
@@ -35,7 +35,7 @@ def G_ARGUMENTS_DEFAULT_F(ps):
     ## Process
     gr_general = ps.add_argument_group('General')
     garg = gr_general.add_argument
-    garg('-k', '--kill', default=None,
+    garg('-k', '--kill', action='store_true', default=None,
          help="Kill running daemonized program.")
     garg('-V', '--verbose', nargs='?', type=str,
          const='a', choices=['a', 'v', 'k'], default=None,

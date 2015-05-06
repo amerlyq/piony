@@ -1,6 +1,6 @@
 import pytest
 from piony.config.argparser import ArgsParser
-from piony import gvars
+from piony.config import gvars
 
 
 def args_check(cmdline, opts={}):
@@ -80,4 +80,4 @@ class TestArgDefault():
 
     def test_e_verbose(self):
         args_check_exit("-V j")
-        args_check_exit("-V v -k")
+        args_check_exit("-V v -m")

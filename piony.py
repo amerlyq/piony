@@ -1,19 +1,9 @@
 #!/usr/bin/env python3
 # vim: fileencoding=utf-8
 
-from sys import argv, exit
-from signal import signal, SIGINT, SIG_DFL
-from subprocess import check_output
-from multiprocessing.connection import Listener, Client
-
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtCore import QObject, QThread, pyqtSignal, pyqtSlot
-
-import piony
-from piony.config import cfgdefaults
-
 
 def search_dst_window():
+    from subprocess import check_output
     out = check_output(['xdotool', 'getactivewindow'])
     idwnd = out[:-1].decode('ascii')
     return idwnd
@@ -22,6 +12,7 @@ def search_dst_window():
 def set_args_from_command_line(cfg, args):
     # print(vars(args))
     # print(getattr(args,'buds', None))
+    from piony.config import cfgdefaults
     cd = cfgdefaults.G_CONFIG_DEFAULT
 
     ar = {k: v for k, v in vars(args).items() if v}
@@ -41,96 +32,51 @@ def set_args_from_command_line(cfg, args):
     #         print(s, o, cfg[s][o])
 
 
-def sendArguments(path, auth):
-    try:
-        conn = Client(path, 'AF_UNIX', authkey=auth)
-    except ConnectionRefusedError:
-        import os
-        os.remove(path)
-    except FileNotFoundError:
-        pass
-    else:
-        conn.send(argv)
-        exit(0)
-
-
-class Worker(QObject):
-    finished = pyqtSignal()
-    cfgChange = pyqtSignal()
-
-    def __init__(self, path, auth):
-        super().__init__()
-        self.listener = Listener(path, 'AF_UNIX', authkey=auth)
-
-    @pyqtSlot()
-    def listenArguments(self):
-        print("Listener")
-        bListen = True
-        while bListen:
-            print("start")
-            with self.listener.accept() as conn:
-                print("conn")
-                msg = conn.recv()
-                if isinstance(msg, str):
-                    if msg == "-k":
-                        bListen = False
-                        break
-                elif isinstance(msg, list) and len(msg) > 1:
-                    print(msg)
-                    if msg[1] == "-k":
-                        bListen = False
-                    else:
-                        self.cfgChange.emit()
-        self.finished.emit()
-
-
-def onCfgChange():
-    print('cfgChange')
-    # QApplication.instance().quit()
-
-
 def loadConfig():
     ## Read configuration files
     # cdir = os.path.dirname(os.path.abspath(__file__))
-    Arg_Ps = piony.ArgsParser()
-    piony.gvars.G_ACTIVE_WINDOW = search_dst_window()
+    from piony.config import gvars
+    from piony.config.cfgparser import ConfigParser
+    from piony.config.argparser import ArgsParser
+    from piony.config.budparser import BudParser
+    gvars.G_ACTIVE_WINDOW = search_dst_window()
 
-    cfg = piony.ConfigParser().read_file()
+    Arg_Ps = ArgsParser()
+    cfg = ConfigParser().read_file()
     args = Arg_Ps.parse()
     set_args_from_command_line(cfg, args)
     Arg_Ps.apply(args)
 
     entries = args.buds if args.buds else cfg['Bud']['default']
-    bud = piony.BudParser().read_args(entries)
+    bud = BudParser().read_args(entries)
     return cfg, bud
 
 
 if __name__ == '__main__':
     ## Close on 'Ctrl-C' system signal.
-    ## WARNING: No cleanup (can't implement because of Qt).
+    ## WARNING: No cleanup possible (can't implement because of Qt).
+    from signal import signal, SIGINT, SIG_DFL
     signal(SIGINT, SIG_DFL)
 
-    ## Send args to listener if exist or create new one.
-    path = '/tmp/' + piony.__appname__ + '.sock'  # OR: path = ('localhost', 6000)
-    auth = b'piony-ipc'
-    sendArguments(path, auth)
+    ## Send args to listener and close
+    from piony.client import Client
+    client = Client()
+    client.connect()
+    if client.socket.waitForConnected(2000):
+        client.send()
+        client.socket.close()
+    else:
+        ## Create window and listening server
+        import sys
+        from PyQt5.QtWidgets import QApplication
+        from piony.server import Server
+        from piony.window import Window
+        import piony
+        app = QApplication(sys.argv)
+        server = Server()
+        app.aboutToQuit.connect(server.server.close)
 
-    ## Create window and main loop
-    app = QApplication(argv)
-
-    thread = QThread()
-    obj = Worker(path, auth)
-    obj.cfgChange.connect(onCfgChange)
-    obj.moveToThread(thread)
-    obj.finished.connect(thread.quit)
-
-    thread.started.connect(obj.listenArguments)
-    thread.finished.connect(app.exit)
-    thread.start()
-
-    wnd = piony.Window(*loadConfig())
-    wnd.setWindowTitle("{} {}".format(piony.__appname__, piony.__version__))
-    wnd.show()
-
-    ret = app.exec_()
-    exit(ret)
+        wnd = Window(*loadConfig())
+        wnd.setWindowTitle("{} {}".format(piony.__appname__, piony.__version__))
+        wnd.show()
+        sys.exit(app.exec_())

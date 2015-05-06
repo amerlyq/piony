@@ -4,7 +4,7 @@
 from subprocess import call
 from PyQt5.QtWidgets import qApp
 
-from piony import gvars
+from piony.config import gvars
 
 
 if __debug__ and gvars.G_DEBUG_ACTIONS:

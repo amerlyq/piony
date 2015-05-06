@@ -6,7 +6,7 @@ from math import sqrt
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt, QSize, QRect
 
-from piony import gvars
+from piony.config import gvars
 from piony.widget import base
 from piony.action import sendKey
 from piony.layout.pie import PieLayout

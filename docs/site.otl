@@ -3,6 +3,7 @@
 DEVELOP
 	Keep in separate branch from master, and use from script when generating
 	items for site pages.
+	: https://github.com/fanglingsu/vimb/tree/gh-pages
 
 CI
 	Build Status

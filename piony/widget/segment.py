@@ -4,7 +4,7 @@
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import Qt, QPoint, QSize, QRect
 
-from piony import gvars
+from piony.config import gvars
 from piony.widget import base
 
 

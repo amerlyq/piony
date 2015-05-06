@@ -24,9 +24,14 @@ ARGUMENTS
 CONFIG
 	[_] Duplicate all arguments to config.ini
 	[_] Merge all args to cfg before pass to Window
+	2015-05-05 [$] instead of global var 'G_CONFIG_DEFAULT' use function
+		:> def cfgDefaults(): return ((...))
+		: more thread-safe, as it creates own copy of dictionary for each thread
+	[_] Use G_CONFIG_DEFAULT as list of permitted options
+		:> Check sections, then options in DEFAULT and corresponding section
 
 	<Flags>
-	[_] -c <path>: path to config.ini
+	[_] -c <path>: path to config.ini or STDIN
 
 
 PROFILES   :>>> All syntax is yaml-compatible

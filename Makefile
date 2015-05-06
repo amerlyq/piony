@@ -13,7 +13,7 @@ all: test debug
 dbg: idbg
 test: test-exec
 style: style-lint
-prf: profile-dot
+prf: prf-dot
 
 # --- MAIN ---
 debug: ARGS += -V k
@@ -32,17 +32,19 @@ dasm: PYARGS += -m dis
 # python -m timeit -s 'text = "sample string"; char = "g"'  'char in text'
 time: PY3 := time -v $(PY3)
 time: app
+trace: PYARGS := -O -m trace --count -C
+trace: app
 profile: PYARGS += -O -m cProfile $(PRFARGS)
 # [-o output_file] [-s sort_order:{line, calls, pcalls, cumulative, cumtime, time, tottime, name } ]
 
 prf-cli prf-gui prf-dot: PRFARGS += -o $(PRF)
 prf-cli: PRFARGS += -s cumulative
-prf-cli: profile $(PRF)
+prf-cli: profile
 	@$(PY3) -c "import pstats;pstats.Stats('$(PRF)').strip_dirs().sort_stats('cumulative').print_stats()" | vim -R -
 #   https://docs.python.org/3.4/library/profile.html#instant-user-s-manual
-prf-gui: profile $(PRF)
+prf-gui: profile
 	@pyprof2calltree -i $(PRF) -k
-prf-dot: profile $(PRF)
+prf-dot: profile
 	@gprof2dot -f pstats $(PRF) | dot -Tpng -o $(PRF:.prof=.png) && sxiv $(PRF:.prof=.png)
 prf-mem-total:
 	@mprof run -T 0.01 -C --python $(PY3) $(PR) && mprof plot

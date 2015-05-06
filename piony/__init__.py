@@ -9,10 +9,3 @@ __appname__ = "piony"
 __version__ = "0.7.2"
 __licence__ = "GPL 3.0"
 __email__ = "amerlyq@gmail.com"
-
-# Disable warning 'unused import' for next lines {{{ pylintw:disable=E0611
-from piony.config.cfgparser import ConfigParser
-from piony.config.argparser import ArgsParser
-from piony.config.budparser import BudParser
-from piony.window import Window
-# }}}
