@@ -12,6 +12,14 @@ def _hasModCtrl():
     return modifiers == Qt.ControlModifier
 
 
+def _hasModShift(e):
+    return e.modifiers() == Qt.ShiftModifier
+
+
+def _hasModAlt(e):
+    return e.modifiers() == Qt.AltModifier
+
+
 class HGEventMixin:
     def _dragStart(self, e):
         self.ppos = e.pos()
@@ -24,6 +32,16 @@ class HGEventMixin:
         if e.key() in k_ex:
             self.close()
             e.accept()
+
+        if _hasModShift(e):
+            print("shift")
+
+        if _hasModAlt(e) and e.key() == Qt.Key_I:
+            print("alt + I")
+
+        if e.key() == Qt.Key_K:
+            print("KKKKKKKK")
+            print(Qt.Key_K)
 
     def mousePressEvent(self, e):
         if e.button() == Qt.MidButton:

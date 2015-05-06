@@ -15,14 +15,12 @@ def set_args_from_command_line(cfg, args):
     from piony.config import cfgdefaults
     cd = cfgdefaults.G_CONFIG_DEFAULT
 
-    ar = {k: v for k, v in vars(args).items() if v}
+    ar = [(k, v) for k, v in vars(args).items() if v]
 
     for section, opts in cd.items():
-        for name_arg in list(ar):
-            for name_arg_of_section in list(opts):
-                if name_arg == name_arg_of_section:
-                    cfg.set(section, name_arg, str(ar[name_arg]))
-                    break
+        for k, v in ar:
+            if k in opts:
+                cfg.set(section, k, str(v))
 
     # di = {'Window':{'size':88, 'aa':'bb'}}
     # cfg.read_dict(di)
