@@ -4,34 +4,30 @@
 from PyQt5.QtCore import QByteArray, QDataStream, QIODevice
 from PyQt5.QtNetwork import QLocalSocket
 
-from piony.config.gvars import G_SOCKET_NAME
-from piony.config.argparser import ArgsParser
+from piony.config import gvars
 
 
 class Client:
     def __init__(self):
         self.socket = QLocalSocket()
-        self.socket.setServerName(G_SOCKET_NAME)
+        self.socket.setServerName(gvars.G_SOCKET_NAME)
         self.socket.error.connect(self.displayError)
         self.socket.disconnected.connect(self.socket.deleteLater)
-        print("Client: init")
 
     def connect(self):
         self.socket.abort()
-        print("Client: connection attempt")
+        if __debug__ and gvars.G_DEBUG_SERVER:
+            print("Client: connection attempt")
         self.socket.connectToServer()
 
     def send(self):
-        Arg_Ps = ArgsParser()
-        entries = vars(Arg_Ps.parse()).items()
-        args = {k: v for k, v in entries if v}
-
         data = QByteArray()
         out = QDataStream(data, QIODevice.WriteOnly)
         out.setVersion(QDataStream.Qt_5_0)
-        out.writeQVariant(args)
+        out.writeQVariant({'args': '-S'})
 
-        print("Client writes:", data)
+        if __debug__ and gvars.G_DEBUG_SERVER:
+            print("Client writes:", data)
         self.socket.write(data)
         self.socket.flush()
         self.socket.disconnectFromServer()

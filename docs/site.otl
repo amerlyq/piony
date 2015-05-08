@@ -43,6 +43,7 @@ Auto-generating layout previews
 		screen.grabWindow(
 			QtWidgets.QApplication.activeWindow().winId()  # desctop()
 		).save("/tmp/piony.png")
+	[_] Maybe use animations to show transitions from air-modes?
 
 SEE
 	http://stackoverflow.com/questions/14347286/headless-qt4-opengl-application

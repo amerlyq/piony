@@ -21,6 +21,11 @@ def _hasModAlt(e):
 
 
 class HGEventMixin:
+    def __init__(self):
+        self.bM3 = False
+        self.bFirstMove = False
+        self.ppos = QtCore.QPoint()
+
     def _dragStart(self, e):
         self.ppos = e.pos()
         self.bM3 = True

@@ -1,5 +1,12 @@
 >>> EDIT MODE (not expected untill v2.5) >>>
 
+Context menu
+	> How to utilize it?
+	[_] can be used to add new shortcuts "on the fly"
+	[_] need cfg option to enable/disable
+	[_] this menu must be mostly the same as tray icon menu
+	[_] entry to enable Edit-mode
+
 Appearance
 	At ring center: three icons {ring,sector,grid} as radiobutton
 	One of them can be selected by touching or CSA modifier.

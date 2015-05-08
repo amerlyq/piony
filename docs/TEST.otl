@@ -10,8 +10,15 @@ Cfgs
 	[_] Gradual profiles
 		: cfg = [ c for c in char_range('a','m') ]
 
+Wnd
+	[_] Test wnd.show() with cfg=None and buds=None files
 
 > SYSTEM
+
+Profiling
+	[_] Cmd launch time
+		for i in {1..10}; do time ./piony.py; done
+
 
 Tile-WM
 	[_] Overlay on-top of fullscreen window

@@ -2,28 +2,18 @@
 # vim: fileencoding=utf-8
 
 from PyQt5 import QtGui, QtWidgets
-from PyQt5.QtCore import Qt, QPoint
+from PyQt5.QtCore import Qt
 
+import piony
 from piony.widget.bud import BudWidget
 from piony.hgevent import HGEventMixin
 
 
 class Window(QtWidgets.QWidget, HGEventMixin):
-    def __init__(self, cfg, bud):
+    def __init__(self):
         super().__init__()
-        self.cfg = cfg
-
-        self.opts = self.cfg['Window']
-        self.bud = BudWidget(bud, self.cfg, self)
-        self.bM3 = False
-        self.bFirstMove = False
-        self.ppos = QPoint()
         self.setWnd()
-        self.setContent()
-        self.resize(self.sizeHint())
-        self.centerOnCursor()
 
-    ## --------------
     def setWnd(self):
         self.setAttribute(Qt.WA_TranslucentBackground)
         wflags = Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint
@@ -32,13 +22,30 @@ class Window(QtWidgets.QWidget, HGEventMixin):
         self.setWindowFlags(wflags)
         self.installEventFilter(self)
         self.setMouseTracking(True)
+        self.setWindowTitle("{} {}".format(piony.__appname__,
+                                           piony.__version__))
+
+    ## --------------
+    def reload(self, cfg, buds, bReload):
+        if not bReload:
+            self.setVisible(not self.isVisible())
+        else:
+            self.cfg = cfg
+            self.bud = BudWidget(buds, self.cfg, self)
+            self.setContent()
+            self.resize(self.sizeHint())
+            # NOTE: don't forget to delete, or --hide will not work later
+            self.show()
+
+        self.centerOnCursor()
 
     def setContent(self):
-        if not self.cfg['Window'].getboolean('no_tooltip'):
+        if self.cfg['Window'].getboolean('no_tooltip'):
+            self.setToolTip(None)
+        else:
             QtWidgets.QToolTip.setFont(QtGui.QFont('Ubuntu', 12))
             self.setToolTip('Slice No=1 <i>Click at any empty space to close.</i>')
 
-        # Context menu -- can be used to add new shortcuts "on the fly"
         aQuit = QtWidgets.QAction("E&xit", self, shortcut="Ctrl+Q",
                                   triggered=QtWidgets.QApplication.instance().quit)
         self.addAction(aQuit)

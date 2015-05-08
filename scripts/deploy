@@ -25,9 +25,9 @@ cat - << EOT > "$FL"
     Mod4 + q
 
 # Launch piony menu
-"python3 -O $PWD/piony.py"
-    F8
 "$PWD/piony.py"
+    F8
+"python3 -O $PWD/piony.py"
     Mod4 + F7+Release
 EOT
 

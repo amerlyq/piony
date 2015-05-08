@@ -113,6 +113,10 @@ SYSTEM
 	[_] Extract global vars to __builtin__.py and access them as builtins.foo
 	2015-04-26 [X] Place all global variables into gvars.py (not common.py)
 	2015-05-04 [$] Setup custom WM_CLASS :> not possible, qt uses filename with extension.
+	[_] Launch server app (main) as 'python3 -O' and client as 'python3'
+		:= it's all due to prolonging startup time because of pre-compiling
+		Maybe, use two different apps -- server and client?
+		Or directly fork shell for server.py from first client launch?
 
 
 THREADS
@@ -120,14 +124,17 @@ THREADS
 		2015-04-27 [X] React to Ctrl-C from console
 		: http://codereview.stackexchange.com/questions/54348/handling-signals-in-python-inside-a-function
 
-	IPC
-		> http://pymotw.com/2/multiprocessing/communication.html
-		> https://wiki.qt.io/Threads_Events_QObjects
+	Clien-Server IPC
+		: > http://pymotw.com/2/multiprocessing/communication.html
+		: > https://wiki.qt.io/Threads_Events_QObjects
 		2015-05-05 [X] Port IPC to QLocalSocket
 		: http://doc.qt.io/qt-5/examples-ipc.html
-		[_] Server's Listener must only be used as dispatcher
-		[_] Process arguments and configs inside Client thread
+		2015-05-08 [$] Server's Listener must only be used as dispatcher
+			:> Architecture was changed. Now server manages global cfg and buds.
+		2015-05-08 [$] Process arguments and configs inside Client thread
+			:> Too slow imports of all libs, I forced to move parsing on server side
 		[_] Send to Server readied cfg dict to use 'read_dict' instantly
+		[_] Make 'bReload' as tuple to distinguish necessary refreshes.
 
 	Tray
 		[_] tray icon and menu
@@ -224,6 +231,8 @@ IDEAS
 		: https://wiki.python.org/moin/PyQt/Handling%20context%20menus
 		:> use Window.eventFilter and on mouseUp, leaveEvent send reset to all buttons
 		[_] After that leaveEvent is sent not always
+	[_] DEFECT: When fast toggling the window, you can see how it firstly
+			appears at screen center.
 
 
 > OPTIMIZATION
