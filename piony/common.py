@@ -8,6 +8,10 @@ def xstr(s):  # Returns empty string even if None
     return '' if s is None else str(s)
 
 
+def lst_isinstance(lst, ptype):  # ptype -- can be tuple
+    return map(lambda i: isinstance(i, ptype), lst)
+
+
 def similar(x, y, estimate=0.001):  # Floats robust comparison
     if isinstance(x, list) and isinstance(y, list):
         return all([similar(xi, yi, estimate) for xi, yi in zip(x, y)])

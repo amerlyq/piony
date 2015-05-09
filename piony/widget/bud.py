@@ -26,7 +26,7 @@ class BudWidget(QtWidgets.QWidget):
         self.dr = (0.7 * a) // 2
 
         pie = PieLayout(self.cfg, self.r, self.dr, 0)
-        for segment in ring:
+        for segment in ring['segments']:
             btn = SegmentWidget(self.cfg['Button'], segment.name,
                                 lambda a=segment.action: sendKey(a))
             if not self.cfg['Window'].getboolean('no_tooltip'):

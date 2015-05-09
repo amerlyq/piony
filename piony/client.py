@@ -20,11 +20,11 @@ class Client:
             print("Client: connection attempt")
         self.socket.connectToServer()
 
-    def send(self):
+    def send(self, argv):
         data = QByteArray()
         out = QDataStream(data, QIODevice.WriteOnly)
         out.setVersion(QDataStream.Qt_5_0)
-        out.writeQVariant({'args': '-S'})
+        out.writeQVariant(argv)
 
         if __debug__ and gvars.G_DEBUG_SERVER:
             print("Client writes:", data)

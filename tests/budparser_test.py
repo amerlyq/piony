@@ -1,6 +1,6 @@
 import pytest
 
-from piony.config.budparser import BudParser
+from piony.budparser.parser import BudParser
 
 
 # https://pytest.org/latest/fixture.html
@@ -12,5 +12,4 @@ def bps():
 class TestBudParser:
 
     def test_addEntry(self, bps):
-        pass
-        # assert bps.parse_args("")
+        assert bps.parse("") == {"slices": [{"rings": [{"segments": []}]}]}

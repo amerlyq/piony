@@ -47,6 +47,8 @@ PROFILES   :>>> All syntax is yaml-compatible
 	[_] check that '-' used *only_once* through _all_ arguments
 	[_] get 'name' from filename if not specified
 	[_] own exceptions for parsing errors
+	[_] replace inner buds format from dict to named tuples
+		:: So I could use ring['segments] -> ring.segments
 	2015-04-27 [X] Full format for each entry
 	| it can be merged with Qt style file, written in CSS (QSS?)
 		2015-04-24 [X] name
@@ -54,6 +56,8 @@ PROFILES   :>>> All syntax is yaml-compatible
 		2015-04-26 [X] tooltip
 		[_] type
 	[_] Import directives to reuse parts from another files
+	[_] try - except for budparser -- or server will crash on bad client args
+	[_] Symbol? Way to replace choosen slices in current bud
 	: {import: ./cfgs/krita.yml, ring: 2, segment: 3}
 	| [k1,{import: ./cfgs/krita.yml}
 	[_] Confidently determine if string is path or part of yaml

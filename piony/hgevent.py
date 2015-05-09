@@ -96,4 +96,4 @@ class HGEventMixin:
         # decided to handle it myself
 
     def resizeEvent(self, e):
-        self.bud.setGeometry(QtCore.QRect(QtCore.QPoint(0, 0), e.size()))
+        self.budwdg.setGeometry(QtCore.QRect(QtCore.QPoint(0, 0), e.size()))

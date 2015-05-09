@@ -28,6 +28,7 @@ DEVELOPMENT
 
 		[_] objgraph
 			http://www.huyng.com/posts/python-performance-analysis/
+		[_] https://eastvisionsystems.com/profiling-tools-in-python-non-deterministic-and-memory-analysis/
 
 	2015-05-03 [X] Debugging
 		http://habrahabr.ru/company/mailru/blog/205426/

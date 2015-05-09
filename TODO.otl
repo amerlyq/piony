@@ -117,6 +117,9 @@ SYSTEM
 		:= it's all due to prolonging startup time because of pre-compiling
 		Maybe, use two different apps -- server and client?
 		Or directly fork shell for server.py from first client launch?
+		: http://stackoverflow.com/questions/5735628/how-to-fix-shebang-flags-that-are-not-recognized-on-some-systems
+	[_] search_dst_window must be launched only on 'show', or exlude self from
+			window list. Better -- use prev-to-piony or next-to-piony active window.
 
 
 THREADS
@@ -135,6 +138,9 @@ THREADS
 			:> Too slow imports of all libs, I forced to move parsing on server side
 		[_] Send to Server readied cfg dict to use 'read_dict' instantly
 		[_] Make 'bReload' as tuple to distinguish necessary refreshes.
+		[_] -N : new clean setup -- reset state objects and load only new sets
+		[_] Connect when exit server to close window and qapp
+			:= It's all to simplify exit in case of bad connection
 
 	Tray
 		[_] tray icon and menu
@@ -231,14 +237,19 @@ IDEAS
 		: https://wiki.python.org/moin/PyQt/Handling%20context%20menus
 		:> use Window.eventFilter and on mouseUp, leaveEvent send reset to all buttons
 		[_] After that leaveEvent is sent not always
-	[_] DEFECT: When fast toggling the window, you can see how it firstly
-			appears at screen center.
+	2015-05-09 [~] DEFECT: When fast toggling the window, you can see how it firstly
+			appears at screen center.  :> Fixed, but needs more testing in wm.
+	2015-05-09 [X] BUG: On launch one of buttons can occasionally became highlighted
+		:> it's composition of double-show window defect and the result of
+		: centering window when enabled trackingMouse
 
 
 > OPTIMIZATION
 	[_] Optimize event calls with caching and restructuring
 		: e.g. setGeometry called three times on launch!
 		>> FAQ: https://docs.python.org/2/faq/programming.html#id14
+	[_] Pre-compile top-level script and launch *.pyc files to reduce startup time
+		python -m compileall myscript.py
 	[_] Direct key emulation -- use libxtest.so (or what used by xdotool internally?)
 	: https://github.com/pimoroni/skywriter-hat/tree/master/python/examples
 		[_] ALT: use udev LKM and registered device for full control

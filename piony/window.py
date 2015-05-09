@@ -12,6 +12,8 @@ from piony.hgevent import HGEventMixin
 class Window(QtWidgets.QWidget, HGEventMixin):
     def __init__(self):
         super().__init__()
+        self.cfg = None
+        self.budwdg = None
         self.setWnd()
 
     def setWnd(self):
@@ -26,18 +28,16 @@ class Window(QtWidgets.QWidget, HGEventMixin):
                                            piony.__version__))
 
     ## --------------
-    def reload(self, cfg, buds, bReload):
-        if not bReload:
+    def reload(self, cfg, bud, bReload):
+        if self.cfg and self.bud and not bReload:
             self.setVisible(not self.isVisible())
         else:
             self.cfg = cfg
-            self.bud = BudWidget(buds, self.cfg, self)
+            self.budwdg = BudWidget(bud, self.cfg, self)
             self.setContent()
             self.resize(self.sizeHint())
             # NOTE: don't forget to delete, or --hide will not work later
             self.show()
-
-        self.centerOnCursor()
 
     def setContent(self):
         if self.cfg['Window'].getboolean('no_tooltip'):
@@ -53,13 +53,16 @@ class Window(QtWidgets.QWidget, HGEventMixin):
 
     ## --------------
     def sizeHint(self):
-        return self.bud.sizeHint()
+        return self.budwdg.sizeHint()
 
     def minimumSize(self):
-        return self.bud.minimalSize()
+        return self.budwdg.minimalSize()
+
+    def showEvent(self, e):
+        self.centerOnCursor()
 
     def centerOnCursor(self):
-        fg = self.frameGeometry()
+        fg = self.geometry()
         cp = QtGui.QCursor.pos()
         # cp = QtGui.QApplication.desktop().cursor().pos()
         # screen = QtGui.QApplication.desktop().screenNumber(cp)

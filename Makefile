@@ -32,6 +32,8 @@ dasm: PYARGS += -m dis
 # python -m timeit -s 'text = "sample string"; char = "g"'  'char in text'
 time: PY3 := time -v $(PY3)
 time: app
+time-client:
+	time bash -c "for i in {1..10}; do time $(PR); echo; done"
 trace: PYARGS := -O -m trace --count -C
 trace: app
 profile: PYARGS += -O -m cProfile $(PRFARGS)

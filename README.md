@@ -26,10 +26,20 @@ Radial menu will appear. You can press on any sector to generate action.
 Depends
 -------
  * [Python3](https://www.python.org/) -- main language
+ * [Qt5](https://www.qt.io/) -- main framework
+ * [yaml](http://yaml.org/) -- interface configs format
  * [xdotool](http://www.semicomplete.com/projects/xdotool) -- keys emulation
  * [xbindkeys](http://www.nongnu.org/xbindkeys/xbindkeys.html) -- binds Wacom to menu
 
 Script ```deploy``` will notify you about all missing dependencies.
+
+
+# Note #
+Firstly, I thought about using C++11 to create something fast and efficient.
+But chance to find any of C++ developers amongst artists and designers is much-much lower
+then several ones with python knowledge to contribute their better ideas.
+Of course this decision greatly affected the program architecture overall.
+
 
 Install
 -------
