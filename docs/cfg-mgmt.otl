@@ -5,7 +5,7 @@ DEVELOPMENT
 	https://docs.python.org/3.4/library/development.html
 
 	[_] Isolated environment -- several reprodusable testing environments
-		: http://habrahabr.ru/post/248189/
+		> http://habrahabr.ru/post/248189/
 		: http://www.fig.sh/
 		: https://testrun.org/tox/latest/
 		Tox
@@ -94,10 +94,14 @@ QA
 		https://seanmckaybeck.com/2014/08/20/pep8-git-hooks/
 
 TESTING
-	Code coverage and permanent @profile
-		https://mg.pov.lt/profilehooks/
-		See how to create custom decorators
+	[_] Test Coverage
+	: https://pypi.python.org/pypi/pytest-cov
+		[_] Code coverage permanent @profile
+			https://mg.pov.lt/profilehooks/
+		[_] See how to create custom decorators
 			https://zapier.com/engineering/profiling-python-boss/
+	[_] Test only changed code (and full tests only before git push)
+		https://pypi.python.org/pypi/pytest-cagoule
 	[_] Regression tests
 		http://asvetlov.blogspot.com/2011/02/regression-tests.html
 	DocTest
@@ -129,6 +133,13 @@ TESTING
 
 	Stubs and Mocks
 		http://www.mypy-lang.org/wiki/CreatingStubsForPythonModules
+
+
+ONLINE
+	[_] https://travis-ci.org
+		https://github.com/harvimt/quamash/blob/master/.travis.yml
+	[_] https://coveralls.io
+
 
 CROSSPLATFORM
 	http://pythonthusiast.pythonblogs.com/230_pythonthusiast/archive/1354_developing_cross_platform_application_using_qt_pyqt_and_pyside__test_driven_development_and_unit_testing-part_3_of_7.html

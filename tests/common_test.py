@@ -1,5 +1,26 @@
+from piony.common import any_in, all_in, all_are
 from piony.common import degreeNorm, arcContains, iround, lrotate
 from piony.common import ra2xy, xy2ra, similar
+
+
+class TestF_all_are:
+    def test_equ(self):
+        assert all_are([1, 2, 3], int)
+        assert all_are([(1, 2), [2], (3, 4)], (list, tuple))
+
+    def test_non(self):
+        assert not all_are([1, "2", "3"], str)
+        assert not all_are([1, [2], "3"], (list, tuple))
+
+
+class TestF_all_in:
+    def test_equ(self):
+        assert all_in([1, 2], [1, 2, 3])
+        assert any_in([1, 2, 3], [1, 2])
+
+    def test_non(self):
+        assert not all_in([1, 2, 3], [1, 2])
+        assert not any_in([4, 5], [1, 2, 3])
 
 
 class TestF_degreeNorm:

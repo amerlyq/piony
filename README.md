@@ -1,6 +1,8 @@
 piony
 ======
 
+[![Build Status](https://travis-ci.org/amerlyq/piony.svg)](https://travis-ci.org/amerlyq/piony)
+
 Radial menu for Wacom / mouse
 ---------------------
 Layered radial menu with multiple levels, designed with Wacom stylus in mind.

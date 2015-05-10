@@ -1,6 +1,6 @@
 import piony.budparser.exceptions as bux
 
-from piony.common import lst_isinstance
+from piony.common import all_are
 from piony.budparser.ring import RingMaker
 
 
@@ -8,19 +8,24 @@ class SliceMaker:
     """ [[..]..]/{rings:[..],...} -> {rings:_} """
 
     NM = 'Slice'
+    KEYS = ('rings', 'corners')
     ringMaker = RingMaker()
 
     def fromList(self, layer):
-        if not all(lst_isinstance(layer, (list, dict))):
+        if not all_are(layer, (list, dict)):
             raise bux.BudSyntaxError(
-                'Unsupported mixed {}'.format(SliceMaker.NM))
+                'Unsupported mixed {}'.format(SliceMaker.NM),
+                SliceMaker.KEYS)
         return layer
 
     def fromDict(self, layer):
-        if 'rings' not in layer:
-            raise bux.BudSyntaxError(
-                'Invalid {} format'.format(SliceMaker.NM))
-        elif len(layer) > 1:
+        if not any(k in layer for k in SliceMaker.KEYS):
+            if any(k in layer for k in self.ringMaker.KEYS):
+                return [layer]
+            else:
+                raise bux.BudSyntaxError(
+                    'Invalid {} format'.format(SliceMaker.NM))
+        elif not all(k in SliceMaker.KEYS for k in list(layer)):
             raise bux.BudSyntaxError(
                 '{} contains odd keywords'.format(SliceMaker.NM))
         layer = layer['rings']

@@ -4,12 +4,7 @@ class PionyError(Exception):
 
 
 class BudError(PionyError):
-    def __init__(self, value):
-        self.value = value
-
-    def __str__(self):
-        return repr(" ".join((self.value + '. ') if self.value else '',
-                             'Expected keys: segments, rings, slices'))
+    pass
 
 
 class BudArgumentError(BudError):
@@ -17,7 +12,13 @@ class BudArgumentError(BudError):
 
 
 class BudSyntaxError(BudError):
-    pass
+    def __init__(self, value, keys=""):
+        self.value = value
+        self.keys = keys
+
+    def __str__(self):
+        return repr("{}. Expected keys: {}.".format(
+            (self.value + '. ') if self.value else '', str(self.keys)))
 
 
 class InputError(PionyError):

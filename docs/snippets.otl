@@ -75,7 +75,7 @@ New widget:
 	recalculation.
 
 hide -- will it be useful?
-	To remove a widget from a layout, call removeWidget(). Calling
+	To remove a widget from a layout, call removeWidget(). Call_ing
 	QWidget::hide() on a widget also effectively removes the widget
 	from the layout until QWidget::show() is called.
 

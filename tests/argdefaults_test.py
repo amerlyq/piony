@@ -15,7 +15,7 @@ def args_check_exit(cmdline):
 
 class TestArgDefault():
     def test_default(self):
-        assert args_check("", {
+        assert args_check(" ", {  # Empty cmdline must have space to use
             'config': gvars.G_CONFIG_PATH,
             'print': False,
             # 'size': 360,

@@ -228,7 +228,7 @@ IDEAS
 	2015-05-03 [X] BUG: clipped border on left and top sides of pie. Wrong centering?
 		:> wrong QRect.center() : for 300x300 shows center at 149x149
 	2015-05-03 [$] BUG: window size can't be smaller then 100x80 :> look at ~/.i3/config
-	2015-05-03 [X] CRITICAL: pie.setGeometry has circular infinite calling
+	2015-05-03 [X] CRITICAL: pie.setGeometry has circular infinite call_ing
 		:	 base.adjustFontSize(self, self.text(), self.gText.size())
 		:> self -> p  -- always use 'p' in paintEvent and 'self' in setGeometry
 	2015-05-04 [$] BUG: Ctrl-C works only after Qt window focused again :> only SIG_DFL works

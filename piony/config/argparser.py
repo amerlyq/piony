@@ -12,7 +12,7 @@ class ArgsParser:
     def __init__(self):
         self.args = None
 
-    def parse(self, line=None):
+    def parse(self, cmdline=None):
         ps = ArgumentParser(prog=__appname__,
                             formatter_class=RawDescriptionHelpFormatter,
                             description=__doc__,
@@ -20,10 +20,8 @@ class ArgsParser:
 
         argdefaults.G_ARGUMENTS_DEFAULT_F(ps)
 
-        # self.args = ps.parse_args()
-        # if line and isinstance(line, basestring):
-        if line and isinstance(line, str):
-            self.args = ps.parse_args(line.split())
+        if cmdline and isinstance(cmdline, str):
+            self.args = ps.parse_args(cmdline.split())
         else:
             self.args = ps.parse_args()
 
