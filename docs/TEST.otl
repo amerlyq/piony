@@ -15,6 +15,11 @@ Wnd
 
 > SYSTEM
 
+Portability
+	[_] Check against another python versions, with same pyqt5
+		[_] 2.7
+		[_] 3.2
+
 Profiling
 	[_] Cmd launch time
 		for i in {1..10}; do time ./piony.py; done

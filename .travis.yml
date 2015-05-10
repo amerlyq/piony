@@ -17,8 +17,8 @@ sudo: false
 
 install:
 # - pip install .  # If you have 'setup.py' to install as package
-  - pip install PyYAML pytest pytest-qt pylint pep8
-  - pip install python-qt5
+  - pip3 install PyYAML pytest pytest-qt pylint pep8
+  - pip3 install python-qt5
 
 script:
   - make test
