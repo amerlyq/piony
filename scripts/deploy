@@ -13,8 +13,8 @@ fi
 die() { echo "Install '$1' by [sudo apt-get install $1] (on Ubuntu/Debian/LinuxMint)"; exit 1; }
 
 ## Check availability of programms
-for pr in xdotool xbindkeys pgrep; do
-    which $pr > /dev/null || die $pr
+for pr in xdotool xbindkeys pgrep python3; do
+    hash $pr > /dev/null || die $pr
 done
 
 ## Setup controls

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Use it regularly to update pip packages!
+
+# python-pip pyqt5-dev
+
+sudo apt-get update -qq
+sudo apt-get install python3-dev python3-pip python3-pyqt5 #python3-yaml
+
+### DEVELOP ###
+sudo pip3 install -U PyYAML
+sudo pip3 install -U pytest pytest-cov pytest-qt
+sudo pip3 install -U pylint pep8
+sudo pip3 install -U readline pyreadline ipython ipdb pudb
+sudo pip3 install -U git+git://github.com/mverteuil/pytest-ipdb.git
+# readline # for adequate navigation in IPython cmdline
+# ipdb     # pretty debugger for IPython
+
+# python3-sip
+#   SIP is a tool for quickly writing Python modules that interface with C++ and C libraries
+#       http://riverbankcomputing.co.uk/software/sip/intro

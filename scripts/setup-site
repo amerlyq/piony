@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# Usage: cd ./piony && travis-yaml
+sudo apt-get install gem
+sudo gem install travis-yaml

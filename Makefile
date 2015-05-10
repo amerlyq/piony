@@ -66,14 +66,14 @@ debug debug-all app udbg idbg vdbg dasm profile prf-mem:
 
 
 ### TEST ###
-# {-s -- turns off capture output, !dbgrs may need!}
-test-dbg: MODARGS += --capture=no
-test-lst: MODARGS += --collect-only
+test-dbg: MODARGS += --ipdb --capture=no
+test-lst: MODARGS += --collect-only --cov $(NM) --cov-report term-missing
 
 test-dbg test-lst: test-exec
 test-exec: export PYTHONPATH += .
+test-exec: export PYTEST_QT_API=pyqt5
 test-exec:
-	@py.test $(MODARGS)  # python3 -m pytest my_file_test.py
+	@py.test $(MODARGS) -- $(shell pwd)  # python3 -m pytest my_file_test.py
 
 
 ### STYLE ###
