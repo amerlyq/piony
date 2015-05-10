@@ -138,8 +138,9 @@ TESTING
 
 ONLINE
 	[_] https://travis-ci.org
-		https://github.com/harvimt/quamash/blob/master/.travis.yml
-		https://github.com/spyder-ide/qtawesome/blob/master/.travis.yml
+		: https://github.com/harvimt/quamash/blob/master/.travis.yml
+		: https://github.com/spyder-ide/qtawesome/blob/master/.travis.yml
+		: https://github.com/pytest-dev/pytest-qt/blob/master/.travis.yml
 	[_] https://coveralls.io
 	[_] https://gitter.im/
 

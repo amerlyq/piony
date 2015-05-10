@@ -7,14 +7,18 @@ python:
   - "3.4"
   # - "nightly"
 
+virtualenv:
+  system_site_packages: true
+
 before_install:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
   # Qt5
   - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
-  - sudo apt-get update
-  - sudo apt-get install -y qtbase5-dev qtdeclarative5-dev
-  - sudo apt-get install -y qt5-default qttools5-dev-tools
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq python3-pyqt5
+    # if sys.version_info[0] == 3: sudo apt-get install -qq python3-pyqt5
+    # else: sudo apt-get install -qq python-qt5
+  # - sudo apt-get install -y qtbase5-dev qtdeclarative5-dev
+  # - sudo apt-get install -y qt5-default qttools5-dev-tools
 
 # Cached Downloads
   - sudo mkdir -p /downloads
@@ -30,31 +34,36 @@ before_install:
 
 
 install:
-  # Builds
-  - pushd /builds
-
-  # SIP
-  - tar xzf /downloads/sip.tar.gz --keep-newer-files
-  - pushd sip-4.16.5
-  - python configure.py
-  - make
-  - sudo make install
-  - popd
-
-  # PyQt5
-  - tar xzf /downloads/pyqt5.tar.gz --keep-newer-files
-  - pushd PyQt-gpl-5.4
-  - python configure.py -c --confirm-license --no-designer-plugin -e QtCore -e QtGui -e QtWidgets -e QtNetwork
-  - make
-  - sudo make install
-  - popd
-  # Builds Complete
-  - popd
+  # # Builds
+  # - pushd /builds
+  #
+  # # SIP
+  # - tar xzf /downloads/sip.tar.gz --keep-newer-files
+  # - pushd sip-4.16.5
+  # - python configure.py
+  # - make
+  # - sudo make install
+  # - popd
+  #
+  # # PyQt5
+  # - tar xzf /downloads/pyqt5.tar.gz --keep-newer-files
+  # - pushd PyQt-gpl-5.4
+  # - python configure.py -c --confirm-license --no-designer-plugin -e QtCore -e QtGui -e QtWidgets -e QtNetwork
+  # - make
+  # - sudo make install
+  # - popd
+  # # Builds Complete
+  # - popd
 
   # Dependencies
 # - pip install .  # If you have 'setup.py' to install as package
   - pip3 install PyYAML
   - pip3 install pytest pytest-qt pylint pep8
+
+before_script:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - sleep 3
 
 script:
   - make test
