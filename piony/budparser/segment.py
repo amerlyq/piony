@@ -13,8 +13,6 @@ class SegmentMaker:
     # OR: NM = type(SEG).__name__; KEYS = SEG._fields
 
     def tooltip(self, action):
-        if __debug__:
-            return action
         return '<b>' + str(action) + '</b>' if action else None
 
     def fromList(self, seg):

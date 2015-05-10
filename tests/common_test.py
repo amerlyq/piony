@@ -6,7 +6,7 @@ from piony.common import ra2xy, xy2ra, similar
 class TestF_all_are:
     def test_equ(self):
         assert all_are([1, 2, 3], int)
-        assert all_are([(1, 2), [2], (3, 4)], (list, tuple))
+        assert all_are([(1,), [2], (3, 4)], (list, tuple))
 
     def test_non(self):
         assert not all_are([1, "2", "3"], str)

@@ -67,9 +67,10 @@ debug debug-all app udbg idbg vdbg dasm profile prf-mem:
 
 ### TEST ###
 test-dbg: MODARGS += --ipdb --capture=no
-test-lst: MODARGS += --collect-only --cov $(NM) --cov-report term-missing
+test-cov: MODARGS += --cov $(NM) --cov-report term-missing
+test-lst: MODARGS += --collect-only
 
-test-dbg test-lst: test-exec
+test-dbg test-cov test-lst: test-exec
 test-exec: export PYTHONPATH += .
 test-exec: export PYTEST_QT_API=pyqt5
 test-exec:

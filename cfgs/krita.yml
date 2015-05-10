@@ -1,4 +1,4 @@
-[
+segments: [
     {name: VA, action: ctrl+a, tooltip: "Select all"},
     b,f,
     {action: c, type: key},

@@ -98,8 +98,8 @@ class Server(QObject):
         Bud_Ps = BudParser()
         try:
             self.bud = Bud_Ps.parse(entries)
-        except bux.BudError:
-            print(bux.BudSyntaxError)
+        except bux.BudError as e:
+            print("Error:", e)
 
         if __debug__:
             pprint.pprint(self.bud, width=41, compact=True)

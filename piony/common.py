@@ -4,8 +4,8 @@
 from math import degrees, acos, cos, sin, radians, sqrt, fmod
 
 
-def xstr(s):  # Returns empty string even if None
-    return '' if s is None else str(s)
+# def xstr(s):  # Returns empty string even if None
+#     return '' if s is None else str(s)
 
 
 def any_are(lst, ptype):  # ptype -- can be tuple
@@ -42,9 +42,9 @@ def lrotate(lst, n):  # Rotate list left:  [1,2,3,4] -> [2,3,4,1]
     return lst[n:] + lst[:n]
 
 
-def char_range(c1, c2):
-    for c in range(ord(c1), ord(c2)+1):
-        yield chr(c)
+# def char_range(c1, c2):
+#     for c in range(ord(c1), ord(c2)+1):
+#         yield chr(c)
 
 
 ## ----------

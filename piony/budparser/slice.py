@@ -1,6 +1,6 @@
 import piony.budparser.exceptions as bux
 
-from piony.common import all_are
+from piony.common import all_are, any_in, all_in
 from piony.budparser.ring import RingMaker
 
 
@@ -19,20 +19,21 @@ class SliceMaker:
         return layer
 
     def fromDict(self, layer):
-        if not any(k in layer for k in SliceMaker.KEYS):
-            if any(k in layer for k in self.ringMaker.KEYS):
+        if not any_in(SliceMaker.KEYS, layer):
+            if any_in(layer, self.ringMaker.KEYS):
                 return [layer]
             else:
                 raise bux.BudSyntaxError(
                     'Invalid {} format'.format(SliceMaker.NM))
-        elif not all(k in SliceMaker.KEYS for k in list(layer)):
+        elif not all_in(layer, SliceMaker.KEYS):
             raise bux.BudSyntaxError(
                 '{} contains odd keywords'.format(SliceMaker.NM))
-        layer = layer['rings']
+        else:
+            return layer['rings']
 
     def make(self, layer):
         if not layer:
-            layer = []
+            layer = [[]]
         elif isinstance(layer, list):
             layer = self.fromList(layer)
         elif isinstance(layer, dict):

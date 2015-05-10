@@ -14,7 +14,8 @@ class RingMaker:
     def fromList(self, ring):
         if not all_are(ring, (str, dict)):
             raise bux.BudSyntaxError(
-                'Unsupported mixed {}'.format(RingMaker.NM))
+                'Unsupported mixed {}'.format(RingMaker.NM),
+                RingMaker.KEYS)
         return ring
 
     def fromDict(self, ring):
@@ -24,7 +25,7 @@ class RingMaker:
             else:
                 raise bux.BudSyntaxError(
                     'Invalid {} format'.format(RingMaker.NM))
-        elif not all(k in RingMaker.KEYS for k in list(ring)):
+        elif not all_in(ring, RingMaker.KEYS):
             raise bux.BudSyntaxError(
                 '{} contains odd keywords'.format(RingMaker.NM))
         else:

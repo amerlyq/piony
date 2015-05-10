@@ -137,7 +137,8 @@ TESTING
 
 
 ONLINE
-	[_] https://travis-ci.org
+	> [_] https://travis-ci.org
+	| Will not work until them upgrade to 14.04. I couldn't setup env under 12.04.
 		: https://github.com/harvimt/quamash/blob/master/.travis.yml
 		: https://github.com/spyder-ide/qtawesome/blob/master/.travis.yml
 		: https://github.com/pytest-dev/pytest-qt/blob/master/.travis.yml
