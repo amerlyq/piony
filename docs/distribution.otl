@@ -8,6 +8,8 @@ Store setting files in appropriate directories
 	http://stackoverflow.com/questions/1024114/location-of-ini-config-files-in-linux-unix
 
 Python
+	[_] pip
+		Maybe create package for pip, like py.test?
 	[_] setup.py
 		http://www.vascop.com/simple-guide-to-packaging-python-applications.html
 		or use similar to ranger's setup.py
