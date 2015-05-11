@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-sudo apt-get install xvfb imagemagick
+sudo apt-get install xvfb imagemagick compton feh
 sudo apt-get install gem
 
 
