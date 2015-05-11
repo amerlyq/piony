@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
-# Usage: cd ./piony && travis-yaml
+sudo apt-get install xvfb imagemagick
 sudo apt-get install gem
+
+
+# Usage: ??? cd ./piony && travis-yaml
 sudo gem install travis-yaml

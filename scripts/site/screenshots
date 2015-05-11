@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+# (c) Dmytro Kolomoiets, amerlyq@gmail.com : (https://github.com/amerlyq)
+## TODO: Use custom config.ini (size, etc) to make screenshots!
+
+
+## Working directory
+SDIR="$(readlink -m ${0%/*})"
+PROJ="${SDIR%/*/*}"
+cd "$PROJ"
+
+## Program variables
+NM=piony
+FL="${NM}.py"
+PR="$PROJ/$FL"
+DIR="/tmp/$NM"
+# TIMESTAMP=$(date +%s)
+mkdir -p "$DIR"
+
+## Helper functions
+wsize(){ xwininfo -id $wid | awk '
+    /Abso.*X:/{X=$NF} /Abso.*Y:/{Y=$NF}
+    /Width:/{W=$NF} /Height:/{H=$NF}
+    END{printf("%dx%d%+d%+d!",W,H,X,Y)}'; }
+save(){ convert -crop $(wsize) /var/tmp/Xvfb_screen0 "$DIR/${1}.png"; }
+
+########################################
+
+## Launch virtual X server
+XVFB=/usr/bin/X11/Xvfb
+XARGS=":99 -screen 0 640x480x24 -fbdir /var/tmp"  # -nolisten tcp
+# PREVIEW: $ xwud -in /var/tmp/Xvfb_screen0
+$XVFB $XARGS >"$DIR/xvfb.log" 2>&1 &
+kill -0 $! 2>/dev/null || exit $?  # check if xvfb started
+prevdisp="$DISPLAY"
+export DISPLAY=:99
+
+
+## Setup environment for screenshots
+compton --config "$SDIR/compton.conf" &
+cm="$!"
+sleep 1
+# hsetroot -solid '#ffffff'
+feh --bg-fill ~/.wallpaper
+
+
+## Launch program
+nohup "$PR" >"$DIR/${NM}.log" 2>&1 &
+sleep 1
+wid=$(xdotool search --class "$FL")
+
+
+## Make series of screenshots
+func() {
+    local args vals
+    args="$1"; shift; vals=($@)
+    for v in "${vals[@]}"; do
+        echo ">>> $PR $args ${v}"
+        "$PR" $args ${v}
+        sleep 0.1
+        save "${args##*-}-${v}.png"
+    done
+}
+
+func --size 120 240 360
+func -- '[[a]]' '[[a,b]]' '[[a,b,c]]'
+
+
+## Exit program
+"$PR" -k
+kill "$cm"
+# Restore X server
+export DISPLAY="$prevdisp"
+killall Xvfb
