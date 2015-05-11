@@ -1,6 +1,4 @@
-class PionyError(Exception):
-    """Base class for bud parsing exceptions."""
-    pass
+from piony.exceptions import PionyError
 
 
 class BudError(PionyError):
@@ -19,16 +17,3 @@ class BudSyntaxError(BudError):
     def __str__(self):
         return repr("{}. Expected keys: {}.".format(
             (self.value + '. ') if self.value else '', str(self.keys)))
-
-
-class InputError(PionyError):
-    def __init__(self, expression, message):
-        self.expression = expression
-        self.message = message
-
-
-class TransitionError(PionyError):
-    def __init__(self, previous, next, message):
-        self.previous = previous
-        self.next = next
-        self.message = message

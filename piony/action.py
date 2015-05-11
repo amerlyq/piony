@@ -19,8 +19,10 @@ if __debug__ and gvars.G_DEBUG_ACTIONS:
 else:
 
     def sendKey(key):
-        call(['xdotool', 'key', '--window', gvars.G_ACTIVE_WINDOW,
-              '--clearmodifiers', key], shell=False)
+        cmd = ['xdotool', 'key']
+        if gvars.G_ACTIVE_WINDOW:
+            cmd.extend(['--window', gvars.G_ACTIVE_WINDOW])
+        call(cmd + ['--clearmodifiers', key], shell=False)
 
     def sysClose():
         qApp.quit()

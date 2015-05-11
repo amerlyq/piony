@@ -10,7 +10,7 @@ if __name__ == '__main__':
     client = Client()
     client.connect()
     if client.socket.waitForConnected(2000):
-        client.send(sys.argv)
+        client.send(sys.argv[1:])
         client.socket.close()
 
     else:
@@ -32,5 +32,5 @@ if __name__ == '__main__':
         wnd = Window()
         server.dataReceived.connect(wnd.reload)
 
-        server.loadData(sys.argv)
+        server.loadData(sys.argv[1:])
         sys.exit(app.exec_())

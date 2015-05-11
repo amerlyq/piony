@@ -14,14 +14,20 @@ class Window(QtWidgets.QWidget, HGEventMixin):
         super().__init__()
         self.cfg = None
         self.budwdg = None
+        self.lytstack = QtWidgets.QStackedLayout()
+        self.setLayout(self.lytstack)
         self.setWnd()
 
     def setWnd(self):
+        # if(QX11Info.isCompositingManagerRunning()):
         self.setAttribute(Qt.WA_TranslucentBackground)
         wflags = Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint
         # if not __debug__:
         #     wflags |= Qt.X11BypassWindowManagerHint
-        self.setWindowFlags(wflags)
+        self.setWindowFlags(self.windowFlags() | wflags)
+        # self.setStyleSheet("background:transparent;")
+        # self.setWindowOpacity(0.7)
+
         self.installEventFilter(self)
         self.setMouseTracking(True)
         self.setWindowTitle("{} {}".format(piony.__appname__,
@@ -29,13 +35,24 @@ class Window(QtWidgets.QWidget, HGEventMixin):
 
     ## --------------
     def reload(self, cfg, bud, bReload):
-        if self.cfg and self.bud and not bReload:
+        if cfg:
+            self.cfg = cfg
+        if bud or bReload['Window']:
+            self.setContent()
+
+            if self.budwdg:
+                self.layout().removeWidget(self.budwdg)
+                self.budwdg.close()
+            self.budwdg = BudWidget(bud, self.cfg)
+            self.lytstack.addWidget(self.budwdg)
+            # QObjectCleanupHandler().add(self.layout())
+            # setCurrentWidget to display the one you want.
+
+            self.resize(self.sizeHint())
+            self.centerOnCursor()
+        if bReload['toggle']:
             self.setVisible(not self.isVisible())
         else:
-            self.cfg = cfg
-            self.budwdg = BudWidget(bud, self.cfg, self)
-            self.setContent()
-            self.resize(self.sizeHint())
             # NOTE: don't forget to delete, or --hide will not work later
             self.show()
 

@@ -16,6 +16,7 @@ Bud
 		2015-04-11 [X] Slices placed at current cursor position
 
 Slice
+	[_] Use QStackLayout -- give it a try to keep all slices loaded simultaneously
 	[_] style (common) -- applied to all unstyled segments in slice
 	2015-05-03 [X] font size must be derived from central space size, and central aligned
 	[_] Mask must be bounding box contour from max ring and enabled corner buttons
@@ -34,6 +35,8 @@ Slice
 
 Ring
 	[_] Mask for each ring must be circle with hole!
+	[_] Specify central space size in percents?
+	[_] Specify ring size in percents or weights?
 	doLayout
 		[_] weight -> derive width of each ring on window resize
 			: or set directly width to receive fixed immutable ring

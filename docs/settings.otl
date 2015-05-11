@@ -20,6 +20,14 @@ ARGUMENTS
 		Uniqueness
 			http://stackoverflow.com/questions/23032514/argparse-disable-same-argument-occurences
 
+	[_] Groups of options
+		[_] Control -- don't duplicate in config.ini, actions only
+			| show/hide/kill/...
+		[_] Setting -- duplicated in config.ini
+			| size/show-tooltip/...
+		[_] Debug -- duplicated in config.ini
+			| verbose/...
+
 
 CONFIG
 	[_] Duplicate all arguments to config.ini

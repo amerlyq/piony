@@ -5,14 +5,21 @@ from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 from piony import __appname__, __doc__
 from piony.config import gvars
+from piony.exceptions import PionyError
 from piony.config import argdefaults
 
 
-class ArgsParser:
-    def __init__(self):
-        self.args = None
+class ArgsError(PionyError):
+    pass
 
-    def parse(self, cmdline=None):
+
+class ArgsInputError(ArgsError):
+    pass
+
+
+class ArgsParser:
+
+    def parse(self, cmdline):
         ps = ArgumentParser(prog=__appname__,
                             formatter_class=RawDescriptionHelpFormatter,
                             description=__doc__,
@@ -20,17 +27,17 @@ class ArgsParser:
 
         argdefaults.G_ARGUMENTS_DEFAULT_F(ps)
 
-        if cmdline and isinstance(cmdline, str):
-            self.args = ps.parse_args(cmdline.split())
-        else:
-            self.args = ps.parse_args()
+        if not cmdline:
+            cmdline = []
+        elif isinstance(cmdline, str):
+            cmdline = cmdline.split()
+        elif not isinstance(cmdline, list):
+            raise ArgsInputError()
 
-        return self.args
+        return ps.parse_args(cmdline)
 
-    def apply(self, args=None):
+    def apply(self, args):
         from operator import xor
-        if not args:
-            args = self.args
         res = (False, False)
         dbg = {'a': (True, True), 'v': (True, False), 'k': (False, True)}
         if args.verbose:

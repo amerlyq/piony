@@ -30,11 +30,14 @@ Auto-generating layout previews
 			http://en.wikipedia.org/wiki/Xvfb
 			: the only option is to use Xvfb to provide a virtual Xserver to render the GUI.
 			:	sudo apt-get install xvfb
-			:	xvfb-run python render.py
+			:	xvfb-run  --server-args="-screen 0 1366x768x24" python render.py
 			ALT : attach to terminal on specific port (until you kill it)
 			:	Xvfb :99 & && export DISPLAY=:99	# Use port == build number
 			:	./piony.py							# to build simultaneously
 			:	import -display :99 -window root image.png
+			:> 	I think you also won't get GLX if you don't have mesa-dri-drivers installed in the chroot.
+			INFO for firefox
+				: http://www.leonardteo.com/2011/07/taking-server-side-screenshots-of-websites/
 		[_] screenshot with overlaying context menus
 			xwd -id 0x2c435b4 -screen -out window-with-menu.xwd
 			convert window-with-menu.xwd window.png

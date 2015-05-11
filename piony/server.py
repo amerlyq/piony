@@ -10,14 +10,18 @@ from piony.config.argparser import ArgsParser
 from piony.budparser.parser import BudParser
 import piony.budparser.exceptions as bux
 
-if __debug__:
-    import pprint
+# if __debug__:
+#     import pprint
 
 
 def search_dst_window():
-    from subprocess import check_output
-    out = check_output(['xdotool', 'getactivewindow'])
-    idwnd = out[:-1].decode('ascii')
+    from subprocess import check_output, CalledProcessError
+    try:
+        out = check_output(['xdotool', 'getactivewindow'])
+    except CalledProcessError:
+        idwnd = None
+    else:
+        idwnd = out[:-1].decode('ascii')
     return idwnd
 
 
@@ -35,7 +39,7 @@ def set_args_from_command_line(cfg, args):
 
 class Server(QObject):
     from configparser import ConfigParser
-    dataReceived = pyqtSignal(ConfigParser, dict, bool)
+    dataReceived = pyqtSignal(ConfigParser, dict, dict)
     quit = pyqtSignal()
 
     def __init__(self):
@@ -83,27 +87,37 @@ class Server(QObject):
     def loadData(self, argv):
         ## Read configuration files
         # cdir = os.path.dirname(os.path.abspath(__file__))
-        # Must be setted up on 'show' action
+        # Must be setted up on 'show' action. Move from beginning to appropriate.
         gvars.G_ACTIVE_WINDOW = search_dst_window()
 
         Arg_Ps = ArgsParser()
         Cfg_Ps = CfgParser()
 
-        self.cfg = Cfg_Ps.read_file()
-        args = Arg_Ps.parse()
-        Arg_Ps.apply(args)
-        set_args_from_command_line(self.cfg, args)
+        cfg = Cfg_Ps.read_file()
+        args = Arg_Ps.parse(argv)
 
-        entries = args.buds if args.buds else self.cfg['Bud']['default']
+        if args.kill:
+            print("kill:")
+            self.quit.emit()
+
+        Arg_Ps.apply(args)
+        set_args_from_command_line(cfg, args)
+
+        entries = args.buds if args.buds else cfg['Bud']['default']
         Bud_Ps = BudParser()
         try:
-            self.bud = Bud_Ps.parse(entries)
+            bud = Bud_Ps.parse(entries)
         except bux.BudError as e:
             print("Error:", e)
 
-        if __debug__:
-            pprint.pprint(self.bud, width=41, compact=True)
+        # if __debug__:
+        #     pprint.pprint(bud, width=41, compact=True)
 
         # TODO: Make 'bReload' as tuple to distinguish necessary refreshes.
-        bReload = True if len(argv) > 1 else False
+        bReload = {}
+        bReload['toggle'] = bool(0 == len(argv))
+        bReload['Window'] = bool(self.cfg and cfg['Window'] != self.cfg['Window'])
+
+        self.cfg = cfg
+        self.bud = bud
         self.dataReceived.emit(self.cfg, self.bud, bReload)

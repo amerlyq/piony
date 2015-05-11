@@ -141,10 +141,13 @@ THREADS
 		[_] -N : new clean setup -- reset state objects and load only new sets
 		[_] Connect when exit server to close window and qapp
 			:= It's all to simplify exit in case of bad connection
+		[_] Send error messages (from print -> log) to client after parsing
+		[_] Set-up getting interface '-g : --get' to receive window id, current buds, etc
 
 	Tray
 		[_] tray icon and menu
 		> http://www.utilities-online.info/articles/Create-a-PyQt-tray-icon-to-send-UDP-Datagram/
+		> https://github.com/pcmantinker/Tray-Notification-System/blob/master/traynotificationwidget.cpp
 
 	Start on log-in
 		http://stackoverflow.com/questions/6186091/pyqt-best-way-to-do-the-trick-start-at-boot-for-my-program-in-windows
@@ -242,6 +245,7 @@ IDEAS
 	2015-05-09 [X] BUG: On launch one of buttons can occasionally became highlighted
 		:> it's composition of double-show window defect and the result of
 		: centering window when enabled trackingMouse
+	[_] BUG: AGAIN: resets geometry position to 0,0 when cursor at screen right border
 
 
 > OPTIMIZATION
