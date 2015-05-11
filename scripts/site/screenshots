@@ -23,8 +23,8 @@ wsize(){ xwininfo -id $wid | awk '
     END{printf("%dx%d%+d%+d!",W,H,X,Y)}'; }
 save(){ convert -crop $(wsize) /var/tmp/Xvfb_screen0 "$DIR/${1}.png"; }
 
-die() { echo "Install '$1' by [sudo apt-get install $1] (on Ubuntu/Debian/LinuxMint)"; exit 1; }
-for pr in xvfb imagemagick compton feh; do
+die() { echo "Not found '$1'. Install dependencies from './scripts/setup-site'."; exit 1; }
+for pr in Xvfb convert compton feh; do
     hash $pr > /dev/null || die $pr
 done
 
