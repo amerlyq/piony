@@ -33,8 +33,8 @@ done
 ## Launch virtual X server
 XVFB=/usr/bin/X11/Xvfb
 XARGS=":99 -screen 0 640x480x24 -fbdir /var/tmp"  # -nolisten tcp
-# PREVIEW: $ xwud -in /var/tmp/Xvfb_screen0
 $XVFB $XARGS >"$DIR/xvfb.log" 2>&1 &
+sleep 1
 kill -0 $! 2>/dev/null || exit $?  # check if xvfb started
 prevdisp="$DISPLAY"
 export DISPLAY=:99
@@ -67,6 +67,8 @@ func() {
 }
 
 func --size 120 240 360
+# PREVIEW:
+DISPLAY=:0 xwud -in /var/tmp/Xvfb_screen0
 func -- '[[a]]' '[[a,b]]' '[[a,b,c]]'
 
 
