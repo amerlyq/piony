@@ -73,3 +73,6 @@ cache:
   # directories:
   #   - /downloads
   apt: true
+
+notifications:
+  email: false
