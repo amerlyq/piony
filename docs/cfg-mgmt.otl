@@ -109,6 +109,9 @@ TESTING
 		http://johnnado.com/test-xml-using-python-doctest/
 		https://docs.python.org/3.4/library/doctest.html
 
+	[_] Sikuli -- gui automation
+		http://www.jedi.be/blog/2010/08/29/sending-keystrokes-to-your-virtual-machines-using-X-vnc-rdp-or-native/
+
 	Infrastructure
 		https://pytest.org/latest/goodpractises.html
 
