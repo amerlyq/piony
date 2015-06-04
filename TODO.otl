@@ -8,6 +8,7 @@ TODO
 	2015-04-22 [X] FIX text 'krita' in the center of ring
 	[_] Compare performance for individual pathes and QTransform rotated.
 	[_] Add extracting git log messages to changelog
+	[_] Option 'verbose' -- move under [Debug] section
 
 FLOW
 	2015-04-20 [X] RingSegment class (draft version)

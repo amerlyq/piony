@@ -5,6 +5,8 @@ DEVELOP
 	items for site pages.
 	: https://github.com/fanglingsu/vimb/tree/gh-pages
 
+	[_] Interactive online layout generator in python -- to be able try layouts w/o install
+
 CI
 	Build Status
 		https://travis-ci.org/
@@ -19,6 +21,7 @@ CI
 	http://elementalselenium.com/tips/38-headless
 
 Auto-generating layout previews
+: Can I generate them on build-server by git-hooks?
 	[_] Capture rendered qt window to image without X
 		[_] optionally disable Mask to produce clear window bkgr
 		[_] extract all instant variables, bound to window state
