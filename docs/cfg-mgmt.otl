@@ -4,6 +4,9 @@ DEVELOPMENT
 	https://docs.python.org/3.4/library/debug.html
 	https://docs.python.org/3.4/library/development.html
 
+	Separate Issue tracking like this?
+		[_] https://gaphor.lighthouseapp.com/dashboard
+
 	[_] Isolated environment -- several reprodusable testing environments
 		> http://habrahabr.ru/post/248189/
 		> http://robertbasic.com/blog/install-pyqt5-in-python-3-virtual-environment
