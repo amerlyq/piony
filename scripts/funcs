@@ -1,0 +1,11 @@
+# vim: ft=sh
+
+distro(){ cat /etc/os-release | grep -iq "$1"; }
+
+if distro ubuntu; then
+  pkg_inst(){ sudo apt-get --yes install $@; }
+
+elif distro arch; then
+  pkg_inst(){ sudo pacman -S --needed --noconfirm $@; }
+
+fi

@@ -1,10 +1,17 @@
-#!/usr/bin/env bash
+#!/bin/bash -e
+cd $(dirname $(readlink -m ${0}))
+source ./funcs
 
 ### PROFILING ###
-sudo apt-get install kcachegrind graphviz #python-matplotlib
 # kcachegrind        # to see profile results in GUI
 # graphviz           # for gprof2dot
 # python3-matplotlib # for memory_profiler
+if distro arch; then
+    pkg_inst kdesdk-kcachegrind graphviz
+elif distro ubuntu; then
+    pkg_inst kcachegrind graphviz #python-matplotlib
+fi
+
 sudo pip3 install -U pyprof2calltree gprof2dot
 sudo pip3 install -U line_profiler pprofile
 sudo pip3 install -U psutil memory_profiler matplotlib

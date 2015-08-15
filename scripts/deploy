@@ -10,7 +10,7 @@ if [ "$1" == "-k" ]; then
     exit
 fi
 
-die() { echo "Install '$1' by [sudo apt-get install $1] (on Ubuntu/Debian/LinuxMint)"; exit 1; }
+die() { printf "%s\n" "Install '$1' by [sudo apt-get install $1] (on Ubuntu/Debian/LinuxMint)\nOr [pacman -S $1] (on ArchLinux)"; exit 1; }
 
 ## Check availability of programms
 for pr in xdotool xbindkeys pgrep python3; do
