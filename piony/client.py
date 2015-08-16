@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# vim: fileencoding=utf-8
-
 from PyQt5.QtCore import QByteArray, QDataStream, QIODevice
 from PyQt5.QtNetwork import QLocalSocket
 

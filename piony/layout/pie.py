@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# vim: fileencoding=utf-8
-
 from PyQt5.QtWidgets import QLayout, QWidgetItem
 from PyQt5.QtCore import QPoint, QSize
 

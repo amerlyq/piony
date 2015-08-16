@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# vim: fileencoding=utf-8
-
 from piony import __version__
 # from piony.config import gvars
 

@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# vim: fileencoding=utf-8
-
 from math import sqrt
 
 from PyQt5 import QtCore, QtGui, QtWidgets

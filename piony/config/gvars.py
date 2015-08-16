@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# vim: fileencoding=utf-8
-
 if __debug__:
     G_DEBUG_ACTIONS = True
     G_DEBUG_VISUALS = False

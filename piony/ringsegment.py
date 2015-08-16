@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# vim: fileencoding=utf-8
-
 from math import degrees, asin, sin, radians, sqrt
 from PyQt5 import QtGui
 from PyQt5.QtCore import Qt, QRect, QRectF
