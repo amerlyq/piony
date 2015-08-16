@@ -3,13 +3,13 @@ cd $(dirname $(readlink -m ${0}))
 source ./funcs
 
 if distro arch; then
-    pkg_inst "xorg-server-xvfb imagemagick feh ruby"
+    pkg_inst "xorg-server-xvfb xorg-xwininfo xorg-xwud"
+    pkg_inst "imagemagick feh ruby"
     yaourt -S --needed --noconfirm compton
 
 elif distro ubuntu; then
     pkg_inst "xvfb imagemagick compton feh gem"
 
+    # Usage: ??? cd ./piony && travis-yaml
+    sudo gem install travis-yaml
 fi
-
-# Usage: ??? cd ./piony && travis-yaml
-sudo gem install travis-yaml

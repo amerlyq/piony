@@ -4,7 +4,7 @@ import piony.budparser.exceptions as bux
 
 
 class SegmentMaker:
-    """ a/[..]/{..} -> {name:_, action:_, ...} """
+    """ 'a' or [..] or {..} -> {name:_, action:_, ...} """
 
     PS = "<i>Placeholder</i>"
     NM = 'Segment'

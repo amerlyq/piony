@@ -5,7 +5,7 @@ from piony.budparser.segment import SegmentMaker
 
 
 class RingMaker:
-    """ [..]/[{..}..]/{segments:[..],...} -> {segments:_} """
+    """ [..] or [{..}..] or {segments:[..],...} -> {segments:_} """
 
     NM = 'Ring'
     KEYS = ('segments',)

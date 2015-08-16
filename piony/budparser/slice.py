@@ -5,7 +5,7 @@ from piony.budparser.ring import RingMaker
 
 
 class SliceMaker:
-    """ [[..]..]/{rings:[..],...} -> {rings:_} """
+    """ [[..]..] or {rings:[..],...} -> {rings:_} """
 
     NM = 'Slice'
     KEYS = ('rings', 'corners')

@@ -5,6 +5,7 @@
 
 ## Working directory
 SDIR="$(readlink -m ${0%/*})"
+FILE="$(readlink -m ${1:-$SDIR/tests})"
 PROJ="${SDIR%/*/*}"
 cd "$PROJ"
 
@@ -21,7 +22,11 @@ wsize(){ xwininfo -id $wid | awk '
     /Abso.*X:/{X=$NF} /Abso.*Y:/{Y=$NF}
     /Width:/{W=$NF} /Height:/{H=$NF}
     END{printf("%dx%d%+d%+d!",W,H,X,Y)}'; }
-save(){ convert -crop $(wsize) /var/tmp/Xvfb_screen0 "$DIR/${1}.png"; }
+save(){
+    convert -crop $(wsize) /var/tmp/Xvfb_screen0 \
+    -background Khaki -pointsize 12 -font DejaVu-Sans-Mono-Bold \
+    label:"$1" -gravity Center -append "$DIR/${1//[: =]/_}.png"
+}
 
 die() { echo "Not found '$1'. Install dependencies from './scripts/setup-site'."; exit 1; }
 for pr in Xvfb convert compton feh; do
@@ -31,7 +36,7 @@ done
 ########################################
 
 ## Launch virtual X server
-XVFB=/usr/bin/X11/Xvfb
+XVFB=Xvfb  #Ubuntu: /usr/bin/X11/Xvfb
 XARGS=":99 -screen 0 640x480x24 -fbdir /var/tmp"  # -nolisten tcp
 $XVFB $XARGS >"$DIR/xvfb.log" 2>&1 &
 sleep 1
@@ -56,20 +61,23 @@ wid=$(xdotool search --class "$FL")
 
 ## Make series of screenshots
 func() {
-    local args vals
+    local args vals pref
     args="$1"; shift; vals=($@)
+    pref="${args##*-}"; pref="${pref:+$pref=}"
     for v in "${vals[@]}"; do
         echo ">>> $PR $args ${v}"
         "$PR" $args ${v}
         sleep 0.1
-        save "${args##*-}-${v}.png"
+        save "${pref}${v}"
     done
 }
 
-func --size 120 240 360
-# PREVIEW:
-DISPLAY=:0 xwud -in /var/tmp/Xvfb_screen0
-func -- '[[a]]' '[[a,b]]' '[[a,b,c]]'
+
+# Screenshots
+sed 's/\s*#.*$//; /^\s*$/d' "$FILE" |
+    while read line; do func $line; done
+# TEST PREVIEW:
+# DISPLAY=:0 xwud -in /var/tmp/Xvfb_screen0
 
 
 ## Exit program
