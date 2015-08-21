@@ -5,6 +5,7 @@ from piony.common import ra2xy
 from piony.ringsegment import RingSegment
 
 
+# TODO: replace with namedtuple
 ## Storage for inscribed layer data
 class SegmentWrapper(object):
     def __init__(self, item):
@@ -78,7 +79,7 @@ class PieLayout(QLayout):
         self.doLayout(QPoint(rect.width()/2, rect.height()/2))
 
     def sizeHint(self):
-        return QSize(self.R(), self.R)
+        return QSize(self.R(), self.R())
 
     def minimumSize(self):
         # size = QSize()

@@ -5,9 +5,9 @@ from PyQt5.QtCore import Qt, QSize, QRect
 
 from piony.config import gvars
 from piony.widget import base
-from piony.action import sendKey
 from piony.layout.pie import PieLayout
 from piony.widget.segment import SegmentWidget
+from piony.system.action import sendKey
 
 
 class BudWidget(QtWidgets.QWidget):

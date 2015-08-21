@@ -1,7 +1,7 @@
 from PyQt5.QtCore import Qt, QEvent
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from piony import action
+from piony.system import action
 
 
 def _hasModCtrl():

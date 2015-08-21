@@ -11,8 +11,7 @@ class Window(QtWidgets.QWidget, HGEventMixin):
         super().__init__()
         self.cfg = None
         self.budwdg = None
-        self.lytstack = QtWidgets.QStackedLayout()
-        self.setLayout(self.lytstack)
+        self.setLayout(QtWidgets.QStackedLayout())
         self.setWnd()
 
     def setWnd(self):
@@ -41,7 +40,7 @@ class Window(QtWidgets.QWidget, HGEventMixin):
                 self.layout().removeWidget(self.budwdg)
                 self.budwdg.close()
             self.budwdg = BudWidget(bud, self.cfg)
-            self.lytstack.addWidget(self.budwdg)
+            self.layout().addWidget(self.budwdg)
             # QObjectCleanupHandler().add(self.layout())
             # setCurrentWidget to display the one you want.
 
@@ -62,6 +61,7 @@ class Window(QtWidgets.QWidget, HGEventMixin):
 
         aQuit = QtWidgets.QAction("E&xit", self, shortcut="Ctrl+Q",
                                   triggered=QtWidgets.QApplication.instance().quit)
+        # aQuit.setShortcutContext(Qt.WidgetShortcut)
         self.addAction(aQuit)
         self.setContextMenuPolicy(Qt.ActionsContextMenu)
 

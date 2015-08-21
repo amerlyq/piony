@@ -89,6 +89,7 @@ SYSTEM
 	[_] Port all text info to QStaticText + drawStaticText
 	[_] Port layouts to QGraphicsLayout and QGraphicsWidget (for QRectF support)
 		: http://pyqt.sourceforge.net/Docs/PyQt4/qgraphicslayoutitem.html
+		: http://doc.qt.io/qt-5/qgraphicslayout.html
 		: A top-level item's style defaults to QGraphicsScene.style
 		: Graphics View provides a custom drag and drop framework, different from QWidget.
 		: If you are subclassing from QGraphicsItem directly and not from one
@@ -199,7 +200,7 @@ IDEAS
 		[_] can have different sense, when written in different screen zones
 	[_] how about elliptic rings, with slope on 60 deg -- for hand anisotropy?
 		of course they can be rotated, changing their slope
-	[_] icons instead of / under text (applied by blending) in segments
+	[_] (v1.7) icons instead of / under text (applied by blending) in segments
 		| maybe I will be OK simply with hieroglyphs? (image from StyleSheet)
 	[_] Get vars values from krita to display onto piony buttons
 		: like pressed/released state, brush size, etc
@@ -249,6 +250,7 @@ IDEAS
 		:> it's composition of double-show window defect and the result of
 		: centering window when enabled trackingMouse
 	[_] BUG: AGAIN: resets geometry position to 0,0 when cursor at screen right border
+	[_] FIX: context menu don't react on its shortcuts (need globalShortcuts/eventFilter?)
 
 
 > OPTIMIZATION

@@ -6,7 +6,7 @@ import sys
 if __name__ == '__main__':
 
     ## Send args to listener and close
-    from piony.client import Client
+    from piony.system.client import Client
     client = Client()
     client.connect()
     if client.socket.waitForConnected(2000):
@@ -22,7 +22,7 @@ if __name__ == '__main__':
         from PyQt5.QtWidgets import QApplication
         app = QApplication(sys.argv)
 
-        from piony.server import Server
+        from piony.system.server import Server
         server = Server()
         server.quit.connect(app.quit)
         app.aboutToQuit.connect(server.close)
