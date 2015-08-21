@@ -149,6 +149,8 @@ THREADS
 		[_] tray icon and menu
 		> http://www.utilities-online.info/articles/Create-a-PyQt-tray-icon-to-send-UDP-Datagram/
 		> https://github.com/pcmantinker/Tray-Notification-System/blob/master/traynotificationwidget.cpp
+		https://gist.github.com/juancarlospaco/7bf539c62015cc8ca7b0
+		https://github.com/dglent/meteo-qt
 
 	Start on log-in
 		http://stackoverflow.com/questions/6186091/pyqt-best-way-to-do-the-trick-start-at-boot-for-my-program-in-windows

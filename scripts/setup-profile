@@ -7,11 +7,16 @@ source ./funcs
 # graphviz           # for gprof2dot
 # python3-matplotlib # for memory_profiler
 if distro arch; then
-    pkg_inst kdesdk-kcachegrind graphviz
+    pkg_inst kdesdk-kcachegrind graphviz python-matplotlib
+
 elif distro ubuntu; then
     pkg_inst kcachegrind graphviz #python-matplotlib
+    sudo pip3 install -U  matplotlib
 fi
 
 sudo pip3 install -U pyprof2calltree gprof2dot
 sudo pip3 install -U line_profiler pprofile
-sudo pip3 install -U psutil memory_profiler matplotlib
+sudo pip3 install -U psutil memory_profiler
+
+# Callgraph for single runtime launch
+sudo pip3 install -U pycallgraph

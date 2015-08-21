@@ -14,11 +14,14 @@ dbg: idbg
 test: test-exec
 style: style-lint
 prf: prf-dot
+uml: uml-png
+cgr: call-graph
 
 # --- MAIN ---
 debug: ARGS += -V k
 debug-all: ARGS += -V a
 app:  PYARGS := -O $(PYARGS)
+
 
 # --- DEBUGGING ---
 udbg: PYARGS += -m pudb.run
@@ -89,6 +92,16 @@ style-pep:  MODARGS += --first --statistics
 style-more: MODARGS += --show-source --show-pep8
 style-pep style-more:
 	@pep8 $(PEP8)
+
+uml-png:
+	pyreverse -A -p $(NM) -o png $(PR) $(NM)
+	mv -f *.png /tmp
+	sxiv /tmp/*_piony.png 2>/dev/null
+
+call-graph:
+	pycallgraph graphviz -- $(PR)
+	mv -f pycallgraph.png /tmp
+	sxiv /tmp/pycallgraph.png 2>/dev/null
 
 
 ### SETUP ###

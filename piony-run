@@ -1,0 +1,8 @@
+#!/bin/bash
+cd "$(readlink -m ${0%/*})"
+
+if ! pgrep -f 'piony.py' >/dev/null; then
+    python3 -O piony.py $@
+else
+    python3 piony.py $@
+fi
