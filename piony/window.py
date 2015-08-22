@@ -1,33 +1,19 @@
 from PyQt5 import QtGui, QtWidgets
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QSize
 
 import piony
 from piony.widget.bud import BudWidget
 from piony.hgevent import HGEventMixin
 
 
-class Window(QtWidgets.QWidget, HGEventMixin):
-    def __init__(self):
-        super().__init__()
+class WindowContent(QtWidgets.QWidget, HGEventMixin):
+    def __init__(self, parent=None):
+        super().__init__(parent)
         self.cfg = None
         self.budwdg = None
         self.setLayout(QtWidgets.QStackedLayout())
-        self.setWnd()
-
-    def setWnd(self):
-        # if(QX11Info.isCompositingManagerRunning()):
-        self.setAttribute(Qt.WA_TranslucentBackground)
-        wflags = Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint
-        # if not __debug__:
-        #     wflags |= Qt.X11BypassWindowManagerHint
-        self.setWindowFlags(self.windowFlags() | wflags)
-        # self.setStyleSheet("background:transparent;")
-        # self.setWindowOpacity(0.7)
-
         self.installEventFilter(self)
         self.setMouseTracking(True)
-        self.setWindowTitle("{} {}".format(piony.__appname__,
-                                           piony.__version__))
 
     ## --------------
     def reload(self, cfg, bud, bReload):
@@ -67,10 +53,10 @@ class Window(QtWidgets.QWidget, HGEventMixin):
 
     ## --------------
     def sizeHint(self):
-        return self.budwdg.sizeHint()
+        return self.budwdg.sizeHint() if self.budwdg else QSize()
 
     def minimumSize(self):
-        return self.budwdg.minimalSize()
+        return self.budwdg.minimalSize() if self.budwdg else QSize()
 
     def showEvent(self, e):
         self.centerOnCursor()
@@ -94,3 +80,22 @@ class Window(QtWidgets.QWidget, HGEventMixin):
         p.setPen(Qt.NoPen)
         p.setBrush(QtGui.QColor(0, 0, 0, 0))
         p.drawRect(self.rect())
+
+
+class MainWindow(QtWidgets.QMainWindow):
+    def __init__(self):
+        super().__init__()
+        # self.setParent(None)  # Create TopLevel-Widget
+
+        # if(QX11Info.isCompositingManagerRunning()):
+        self.setAttribute(Qt.WA_TranslucentBackground)
+        wflags = Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint
+        # if not __debug__:
+        #     wflags |= Qt.X11BypassWindowManagerHint
+        self.setWindowFlags(self.windowFlags() | wflags)
+        self.setCentralWidget(WindowContent())
+
+        # self.setStyleSheet("background:transparent;")
+        # self.setWindowOpacity(0.7)
+        self.setWindowTitle("{} {}".format(piony.__appname__,
+                                           piony.__version__))

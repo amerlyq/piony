@@ -28,9 +28,9 @@ if __name__ == '__main__':
         app.aboutToQuit.connect(server.close)
         server.create()
 
-        from piony.window import Window
-        wnd = Window()
-        server.dataReceived.connect(wnd.reload)
-
+        from piony.window import MainWindow
+        main = MainWindow()
+        server.dataReceived.connect(main.centralWidget().reload)
         server.loadData(sys.argv[1:])
+        main.show()
         sys.exit(app.exec_())

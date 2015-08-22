@@ -88,8 +88,8 @@ SYSTEM
 		2015-04-23 [X] Complete current dev stage and only then port
 	[_] Port all text info to QStaticText + drawStaticText
 	[_] Port layouts to QGraphicsLayout and QGraphicsWidget (for QRectF support)
-		: http://pyqt.sourceforge.net/Docs/PyQt4/qgraphicslayoutitem.html
-		: http://doc.qt.io/qt-5/qgraphicslayout.html
+		http://doc.qt.io/qt-5/graphicsview.html
+		http://stackoverflow.com/questions/3131399/extend-qgraphicsitem-with-pyqt
 		: A top-level item's style defaults to QGraphicsScene.style
 		: Graphics View provides a custom drag and drop framework, different from QWidget.
 		: If you are subclassing from QGraphicsItem directly and not from one

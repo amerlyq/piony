@@ -32,7 +32,8 @@ class HGEventMixin:
         # Tab, Space -- out of questions as used to choose/press UI elements
         k_ex = [Qt.Key_Escape, Qt.Key_Return]
         if e.key() in k_ex:
-            self.close()
+            QtWidgets.qApp.quit()
+            # self.close()
             e.accept()
 
         if _hasModShift(e):
@@ -93,4 +94,5 @@ class HGEventMixin:
         # decided to handle it myself
 
     def resizeEvent(self, e):
-        self.budwdg.setGeometry(QtCore.QRect(QtCore.QPoint(0, 0), e.size()))
+        if self.budwdg:
+            self.budwdg.setGeometry(QtCore.QRect(QtCore.QPoint(0, 0), e.size()))
