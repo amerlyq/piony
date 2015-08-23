@@ -103,6 +103,10 @@ call-graph:
 	mv -f pycallgraph.png /tmp
 	sxiv /tmp/pycallgraph.png 2>/dev/null
 
+# Compile resources in ascii binary
+# SEE: pyqt4/examples/desktop/systray/systray.py
+# res:
+#	pyrcc5 -o piony_rc.py piony.qrc
 
 ### SETUP ###
 keys:

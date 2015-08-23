@@ -1,5 +1,5 @@
 from PyQt5 import QtGui, QtWidgets
-from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtCore import Qt, QSize  # , QRect
 
 import piony
 from piony.widget.bud import BudWidget
@@ -14,6 +14,7 @@ class WindowContent(QtWidgets.QWidget, HGEventMixin):
         self.setLayout(QtWidgets.QStackedLayout())
         self.installEventFilter(self)
         self.setMouseTracking(True)
+        self.setStyleSheet("background:transparent")
 
     ## --------------
     def reload(self, cfg, bud, bReload):
@@ -32,11 +33,11 @@ class WindowContent(QtWidgets.QWidget, HGEventMixin):
 
             self.resize(self.sizeHint())
             self.centerOnCursor()
-        if bReload['toggle']:
-            self.setVisible(not self.isVisible())
-        else:
-            # NOTE: don't forget to delete, or --hide will not work later
-            self.show()
+        # if bReload['toggle']:
+        #     self.setVisible(not self.isVisible())
+        # else:
+        #     # NOTE: don't forget to delete, or --hide will not work later
+        #     self.show()
 
     def setContent(self):
         if self.cfg['Window'].getboolean('no_tooltip'):
@@ -70,32 +71,39 @@ class WindowContent(QtWidgets.QWidget, HGEventMixin):
         fg.moveCenter(cp)
         self.move(fg.topLeft())  # self.setGeometry(fg)
 
-    ## --------------
-    def paintEvent(self, e):
-        p = QtWidgets.QStylePainter(self)  # p.begin(self)
-        self.drawCleanBkgr(p)
-        p.end()
 
-    def drawCleanBkgr(self, p):
-        p.setPen(Qt.NoPen)
-        p.setBrush(QtGui.QColor(0, 0, 0, 0))
-        p.drawRect(self.rect())
+class MainView(QtWidgets.QGraphicsView):
+    def __init__(self, scene, parent=None):
+        super().__init__(parent)
+        self._setup()
+        self.setScene(scene)
+        self.resize(scene.width(), scene.height())
+
+    def _setup(self):
+        self.setStyleSheet("background:transparent")
+        self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.setCacheMode(QtWidgets.QGraphicsView.CacheBackground)
 
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
-        # self.setParent(None)  # Create TopLevel-Widget
+        self.setupWindow()
+        self.wnd = WindowContent()
+        self.attachWidgets()
 
-        # if(QX11Info.isCompositingManagerRunning()):
+    def setupWindow(self):
         self.setAttribute(Qt.WA_TranslucentBackground)
         wflags = Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint
         # if not __debug__:
         #     wflags |= Qt.X11BypassWindowManagerHint
         self.setWindowFlags(self.windowFlags() | wflags)
-        self.setCentralWidget(WindowContent())
+        self.setWindowTitle("{} {}".format(
+            piony.__appname__, piony.__version__))
 
-        # self.setStyleSheet("background:transparent;")
-        # self.setWindowOpacity(0.7)
-        self.setWindowTitle("{} {}".format(piony.__appname__,
-                                           piony.__version__))
+    def attachWidgets(self):
+        self.scene = QtWidgets.QGraphicsScene()
+        self.scene.addWidget(self.wnd)
+        self.view = MainView(self.scene)
+        self.setCentralWidget(self.view)
