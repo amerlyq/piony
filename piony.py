@@ -14,23 +14,12 @@ if __name__ == '__main__':
         client.socket.close()
 
     else:
+        from PyQt5.QtWidgets import QApplication
+        from piony.window import MainApplication
+        from signal import signal, SIGINT, SIG_DFL
         ## Close on 'Ctrl-C' system signal.
         ## WARNING: No cleanup possible (can't implement because of Qt).
-        from signal import signal, SIGINT, SIG_DFL
         signal(SIGINT, SIG_DFL)
-        ## Create window and listening server
-        from PyQt5.QtWidgets import QApplication
         app = QApplication(sys.argv)
-
-        from piony.system.server import Server
-        server = Server()
-        server.quit.connect(app.quit)
-        app.aboutToQuit.connect(server.close)
-        server.create()
-
-        from piony.window import MainWindow
-        main = MainWindow()
-        server.dataReceived.connect(main.reload)
-        server.loadData(sys.argv[1:])
-        main.show()
+        main = MainApplication(sys.argv)
         sys.exit(app.exec_())

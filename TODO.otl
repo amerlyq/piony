@@ -148,10 +148,12 @@ THREADS
 
 	Tray
 		[_] tray icon and menu
-		> http://www.utilities-online.info/articles/Create-a-PyQt-tray-icon-to-send-UDP-Datagram/
-		> https://github.com/pcmantinker/Tray-Notification-System/blob/master/traynotificationwidget.cpp
-		https://gist.github.com/juancarlospaco/7bf539c62015cc8ca7b0
-		https://github.com/dglent/meteo-qt
+			> http://www.utilities-online.info/articles/Create-a-PyQt-tray-icon-to-send-UDP-Datagram/
+			> https://github.com/pcmantinker/Tray-Notification-System/blob/master/traynotificationwidget.cpp
+			: https://gist.github.com/juancarlospaco/7bf539c62015cc8ca7b0
+			: https://github.com/dglent/meteo-qt
+		[_] BUG: forever lost prev window focus when click on TrayIcon
+			:SEE: http://stackoverflow.com/questions/25314391/system-tray-icon-doesnt-show-in-qt5-linux-lxde
 
 	Start on log-in
 		http://stackoverflow.com/questions/6186091/pyqt-best-way-to-do-the-trick-start-at-boot-for-my-program-in-windows

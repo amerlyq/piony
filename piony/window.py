@@ -9,6 +9,7 @@ import piony
 from piony.widget.bud import BudWidget
 from piony.hgevent import HGEventMixin
 from piony.config.cfgparser import CfgParser
+from piony.system.server import Server
 
 
 class MainWidget(QWidget, HGEventMixin):
@@ -53,7 +54,7 @@ class MainEventsMixin(object):
         # Tab, Space -- out of questions as used by Qt (and me in future)
         #   to choose/press UI elements
         if e.key() in [Qt.Key_Escape, Qt.Key_Return]:
-            self.close()
+            qApp.quit()
         if e.modifiers() == Qt.ShiftModifier and e.key() == Qt.Key_K:
             print("K")
             e.accept()
@@ -70,7 +71,7 @@ class MainSettingsMixin(object):
         QToolTip.setFont(QFont('Ubuntu', 12))
 
         self.setAttribute(Qt.WA_TranslucentBackground)
-        wflags = Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint
+        wflags = Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint | Qt.Tool
         self.setWindowFlags(self.windowFlags() | wflags)
 
         self.setMinimumSize(10, 10)
@@ -130,3 +131,23 @@ class MainWindow(MainSettingsMixin, MainEventsMixin, QMainWindow):
         # sg = QApplication.desktop().screenGeometry(screen)
         fg.moveCenter(cp)
         self.move(fg.topLeft())  # self.setGeometry(fg)
+
+
+class MainApplication(object):
+    def __init__(self, argv):
+        self.wnd = MainWindow()
+        self.srv = Server()
+
+        self.srv.create()
+        self.srv.dataReceived.connect(self.wnd.reload)
+        self.srv.loadData(argv[1:])
+
+        self.wnd.show()
+
+    # def attachTray(self):
+    #     from PyQt5.QtWidgets import QSystemTrayIcon
+    #     from PyQt5.QtGui import QIcon
+    #     self.tray = QSystemTrayIcon()
+    #     self.tray.setIcon(QIcon("/usr/share/themes/Vertex-Dark/gtk-3.0/assets/checkbox-checked-dark.png"))
+    #     self.tray.blockSignals(True)
+    #     self.tray.show()
