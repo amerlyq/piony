@@ -1,6 +1,7 @@
 >>> EDIT MODE (not expected untill v2.5) >>>
 
 Context menu
+	[_] Launched only from tray -- because of utilizing M2 for bud itself
 	> How to utilize it?
 	[_] can be used to add new shortcuts "on the fly"
 	[_] need cfg option to enable/disable

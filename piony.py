@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
         from piony.window import MainWindow
         main = MainWindow()
-        server.dataReceived.connect(main.wnd.reload)
+        server.dataReceived.connect(main.reload)
         server.loadData(sys.argv[1:])
         main.show()
         sys.exit(app.exec_())

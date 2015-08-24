@@ -12,6 +12,9 @@ G_CONFIG_DEFAULT = OrderedDict((
     ('Button', OrderedDict((
         ('text_scale', 0.64),
     ))),
+    ('System', OrderedDict((
+        ('no_focus', False),
+    ))),
     ('Window', OrderedDict((
         ('text_scale', 0.64),
         ('size', 360),

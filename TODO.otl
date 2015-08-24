@@ -250,7 +250,8 @@ IDEAS
 		:> it's composition of double-show window defect and the result of
 		: centering window when enabled trackingMouse
 	[_] BUG: AGAIN: resets geometry position to 0,0 when cursor at screen right border
-	[_] FIX: context menu don't react on its shortcuts (need globalShortcuts/eventFilter?)
+	2015-08-24 [X] FIX: context menu don't react on its shortcuts
+		:> NEED: shortcutContext=Qt.ApplicationShortcut
 	[_] NOTE: not equialent, white bkgr for view in second case:
 		-1- setStyleSheet("background: transparent")
 		-2- def paintEvent(self, e): p.setBrush(QtGui.QColor(0, 0, 0, 0))...

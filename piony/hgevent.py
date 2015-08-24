@@ -4,6 +4,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from piony.system import action
 
 
+# @staticmethod
 def _hasModCtrl():
     modifiers = QtWidgets.QApplication.keyboardModifiers()
     return modifiers == Qt.ControlModifier
@@ -27,24 +28,6 @@ class HGEventMixin:
         self.ppos = e.pos()
         self.bM3 = True
         e.accept()
-
-    def keyPressEvent(self, e):
-        # Tab, Space -- out of questions as used to choose/press UI elements
-        k_ex = [Qt.Key_Escape, Qt.Key_Return]
-        if e.key() in k_ex:
-            QtWidgets.qApp.quit()
-            # self.close()
-            e.accept()
-
-        if _hasModShift(e):
-            print("shift")
-
-        if _hasModAlt(e) and e.key() == Qt.Key_I:
-            print("alt + I")
-
-        if e.key() == Qt.Key_K:
-            print("KKKKKKKK")
-            print(Qt.Key_K)
 
     def mousePressEvent(self, e):
         if e.button() == Qt.MidButton:
