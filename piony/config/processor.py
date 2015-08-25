@@ -3,6 +3,7 @@ import sys
 import yaml
 from collections import OrderedDict
 
+from piony.common import expand_pj
 from piony.exceptions import InputError
 
 
@@ -21,23 +22,26 @@ def init():
 def load(entry):
     if not entry:
         obj = None
-
     elif '-' == entry:
         obj = yaml.safe_load(sys.stdin)  # entry = sys.stdin.read()
 
-    elif os.path.isfile(entry):            # && os.path.isabs(PATH)
-        with open(entry, 'r') as f:
+    elif os.path.isfile(expand_pj(entry)):            # && os.path.isabs(PATH)
+        with open(expand_pj(entry), 'r') as f:
             obj = yaml.safe_load(f)      # entry = f.read()
     else:
         obj = yaml.safe_load(entry)
-        if obj and not isinstance(obj, (list, OrderedDict)):
-            raise InputError('Seems like non-existing path: {}'.format(obj))
+
+    if obj and isinstance(obj, str):
+        raise InputError(obj, 'Seems like non-existent path: {}' .format(obj))
+    elif obj and not isinstance(obj, (list, OrderedDict)):
+        raise InputError(obj, 'Loaded not allowed obj type: {}' .format(type(obj)))
     return obj
 
 
 def save(obj, path):
+    # NOTE: even for OrderedDict yaml will sort keys on dump!
     if '-' == path:
         yaml.safe_dump(obj, stream=sys.stdout)
     else:
-        with open(path, 'w') as f:
+        with open(expand_pj(path), 'w') as f:
             yaml.safe_dump(obj, stream=f)

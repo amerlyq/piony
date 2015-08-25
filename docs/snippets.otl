@@ -25,9 +25,9 @@ See
 
 Consider caching of calculated results
 	: if (d->isDirty() || rect != geometry()) {
-	: 	QRect cr = alignment() ? alignmentRect(rect) : rect;
-	: 	d->distribute(cr, horizontalSpacing(), verticalSpacing());
-	: 	QLayout::setGeometry(rect);
+	:	QRect cr = alignment() ? alignmentRect(rect) : rect;
+	:	d->distribute(cr, horizontalSpacing(), verticalSpacing());
+	:	QLayout::setGeometry(rect);
 	: }
 
 Size distribute
@@ -44,22 +44,22 @@ Create layout
 
 	: void QGridLayout::addLayout(QLayout *layout, int row, int column, Qt::Alignment alignment)
 	: {
-	: 	Q_D(QGridLayout);
-	: 	if (!adoptLayout(layout))
-	: 		return;
-	: 	QGridBox *b = new QGridBox(layout);
-	: 	b->setAlignment(alignment);
-	: 	d->add(b, row, column);
+	:	Q_D(QGridLayout);
+	:	if (!adoptLayout(layout))
+	:		return;
+	:	QGridBox *b = new QGridBox(layout);
+	:	b->setAlignment(alignment);
+	:	d->add(b, row, column);
 	: }
 
 	: void QGridLayoutPrivate::add(QGridBox *box, int row, int col)
 	: {
-	: 	expand(row + 1, col + 1);
-	: 	box->row = box->torow = row;
-	: 	box->col = box->tocol = col;
-	: 	things.append(box);
-	: 	setDirty();
-	: 	setNextPosAfter(row, col);
+	:	expand(row + 1, col + 1);
+	:	box->row = box->torow = row;
+	:	box->col = box->tocol = col;
+	:	things.append(box);
+	:	setDirty();
+	:	setNextPosAfter(row, col);
 	: }
 
 when creating grid:
@@ -127,3 +127,15 @@ def info(type, value, tb):
     ipdb.pm()
 
 sys.excepthook = info
+
+
+ConfigParser (deprecated by yaml)
+	: self.cfg = ConfigParser(
+	:	dict_type=OrderedDict,
+	:	allow_no_value=False, delimiters=('=', ':'),
+	:	comment_prefixes=('#', ';'),
+	:	inline_comment_prefixes=('#', ';'),
+	:	strict=True, empty_lines_in_values=False,
+	:	default_section="DEFAULT", interpolation=None)
+	: self.cfg.read_dict(cfgdefaults.G_CONFIG_DEFAULT)
+	: self.cfg.read(path)  # Can specify bunch of possible files

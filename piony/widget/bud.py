@@ -18,7 +18,7 @@ class BudWidget(QtWidgets.QWidget):
         self.name = bud['slices'][0].get('name', "slice")  # None
         ring = bud['slices'][0]['rings'][0]
 
-        a = self.cfg['Window'].getint('size')
+        a = int(self.cfg['Window']['size'])
         self.r = (0.3 * a) // 2
         self.dr = (0.7 * a) // 2
 
@@ -26,7 +26,7 @@ class BudWidget(QtWidgets.QWidget):
         for segment in ring['segments']:
             btn = SegmentWidget(self.cfg['Button'], segment.name,
                                 lambda a=segment.action: sendKey(a))
-            if not self.cfg['Window'].getboolean('no_tooltip'):
+            if not bool(self.cfg['Window']['no_tooltip']):
                 btn.setToolTip(segment.tooltip)
             pie.addWidget(btn)
         self.setLayout(pie)
@@ -49,7 +49,7 @@ class BudWidget(QtWidgets.QWidget):
         self.dr = self.layout().dr
 
         ## text_scale -- has effect only untill you fit bbox
-        txtw = self.r * self.cfg['Bud'].getfloat('text_scale')
+        txtw = self.r * float(self.cfg['Bud']['text_scale'])
         base.adjustFontSize(self, self.name, QSize(txtw, txtw))
 
         a = min(self.width(), self.height())

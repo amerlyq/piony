@@ -1,6 +1,7 @@
 import pytest
 
 import piony.budparser.exceptions as bux
+from piony.exceptions import InputError
 from piony.budparser.segment import SegmentMaker
 from piony.budparser.ring import RingMaker
 from piony.budparser.slice import SliceMaker
@@ -144,5 +145,5 @@ class TestBudParser:
         assert bps.parse("") == BUD(SLCE(RING()), SLCE(RING()))
 
     def test_noFile(self, bps):
-        with pytest.raises(bux.BudArgumentError):
+        with pytest.raises(InputError):
             bps.parse("./cfg/ss")

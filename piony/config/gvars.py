@@ -5,6 +5,6 @@ if __debug__:
 
 
 G_ACTIVE_WINDOW = "%1"
-G_CONFIG_PATH = "./cfgs/config.ini"
+G_CONFIG_PATH = ":/cfgs/config.yml"
 G_IPC_DAEMON = True
 G_SOCKET_NAME = "piony-socket"

@@ -19,7 +19,6 @@ class BudParser:
     sliceMaker = SliceMaker()
 
     def __init__(self):
-        prc.init()
         self.default()
 
     def default(self):

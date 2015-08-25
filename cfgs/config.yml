@@ -1,0 +1,16 @@
+Window:
+  text_scale: 0.64
+  size: 300
+  no_tooltip: false
+
+Button:
+  text_scale: 0.40
+
+Bud:
+  default: ":/cfgs/krita.yml"
+  line_width: 2
+
+System:
+  no_focus: false
+
+# vim:ts=2:sw=2:sts=2

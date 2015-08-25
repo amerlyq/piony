@@ -3,9 +3,9 @@ from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtCore import QObject, QDataStream, pyqtSignal
 
 from piony.config import gvars
-from piony.config.cfgparser import CfgParser
 from piony.config.argparser import ArgsParser
 from piony.budparser.parser import BudParser
+import piony.config.processor as prc
 import piony.budparser.exceptions as bux
 
 # if __debug__:
@@ -24,20 +24,16 @@ def search_dst_window():
 
 
 def set_args_from_command_line(cfg, args):
-    from piony.config import cfgdefaults
-    cd = cfgdefaults.G_CONFIG_DEFAULT
-
     ar = [(k, v) for k, v in vars(args).items() if v]
-
-    for section, opts in cd.items():
+    for section, opts in cfg.items():
         for k, v in ar:
             if k in opts:
-                cfg.set(section, k, str(v))
+                cfg[section][k] = str(v)
 
 
 class Server(QObject):
-    from configparser import ConfigParser
-    dataReceived = pyqtSignal(ConfigParser, dict, dict)
+    from collections import OrderedDict
+    dataReceived = pyqtSignal(OrderedDict, dict, dict)
     quit = pyqtSignal()
 
     def __init__(self):
@@ -46,6 +42,7 @@ class Server(QObject):
         self.bud = None
         self.conn = None
         self.server = None
+        prc.init()
 
     def create(self, name=gvars.G_SOCKET_NAME):
         QLocalServer.removeServer(name)
@@ -89,9 +86,8 @@ class Server(QObject):
         gvars.G_ACTIVE_WINDOW = search_dst_window()
 
         Arg_Ps = ArgsParser()
-        Cfg_Ps = CfgParser()
 
-        cfg = Cfg_Ps.read_file()
+        cfg = prc.load(gvars.G_CONFIG_PATH)
         args = Arg_Ps.parse(argv)
 
         if args.kill:
@@ -99,7 +95,7 @@ class Server(QObject):
             self.quit.emit()
 
         Arg_Ps.apply(args)
-        set_args_from_command_line(cfg, args)
+        # set_args_from_command_line(cfg, args)
 
         entries = args.buds if args.buds else cfg['Bud']['default']
         Bud_Ps = BudParser()

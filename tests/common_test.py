@@ -1,6 +1,17 @@
+from piony.common import expand_pj
 from piony.common import any_in, all_in, all_are
 from piony.common import degreeNorm, arcContains, iround, lrotate
 from piony.common import ra2xy, xy2ra, similar
+
+
+class TestF_expand_pj:
+    def test_pj(self):
+        assert 'some/path' == expand_pj(':/path', 'some')
+        assert '/path' == expand_pj('/path')
+
+    def test_non(self):
+        assert None == expand_pj(None)
+        assert ':path' == expand_pj(':path')
 
 
 class TestF_all_are:

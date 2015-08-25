@@ -75,13 +75,13 @@ class MainEventsMixin(object):
 class MainControlMixin(object):
     def setupDynamic(self, cfg):
         wflags = self.windowFlags()
-        if cfg['System'].getboolean('no_focus'):
+        if bool(cfg['System']['no_focus']):
             wflags |= Qt.X11BypassWindowManagerHint
         else:
             wflags &= ~Qt.X11BypassWindowManagerHint
         self.setWindowFlags(wflags)
 
-        if not cfg['Window'].getboolean('no_tooltip'):
+        if not bool(cfg['Window']['no_tooltip']):
             text = 'Slice No=1 <i>Click at any empty space to close.</i>'
         self.setToolTip(text if text else None)
 

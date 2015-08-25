@@ -28,7 +28,7 @@ class SegmentWidget(QtWidgets.QToolButton):
         self.setText(name)
         self.action = act
 
-        self.text_scale = self.opts.getfloat('text_scale')
+        self.text_scale = float(self.opts['text_scale'])
 
         self.bHover = False
         self.bHold = False
