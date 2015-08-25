@@ -142,3 +142,7 @@ class TestBudParser:
         # It's an accumulating scheme
         assert bps.parse(None) == BUD(SLCE(RING()))
         assert bps.parse("") == BUD(SLCE(RING()), SLCE(RING()))
+
+    def test_noFile(self, bps):
+        with pytest.raises(bux.BudArgumentError):
+            bps.parse("./cfg/ss")

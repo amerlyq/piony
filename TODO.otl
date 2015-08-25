@@ -257,6 +257,10 @@ IDEAS
 	[_] NOTE: not equialent, white bkgr for view in second case:
 		-1- setStyleSheet("background: transparent")
 		-2- def paintEvent(self, e): p.setBrush(QtGui.QColor(0, 0, 0, 0))...
+	[_] BUG: launch piony from home -- exception on self.bud assign
+		:= it's about relative path for default bud. Need new exception for budparser
+	[_] FIX: message 'refused by peer' must be only if there is broken socket
+		:? but now it is printed on every launch
 
 
 > OPTIMIZATION

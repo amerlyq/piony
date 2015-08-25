@@ -1,4 +1,4 @@
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QObject, pyqtSignal
 from PyQt5.QtGui import QCursor, QFont
 from PyQt5.QtWidgets import (
     QMainWindow, QGraphicsView, QGraphicsScene,
@@ -8,8 +8,6 @@ from PyQt5.QtWidgets import (
 import piony
 from piony.widget.bud import BudWidget
 from piony.hgevent import HGEventMixin
-from piony.config.cfgparser import CfgParser
-from piony.system.server import Server
 
 
 class MainWidget(QWidget, HGEventMixin):
@@ -60,68 +58,18 @@ class MainEventsMixin(object):
             e.accept()
 
 
-class MainSettingsMixin(object):
-    def attachElements(self):
-        self.wdg = MainWidget()
-        scene = QGraphicsScene()
-        scene.addWidget(self.wdg)
-        self.setCentralWidget(MainView(scene))
-
-    def setupWindow(self):
-        QToolTip.setFont(QFont('Ubuntu', 12))
-
-        self.setAttribute(Qt.WA_TranslucentBackground)
-        wflags = Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint | Qt.Tool
-        self.setWindowFlags(self.windowFlags() | wflags)
-
-        self.setMinimumSize(10, 10)
-        self.setWindowTitle("{} {}".format(
-            piony.__appname__, piony.__version__))
-
-    def setupContextMenu(self):
-        # SEE: http://doc.qt.io/qt-5/qtwidgets-mainwindows-menus-example.html
-        aQuit = QAction("E&xit", self, shortcut="Ctrl+Q",
-                        shortcutContext=Qt.ApplicationShortcut,
-                        triggered=qApp.quit)
-        self.addAction(aQuit)
-        # TODO: for release use Qt.NoContextMenu, enable only in edit-mode
-        self.setContextMenuPolicy(Qt.ActionsContextMenu)
-
-    def setupDynamic(self):
+class MainControlMixin(object):
+    def setupDynamic(self, cfg):
         wflags = self.windowFlags()
-        if self.cfg['System'].getboolean('no_focus'):
+        if cfg['System'].getboolean('no_focus'):
             wflags |= Qt.X11BypassWindowManagerHint
         else:
             wflags &= ~Qt.X11BypassWindowManagerHint
         self.setWindowFlags(wflags)
 
-        if not self.cfg['Window'].getboolean('no_tooltip'):
+        if not cfg['Window'].getboolean('no_tooltip'):
             text = 'Slice No=1 <i>Click at any empty space to close.</i>'
         self.setToolTip(text if text else None)
-
-
-class MainWindow(MainSettingsMixin, MainEventsMixin, QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.cfg = CfgParser().default()
-
-        self.setupWindow()
-        self.setupDynamic()
-        self.attachElements()
-        self.setupContextMenu()
-
-    def reload(self, cfg, bud, bReload):
-        if cfg:
-            self.cfg = cfg
-            self.setupDynamic()
-        if bud or bReload['Window']:
-            self.wdg.refreshBuds(cfg, bud)
-            self.centerOnCursor()
-        if bReload['toggle']:
-            self.setVisible(not self.isVisible())
-        else:
-            # NOTE: don't forget to delete, or --hide will not work later
-            self.show()
 
     def centerOnCursor(self):
         fg = self.geometry()
@@ -133,21 +81,80 @@ class MainWindow(MainSettingsMixin, MainEventsMixin, QMainWindow):
         self.move(fg.topLeft())  # self.setGeometry(fg)
 
 
-class MainApplication(object):
+class MainWindow(MainControlMixin, MainEventsMixin, QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self._setupWindow()
+        self._attachElements()
+        self._setupContextMenu()
+
+    def _attachElements(self):
+        self.wdg = MainWidget()
+        self.scene = QGraphicsScene()
+        self.scene.addWidget(self.wdg)
+        self.view = MainView(self.scene)
+        self.setCentralWidget(self.view)
+
+    def _setupWindow(self):
+        QToolTip.setFont(QFont('Ubuntu', 12))
+
+        self.setAttribute(Qt.WA_TranslucentBackground)
+        wflags = Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint | Qt.Tool
+        self.setWindowFlags(self.windowFlags() | wflags)
+
+        self.setMinimumSize(10, 10)
+        self.setWindowTitle("{} {}".format(
+            piony.__appname__, piony.__version__))
+
+    def _setupContextMenu(self):
+        # SEE: http://doc.qt.io/qt-5/qtwidgets-mainwindows-menus-example.html
+        aQuit = QAction("E&xit", self, shortcut="Ctrl+Q",
+                        shortcutContext=Qt.ApplicationShortcut,
+                        triggered=qApp.quit)
+        self.addAction(aQuit)
+        # TODO: for release use Qt.NoContextMenu, enable only in edit-mode
+        self.setContextMenuPolicy(Qt.ActionsContextMenu)
+
+
+class MainApplication(QObject):
+    start = pyqtSignal(list)
+
     def __init__(self, argv):
+        super().__init__()
+        from os import path as fs
+        self.dir_res = fs.join(fs.dirname(fs.abspath(argv[0])), 'res', '')
+        self.start.connect(self.load)
+        self.start.emit(argv)
+
+    def load(self, argv):
+        self.tray = self._createTray()
+        self.srv = self._createServer()
         self.wnd = MainWindow()
-        self.srv = Server()
-
-        self.srv.create()
-        self.srv.dataReceived.connect(self.wnd.reload)
         self.srv.loadData(argv[1:])
-
         self.wnd.show()
 
-    # def attachTray(self):
-    #     from PyQt5.QtWidgets import QSystemTrayIcon
-    #     from PyQt5.QtGui import QIcon
-    #     self.tray = QSystemTrayIcon()
-    #     self.tray.setIcon(QIcon("/usr/share/themes/Vertex-Dark/gtk-3.0/assets/checkbox-checked-dark.png"))
-    #     self.tray.blockSignals(True)
-    #     self.tray.show()
+    def reloadState(self, cfg, bud, bReload):
+        if cfg:
+            self.wnd.setupDynamic(cfg)
+            self.cfg = cfg
+        if bud or bReload['Window']:
+            self.wnd.wdg.refreshBuds(cfg, bud)
+            self.wnd.centerOnCursor()
+        if bReload['toggle']:
+            self.wnd.setVisible(not self.wnd.isVisible())
+
+    def _createTray(self):
+        from PyQt5.QtWidgets import QSystemTrayIcon
+        from PyQt5.QtGui import QIcon
+        tray = QSystemTrayIcon()
+        tray.setIcon(QIcon(self.dir_res + "tray-normal.png"))
+        tray.show()
+        return tray
+
+    def _createServer(self):
+        from piony.system.server import Server
+        srv = Server()
+        srv.create()
+        # srv.quit.connect(qApp.quit)
+        srv.dataReceived.connect(self.reloadState)
+        return srv

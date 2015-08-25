@@ -1,3 +1,4 @@
+from PyQt5.QtWidgets import qApp
 from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtCore import QObject, QDataStream, pyqtSignal
 
@@ -106,6 +107,7 @@ class Server(QObject):
             bud = Bud_Ps.parse(entries)
         except bux.BudError as e:
             print("Error:", e)
+            qApp.quit()
 
         # if __debug__:
         #     pprint.pprint(bud, width=41, compact=True)
