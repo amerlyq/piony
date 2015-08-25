@@ -1,10 +1,6 @@
-import os
-import sys
-import yaml
-
-import piony.budparser.exceptions as bux
 from piony.budparser.ring import RingMaker
 from piony.budparser.slice import SliceMaker
+import piony.config.processor as prc
 
 
 # class BudMaker:
@@ -23,6 +19,7 @@ class BudParser:
     sliceMaker = SliceMaker()
 
     def __init__(self):
+        prc.init()
         self.default()
 
     def default(self):
@@ -30,20 +27,7 @@ class BudParser:
         return self.bud
 
     def interpret(self, entry):
-        if not entry:
-            layer = None
-        elif '-' == entry:
-            layer = yaml.safe_load(sys.stdin)  # entry = sys.stdin.read()
-        elif os.path.isfile(entry):            # && os.path.isabs(PATH)
-            with open(entry, 'r') as f:
-                layer = yaml.safe_load(f)      # entry = f.read()
-        else:
-            layer = yaml.safe_load(entry)
-
-        if layer and not isinstance(layer, (list, dict)):
-            raise bux.BudArgumentError(
-                'Seems like non-existing path {}'.format(layer))
-
+        layer = prc.load(entry)
         self.bud['slices'].append(self.sliceMaker.make(layer))
         # self.parseEntry(layer)
 

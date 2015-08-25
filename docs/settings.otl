@@ -70,6 +70,8 @@ PROFILES   :>>> All syntax is yaml-compatible
 	| [k1,{import: ./cfgs/krita.yml}
 	[_] Confidently determine if string is path or part of yaml
 	|   |
+	[_] File embeddings
+	| {segments: [k1, {file1: path, index: [ring2]}, ...]
 	[_] Bud primitives
 	| -      | slice from stdin
 	| <file> | slice from file (search in pwd/, pwd/cfgs/, ~/.piony/, /etc/piony/)

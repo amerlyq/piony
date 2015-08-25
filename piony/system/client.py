@@ -42,5 +42,5 @@ class Client:
 
         msg = errdesc.get(err, "Error occurred: {}."
                           .format(self.socket.errorString()))
-        if msg is not None:
+        if msg:
             print("Client:", msg)
