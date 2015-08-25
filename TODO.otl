@@ -25,12 +25,10 @@ RFC
 	[_] Calculate text size to fit into rect in one pass (find Qt Api)
 	[_] Rename all config options to format 'fTextScale' with type letter
 
+
 STYLE
-	[_] If possible, use styles instead of my own vehicle:
-		: http://wiki.qt.io/Main_Page
-		: http://doc.qt.io/qt-4.8/style-reference.html
-		2015-04-27 [$] remove my overload for mouseDown/Up for btn.connect work again
-			:> I will need overloading for future air-menu, so NO.
+	2015-04-27 [$] remove my overload for mouseDown/Up for btn.connect work again
+		:> I will need overloading for future air-menu, so NO.
 	[_] (v1.1) for selection by <Tab> use different highlight than for hover
 		thin red-thansparent gradient lines as outer contour to current yellow.
 		they will cover only half-length of one petal, fading out with distance

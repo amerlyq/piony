@@ -1,4 +1,4 @@
-from PyQt5.QtCore import Qt, QObject, pyqtSignal
+from PyQt5.QtCore import Qt, QObject, pyqtSignal  # , QRect, QPoint
 from PyQt5.QtGui import QCursor, QFont
 from PyQt5.QtWidgets import (
     QMainWindow, QGraphicsView, QGraphicsScene,
@@ -7,16 +7,14 @@ from PyQt5.QtWidgets import (
 
 import piony
 from piony.widget.bud import BudWidget
-from piony.hgevent import HGEventMixin
+from piony.hgevent import InputProcessor
 
 
-class MainWidget(QWidget, HGEventMixin):
+class MainWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.budwdg = None
         self.setLayout(QStackedLayout())
-        self.installEventFilter(self)
-        self.setMouseTracking(True)
         self.setStyleSheet("background:transparent")
 
     def refreshBuds(self, cfg, bud):
@@ -46,6 +44,7 @@ class MainView(QGraphicsView):
 
 class MainEventsMixin(object):
     def showEvent(self, e):
+        self.adjustSize()
         self.centerOnCursor()
 
     def keyPressEvent(self, e):
@@ -56,6 +55,21 @@ class MainEventsMixin(object):
         if e.modifiers() == Qt.ShiftModifier and e.key() == Qt.Key_K:
             print("K")
             e.accept()
+
+    def mousePressEvent(self, e):
+        print(e.button())
+        self.ipr.mPress(e)
+        # e.accept()
+
+    def mouseMoveEvent(self, e):
+        if self.key('M3') or self.key('C-M1'):
+            self.move(self.ipr.delta(e, 'M3'))
+
+    def resizeEvent(self, e):
+        self.adjustSize()
+
+    def wheelEvent(self, e):
+        print("Ring rotate: ", e.angleDelta())
 
 
 class MainControlMixin(object):
@@ -80,6 +94,21 @@ class MainControlMixin(object):
         fg.moveCenter(cp)
         self.move(fg.topLeft())  # self.setGeometry(fg)
 
+    def adjustSize(self):
+        # CHG: fast (no bud recreation) but blur fonts after scaling
+        # THINK: may it be useful for wide scene?
+        # TODO: remove it when port all to QGraphics..
+        self.view.fitInView(self.scene.sceneRect(), Qt.KeepAspectRatio)
+
+        # ALT: create with exact size -- for rare resize
+        # self.scene.setSceneRect(self.scene.itemsBoundingRect())
+        # if self.wdg.budwdg:
+        #     self.scene.clear()
+        #     self.wdg = MainWidget()
+        #     self.wdg.budwdg.setGeometry(
+        #         QRect(0, 0, self.view.width(), self.view.height()))
+        #     self.scene.addWidget(self.wdg)
+
 
 class MainWindow(MainControlMixin, MainEventsMixin, QMainWindow):
     def __init__(self):
@@ -89,6 +118,7 @@ class MainWindow(MainControlMixin, MainEventsMixin, QMainWindow):
         self._setupContextMenu()
 
     def _attachElements(self):
+        self.ipr = InputProcessor()
         self.wdg = MainWidget()
         self.scene = QGraphicsScene()
         self.scene.addWidget(self.wdg)
@@ -96,11 +126,11 @@ class MainWindow(MainControlMixin, MainEventsMixin, QMainWindow):
         self.setCentralWidget(self.view)
 
     def _setupWindow(self):
-        QToolTip.setFont(QFont('Ubuntu', 12))
-
         self.setAttribute(Qt.WA_TranslucentBackground)
         wflags = Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint | Qt.Tool
         self.setWindowFlags(self.windowFlags() | wflags)
+        self.installEventFilter(self)
+        self.setMouseTracking(True)
 
         self.setMinimumSize(10, 10)
         self.setWindowTitle("{} {}".format(
@@ -123,10 +153,12 @@ class MainApplication(QObject):
         super().__init__()
         from os import path as fs
         self.dir_res = fs.join(fs.dirname(fs.abspath(argv[0])), 'res', '')
+        # CHG: bad try to introduce quit event before qapp event loop
         self.start.connect(self.load)
         self.start.emit(argv)
 
     def load(self, argv):
+        QToolTip.setFont(QFont('Ubuntu', 12))
         self.tray = self._createTray()
         self.srv = self._createServer()
         self.wnd = MainWindow()

@@ -1,4 +1,8 @@
->>> EDIT MODE (not expected untill v2.5) >>>
+>>> EDIT MODE (not expected until v2.5) >>>
+
+	[_] For QWidgets (edit and context menu) use StyleSheet:
+		: http://wiki.qt.io/Main_Page
+		: http://doc.qt.io/qt-5.5/style-reference.html
 
 Context menu
 	[_] Launched only from tray -- because of utilizing M2 for bud itself
