@@ -24,7 +24,7 @@ class BudWidget(QtWidgets.QWidget):
 
         pie = PieLayout(self.cfg, self.r, self.dr, 0)
         for segment in ring['segments']:
-            btn = SegmentWidget(self.cfg['Button'], segment.name,
+            btn = SegmentWidget(segment.name,
                                 lambda a=segment.action: sendKey(a))
             if not bool(self.cfg['Window']['no_tooltip']):
                 btn.setToolTip(segment.tooltip)

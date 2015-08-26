@@ -1,0 +1,22 @@
+Segment:
+  Border:
+    color:
+      select: [255, 200, 0, 220]
+      press: [255, 200, 0, 220]
+      normal: [10, 10, 0, 220]
+    width: 3
+
+  Filler:
+    color:
+      select: [30, 30, 0, 180]
+      press: [30, 80, 0, 180]
+      normal: [40, 40, 40, 180]  # 10, 10, 0
+
+  Text:
+    color:
+      select: [255, 120, 0, 255]
+      press: [255, 40, 40, 255]
+      normal: [100, 255, 0, 255]
+    scale: 0.40
+
+# vim:ts=2:sw=2:sts=2

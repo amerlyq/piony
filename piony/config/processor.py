@@ -8,6 +8,7 @@ from piony.exceptions import InputError
 
 
 G_CONFIG_PATH = ':/cfgs/config.yml'
+G_STYLE_PATH = ':/cfgs/style.yml'
 
 
 def init():

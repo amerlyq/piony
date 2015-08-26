@@ -3,38 +3,21 @@ from PyQt5.QtCore import Qt, QPoint, QSize, QRect
 
 from piony.config import gvars
 from piony.widget import base
-
-
-class PetalStyle():
-    wLine = 3
-
-    def __init__(self):
-        self.cBorder = {"select": [255, 200, 0, 220],
-                        "press": [255, 200, 0, 220],
-                        "normal": [10, 10, 0, 220]}
-        self.cFiller = {"select": [30, 30, 0, 180],
-                        "press": [30, 80, 0, 180],
-                        "normal": [40, 40, 40, 180]}  # 10, 10, 0
-        self.cText = {"select": [255, 120, 0, 255],
-                      "press": [255, 40, 40, 255],
-                      "normal": [100, 255, 0, 255]}
+from piony.gstate import GState
 
 
 class SegmentWidget(QtWidgets.QToolButton):
-    def __init__(self, opts, name="", act=None, parent=None):
+    def __init__(self, name="", act=None, parent=None):
         super().__init__(parent)
+        self.sty = GState().sty['Segment']
 
-        self.opts = opts
         self.setText(name)
         self.action = act
-
-        self.text_scale = float(self.opts['text_scale'])
 
         self.bHover = False
         self.bHold = False
         self.gPath = None
         self.gText = QRect(0, 0, 20, 20)
-        self.pstyle = PetalStyle()
 
         self.setFont(QtGui.QFont('Ubuntu', 16))
         self.setMouseTracking(True)
@@ -82,23 +65,25 @@ class SegmentWidget(QtWidgets.QToolButton):
 
     def _clr(self, nm):
         if self.bHold:
-            clr = "press"
+            regime = "press"
         elif self.bHover:
-            clr = "select"
+            regime = "select"
         else:
-            clr = "normal"
-        return QtGui.QColor(*getattr(self.pstyle, nm)[clr])
+            regime = "normal"
+        return QtGui.QColor(*list(self.sty[nm]['color'][regime]))
 
     def drawSegment(self, p):
-        p.setBrush(self._clr("cFiller"))
-        p.setPen(QtGui.QPen(self._clr("cBorder"), PetalStyle.wLine, Qt.SolidLine))
+        p.setBrush(self._clr("Filler"))
+        p.setPen(QtGui.QPen(self._clr("Border"),
+                            self.sty['Border']['width'], Qt.SolidLine))
         p.drawPath(self.gPath)
 
     def drawSegmentText(self, p):
         ## RFC: Move to setGeometry. BUG: 'self' instead 'p' causes circular call
-        base.adjustFontSize(p, self.text(), self.gText.size())
+        sz = self.gText.size() * float(self.sty['Text']['scale'])
+        base.adjustFontSize(p, self.text(), sz)
 
-        p.setPen(self._clr("cText"))
+        p.setPen(self._clr("Text"))
         if __debug__ and gvars.G_DEBUG_VISUALS:
             p.drawRect(self.gText)
         p.drawText(self.gText, Qt.AlignCenter, self.text())
