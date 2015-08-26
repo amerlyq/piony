@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import (
 )
 
 import piony
+from piony.common import expand_pj
 from piony.widget.bud import BudWidget
 from piony.hgevent import InputProcessor
 
@@ -146,19 +147,53 @@ class MainWindow(MainControlMixin, MainEventsMixin, QMainWindow):
         self.setContextMenuPolicy(Qt.ActionsContextMenu)
 
 
+class GlobalState(QObject):
+    invalidated = pyqtSignal(dict, list)
+
+    def __init__(self, argv):
+        super().__init__()
+        self.active_window = '%1'
+        self.cfg = None
+        self.bud = None
+        self.now = None  # Instant states like current visibility, etc
+        self.update(argv)
+
+    def update(self, argv):
+        kgs = self.parse(argv)
+        chg_gs = self.compare(kgs)
+        if chg_gs:
+            self.invalidated.emit(self.get_gs(), chg_gs)
+
+    def parse(self, argv):
+        # TODO: ret whole new current state
+        return {'cfg': False}
+
+    def compare(self, kgs):
+        """ Used as separate function because of embedded file paths in arg """
+        # Compose dict of current GlobalState variables
+        # curr_gs = self.get_gs()
+        # Detected changes in global state
+        chg_gs = [('cfg', 'Window'), 'bud']
+        # TODO: recursive diff cgs/kgs and inserting 1 in changed keys/branches
+        return chg_gs
+
+    def get_gs(self):
+        return {k: v for k, v in self.__dict__.items()
+                if not k.startswith('__') and not callable(k)}
+
+
 class MainApplication(QObject):
     start = pyqtSignal(list)
 
     def __init__(self, argv):
         super().__init__()
-        from os import path as fs
-        self.dir_res = fs.join(fs.dirname(fs.abspath(argv[0])), 'res', '')
         # CHG: bad try to introduce quit event before qapp event loop
         self.start.connect(self.load)
         self.start.emit(argv)
 
     def load(self, argv):
-        QToolTip.setFont(QFont('Ubuntu', 12))
+        self.gs = GlobalState(argv)
+        self._globalSetup()
         self.tray = self._createTray()
         self.srv = self._createServer()
         self.wnd = MainWindow()
@@ -175,11 +210,14 @@ class MainApplication(QObject):
         if bReload['toggle']:
             self.wnd.setVisible(not self.wnd.isVisible())
 
+    def _globalSetup(self):
+        QToolTip.setFont(QFont('Ubuntu', 12))
+
     def _createTray(self):
         from PyQt5.QtWidgets import QSystemTrayIcon
         from PyQt5.QtGui import QIcon
         tray = QSystemTrayIcon()
-        tray.setIcon(QIcon(self.dir_res + "tray-normal.png"))
+        tray.setIcon(QIcon(expand_pj(":/res/tray-normal.png")))
         tray.show()
         return tray
 

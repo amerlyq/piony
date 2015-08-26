@@ -2,25 +2,16 @@ from PyQt5.QtWidgets import qApp
 from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtCore import QObject, QDataStream, pyqtSignal
 
+import piony.config.processor as prc
+import piony.budparser.exceptions as bux
 from piony.config import gvars
 from piony.config.argparser import ArgsParser
 from piony.budparser.parser import BudParser
-import piony.config.processor as prc
-import piony.budparser.exceptions as bux
+from piony.system import action
 
 # if __debug__:
 #     import pprint
-
-
-def search_dst_window():
-    from subprocess import check_output, CalledProcessError
-    try:
-        out = check_output(['xdotool', 'getactivewindow'])
-    except CalledProcessError:
-        idwnd = None
-    else:
-        idwnd = out[:-1].decode('ascii')
-    return idwnd
+#     pprint.pprint(bud, width=41, compact=True)
 
 
 def set_args_from_command_line(cfg, args):
@@ -80,14 +71,12 @@ class Server(QObject):
         self.loadData(argv)
 
     def loadData(self, argv):
-        ## Read configuration files
-        # cdir = os.path.dirname(os.path.abspath(__file__))
         # Must be setted up on 'show' action. Move from beginning to appropriate.
-        gvars.G_ACTIVE_WINDOW = search_dst_window()
+        action.search_dst_window()
 
         Arg_Ps = ArgsParser()
 
-        cfg = prc.load(gvars.G_CONFIG_PATH)
+        cfg = prc.load(prc.G_CONFIG_PATH)
         args = Arg_Ps.parse(argv)
 
         if args.kill:
@@ -95,18 +84,16 @@ class Server(QObject):
             self.quit.emit()
 
         Arg_Ps.apply(args)
-        # set_args_from_command_line(cfg, args)
+        set_args_from_command_line(cfg, args)
 
-        entries = args.buds if args.buds else cfg['Bud']['default']
+        entries = args.buds if args.buds else str(cfg['Bud']['default'])
         Bud_Ps = BudParser()
         try:
             bud = Bud_Ps.parse(entries)
         except bux.BudError as e:
             print("Error:", e)
-            qApp.quit()
-
-        # if __debug__:
-        #     pprint.pprint(bud, width=41, compact=True)
+            if not self.bud:  # NOTE: work must go on if client args are bad
+                qApp.quit()
 
         # TODO: Make 'bReload' as tuple to distinguish necessary refreshes.
         bReload = {}

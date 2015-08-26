@@ -1,6 +1,5 @@
 import pytest
 from piony.config.argparser import ArgsParser
-from piony.config import gvars
 
 
 def args_check(cmdline, opts={}):
@@ -16,7 +15,7 @@ def args_check_exit(cmdline):
 class TestArgDefault():
     def test_default(self):
         assert args_check(" ", {  # Empty cmdline must have space to use
-            'config': gvars.G_CONFIG_PATH,
+            'config': ':/cfgs/config.yml',
             'print': False,
             # 'size': 360,
             'fullscreen': False,

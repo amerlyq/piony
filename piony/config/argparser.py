@@ -1,6 +1,6 @@
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
-from piony import __appname__, __doc__
+import piony
 from piony.config import gvars
 from piony.exceptions import PionyError
 from piony.config import argdefaults
@@ -17,9 +17,9 @@ class ArgsInputError(ArgsError):
 class ArgsParser:
 
     def parse(self, cmdline):
-        ps = ArgumentParser(prog=__appname__,
+        ps = ArgumentParser(prog=piony.__appname__,
                             formatter_class=RawDescriptionHelpFormatter,
-                            description=__doc__,
+                            description=piony.__doc__,
                             epilog="Enjoy!!!")
 
         argdefaults.G_ARGUMENTS_DEFAULT_F(ps)

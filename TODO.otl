@@ -157,7 +157,7 @@ THREADS
 		http://stackoverflow.com/questions/6186091/pyqt-best-way-to-do-the-trick-start-at-boot-for-my-program-in-windows
 
 	<Flags>
-	[_] -d : start as background daemon  # OR: '-D','--no-daemon'
+	[_] -d : start as background daemon, enable client-server (OR: '-D','--no-daemon')
 	: https://www.safaribooksonline.com/library/view/python-cookbook/0596001673/ch06s09.html
 		[_] toggle show/hide instead of creating each time
 			| check self.hide() functional -- does it hide from i3wm?

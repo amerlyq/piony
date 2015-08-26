@@ -7,6 +7,9 @@ from piony.common import expand_pj
 from piony.exceptions import InputError
 
 
+G_CONFIG_PATH = ':/cfgs/config.yml'
+
+
 def init():
     yaml.add_constructor(
         'tag:yaml.org,2002:map',

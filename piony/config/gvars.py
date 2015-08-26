@@ -4,7 +4,5 @@ if __debug__:
     G_DEBUG_SERVER = False
 
 
-G_ACTIVE_WINDOW = "%1"
-G_CONFIG_PATH = ":/cfgs/config.yml"
-G_IPC_DAEMON = True
-G_SOCKET_NAME = "piony-socket"
+G_ACTIVE_WINDOW = '%1'
+G_SOCKET_NAME = 'piony-socket'
