@@ -139,3 +139,7 @@ ConfigParser (deprecated by yaml)
 	:	default_section="DEFAULT", interpolation=None)
 	: self.cfg.read_dict(cfgdefaults.G_CONFIG_DEFAULT)
 	: self.cfg.read(path)  # Can specify bunch of possible files
+
+Debug: (print OrderedDict)
+	import pprint
+	pprint.pprint(bud, width=41, compact=True)

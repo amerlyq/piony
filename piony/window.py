@@ -147,28 +147,76 @@ class MainWindow(MainControlMixin, MainEventsMixin, QMainWindow):
         self.setContextMenuPolicy(Qt.ActionsContextMenu)
 
 
-class GlobalState(QObject):
-    invalidated = pyqtSignal(dict, list)
+from collections import OrderedDict
 
-    def __init__(self, argv):
+import piony.budparser.exceptions as bux
+import piony.config.processor as prc
+from piony.system import action
+from piony.config.argparser import ArgsParser
+from piony.budparser.parser import BudParser
+
+
+class GlobalState(QObject):
+    # invalidated = pyqtSignal(dict, list)
+    invalidated = pyqtSignal(OrderedDict, dict, dict)
+
+    def __init__(self):
         super().__init__()
+        prc.init()
         self.active_window = '%1'
         self.cfg = None
         self.bud = None
         self.now = None  # Instant states like current visibility, etc
-        self.update(argv)
 
     def update(self, argv):
         kgs = self.parse(argv)
-        chg_gs = self.compare(kgs)
-        if chg_gs:
-            self.invalidated.emit(self.get_gs(), chg_gs)
+        # chg_gs = self.compare(kgs)
+        # Must be setted up on 'show' action. Move from beginning to appropriate.
+        action.search_dst_window()
+        # if chg_gs:
+        #     self.invalidated.emit(self.get_gs(), chg_gs)
+        self.invalidated.emit(kgs['cfg'], kgs['bud'], kgs['bReload'])
 
-    def parse(self, argv):
+    def _set_args_from_command_line(self, cfg, args):
+        ar = [(k, v) for k, v in vars(args).items() if v]
+        for section, opts in cfg.items():
+            for k, v in ar:
+                if k in opts:
+                    cfg[section][k] = str(v)
+
+    def parse(self, argv):  # NEED: RFC
+        Arg_Ps = ArgsParser()
+
+        cfg = prc.load(prc.G_CONFIG_PATH)
+        args = Arg_Ps.parse(argv)
+
+        if args.kill:
+            print("kill:")
+            self.quit.emit()
+
+        Arg_Ps.apply(args)  # Set gvars
+        self._set_args_from_command_line(cfg, args)
+
+        entries = args.buds if args.buds else str(cfg['Bud']['default'])
+        Bud_Ps = BudParser()
+        try:
+            bud = Bud_Ps.parse(entries)
+        except bux.BudError as e:
+            print("Error:", e)
+            if not self.bud:  # NOTE: work must go on if client args are bad
+                qApp.quit()
+
+        # TODO: Make 'bReload' as tuple to distinguish necessary refreshes.
+        bReload = {}
+        bReload['toggle'] = bool(0 == len(argv))
+        bReload['Window'] = bool(self.cfg and cfg['Window'] != self.cfg['Window'])
+
+        self.cfg = cfg
+        self.bud = bud
         # TODO: ret whole new current state
-        return {'cfg': False}
+        return {'cfg': cfg, 'bud': bud, 'bReload': bReload}
 
-    def compare(self, kgs):
+    def compare(self, kgs):  # WARNING: broken
         """ Used as separate function because of embedded file paths in arg """
         # Compose dict of current GlobalState variables
         # curr_gs = self.get_gs()
@@ -182,22 +230,24 @@ class GlobalState(QObject):
                 if not k.startswith('__') and not callable(k)}
 
 
-class MainApplication(QObject):
-    start = pyqtSignal(list)
+class MainApplication(object):
+    # start = pyqtSignal(list)
 
     def __init__(self, argv):
-        super().__init__()
+        self.load(argv)
+        # super().__init__()
         # CHG: bad try to introduce quit event before qapp event loop
-        self.start.connect(self.load)
-        self.start.emit(argv)
+        # self.start.connect(self.load)
+        # self.start.emit(argv)
 
     def load(self, argv):
-        self.gs = GlobalState(argv)
+        self.gs = GlobalState()
+        self.gs.invalidated.connect(self.reloadState)
         self._globalSetup()
         self.tray = self._createTray()
         self.srv = self._createServer()
         self.wnd = MainWindow()
-        self.srv.loadData(argv[1:])
+        self.gs.update(argv[1:])
         self.wnd.show()
 
     def reloadState(self, cfg, bud, bReload):
@@ -226,5 +276,5 @@ class MainApplication(QObject):
         srv = Server()
         srv.create()
         # srv.quit.connect(qApp.quit)
-        srv.dataReceived.connect(self.reloadState)
+        srv.dataReceived.connect(self.gs.update)
         return srv
