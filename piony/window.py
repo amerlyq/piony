@@ -119,6 +119,15 @@ class MainWindow(MainControlMixin, MainEventsMixin, QMainWindow):
         self._attachElements()
         self._setupContextMenu()
 
+    def reloadState(self, cfg, bud, bReload):
+        if cfg:
+            self.setupDynamic(cfg)
+        if bud or bReload['Window']:
+            self.wdg.refreshBuds(cfg, bud)
+            self.centerOnCursor()
+        if bReload['toggle']:
+            self.setVisible(not self.isVisible())
+
     def _attachElements(self):
         self.ipr = InputProcessor()
         self.wdg = MainWidget()
@@ -160,23 +169,14 @@ class MainApplication(object):
 
     def load(self, argv):
         self.gs = GState()
-        self.gs.invalidated.connect(self.reloadState)
         self._globalSetup()
+        # if gs.cfg['System']['use_tray']:
         self.tray = self._createTray()
         self.srv = self._createServer()
         self.wnd = MainWindow()
+        self.gs.invalidated.connect(self.wnd.reloadState)
         self.gs.update(argv[1:])
         self.wnd.show()
-
-    def reloadState(self, cfg, bud, bReload):
-        if cfg:
-            self.wnd.setupDynamic(cfg)
-            self.cfg = cfg
-        if bud or bReload['Window']:
-            self.wnd.wdg.refreshBuds(cfg, bud)
-            self.wnd.centerOnCursor()
-        if bReload['toggle']:
-            self.wnd.setVisible(not self.wnd.isVisible())
 
     def _globalSetup(self):
         QToolTip.setFont(QFont('Ubuntu', 12))

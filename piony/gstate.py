@@ -3,9 +3,9 @@ from PyQt5.QtWidgets import qApp
 from collections import OrderedDict
 
 import piony.budparser.exceptions as bux
-import piony.config.processor as prc
+from piony.config import ymlparser as yml
 from piony.system import action
-from piony.config.argparser import ArgsParser
+from piony.config.argparser import ArgParser
 from piony.budparser.parser import BudParser
 
 
@@ -22,11 +22,12 @@ class GState(QObject):
 
     def __init__(self):
         super().__init__()
-        prc.init()
         self.active_window = '%1'
         self.cfg = None
         self.bud = None
         self.now = None  # Instant states like current visibility, etc
+        yml.init()
+        self._psArg = ArgParser()
 
     def update(self, argv):
         kgs = self.parse(argv)
@@ -45,17 +46,16 @@ class GState(QObject):
                     cfg[section][k] = str(v)
 
     def parse(self, argv):  # NEED: RFC
-        Arg_Ps = ArgsParser()
-
-        self.sty = prc.load(prc.G_STYLE_PATH)
-        cfg = prc.load(prc.G_CONFIG_PATH)
-        args = Arg_Ps.parse(argv)
+        args = self._psArg.parse(argv)
+        self._psArg.apply(args)  # Set gvars
+        cfg = yml.parse(yml.G_CONFIG_PATH)
+        self.sty = yml.parse(yml.G_STYLE_PATH)
 
         if args.kill:
             print("kill:")
             self.quit.emit()
 
-        Arg_Ps.apply(args)  # Set gvars
+        self._psArg.apply(args)  # Set gvars
         self._set_args_from_command_line(cfg, args)
 
         entries = args.buds if args.buds else str(cfg['Bud']['default'])
@@ -86,6 +86,7 @@ class GState(QObject):
         # TODO: recursive diff cgs/kgs and inserting 1 in changed keys/branches
         return chg_gs
 
+    # TODO: replace with namedtuple (use it to emit)
     def get_gs(self):
         return {k: v for k, v in self.__dict__.items()
                 if not k.startswith('__') and not callable(k)}

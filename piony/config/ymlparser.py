@@ -23,7 +23,7 @@ def init():
         Dumper=yaml.SafeDumper)
 
 
-def load(entry):
+def parse(entry):
     if not entry:
         obj = None
     elif '-' == entry:

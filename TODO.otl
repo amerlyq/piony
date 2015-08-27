@@ -143,6 +143,8 @@ THREADS
 			:= It's all to simplify exit in case of bad connection
 		[_] Send error messages (from print -> log) to client after parsing
 		[_] Set-up getting interface '-g : --get' to receive window id, current buds, etc
+		[_] All relative to client pathes must be converted to full before sending server
+			:= Therefore client could specify files from its pwd instead full-pathes
 
 	Tray
 		[_] tray icon and menu

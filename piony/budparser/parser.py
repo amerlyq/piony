@@ -1,6 +1,6 @@
+from piony.config import ymlparser
 from piony.budparser.ring import RingMaker
 from piony.budparser.slice import SliceMaker
-import piony.config.processor as prc
 
 
 # class BudMaker:
@@ -26,7 +26,7 @@ class BudParser:
         return self.bud
 
     def interpret(self, entry):
-        layer = prc.load(entry)
+        layer = ymlparser.parse(entry)
         self.bud['slices'].append(self.sliceMaker.make(layer))
         # self.parseEntry(layer)
 

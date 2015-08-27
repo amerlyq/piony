@@ -1,9 +1,9 @@
 import pytest
-from piony.config.argparser import ArgsParser
+from piony.config.argparser import ArgParser
 
 
 def args_check(cmdline, opts={}):
-    argdic = vars(ArgsParser().parse(cmdline))
+    argdic = vars(ArgParser().parse(cmdline))
     return all(item in argdic for item in opts)
 
 
