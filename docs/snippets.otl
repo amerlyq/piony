@@ -130,16 +130,28 @@ sys.excepthook = info
 
 
 ConfigParser (deprecated by yaml)
-	: self.cfg = ConfigParser(
-	:	dict_type=OrderedDict,
-	:	allow_no_value=False, delimiters=('=', ':'),
-	:	comment_prefixes=('#', ';'),
-	:	inline_comment_prefixes=('#', ';'),
-	:	strict=True, empty_lines_in_values=False,
-	:	default_section="DEFAULT", interpolation=None)
-	: self.cfg.read_dict(cfgdefaults.G_CONFIG_DEFAULT)
-	: self.cfg.read(path)  # Can specify bunch of possible files
+: self.cfg = ConfigParser(
+:	dict_type=OrderedDict,
+:	allow_no_value=False, delimiters=('=', ':'),
+:	comment_prefixes=('#', ';'),
+:	inline_comment_prefixes=('#', ';'),
+:	strict=True, empty_lines_in_values=False,
+:	default_section="DEFAULT", interpolation=None)
+: self.cfg.read_dict(cfgdefaults.G_CONFIG_DEFAULT)
+: self.cfg.read(path)  # Can specify bunch of possible files
 
 Debug: (print OrderedDict)
 	import pprint
 	pprint.pprint(bud, width=41, compact=True)
+
+
+Singleton on metaclasses (can't have both metaclasses for QObject inheritance)
+: class Singleton(type):
+:     _instances = {}
+:     def __call__(cls, *args, **kwargs):
+:         if cls not in cls._instances:
+:             cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+:         # else:  # To init on every call
+:         #     cls._instances[cls].__init__(*args, **kwargs)
+:         return cls._instances[cls]
+: # USAGE: class A(B, metaclass=Singleton)

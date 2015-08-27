@@ -10,9 +10,7 @@ from piony.budparser.parser import BudParser
 
 
 class GState(QObject):
-    # invalidated = pyqtSignal(dict, list)
     invalidated = pyqtSignal(OrderedDict, dict, dict)
-
     __instance = None
 
     def __new__(cls):
