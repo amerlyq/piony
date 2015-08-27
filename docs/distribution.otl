@@ -3,6 +3,8 @@
 < [_] Maybe, test under Windows too? It will expand users.
 	http://habrahabr.ru/post/248189/
 	http://skramm.blogspot.com/2013/04/writing-portable-makefiles.html
+	pyqt5 -> py2exe under Windows
+		http://habrahabr.ru/post/264233/
 
 Store setting files in appropriate directories
 	http://stackoverflow.com/questions/1024114/location-of-ini-config-files-in-linux-unix

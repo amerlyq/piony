@@ -59,6 +59,7 @@ python:
   # Dependencies
 # - pip install .  # If you have 'setup.py' to install as package
 install:
+  - pip install -q python-qt5
   - pip install -q PyYAML
   - pip install -q pytest pylint pep8  # pytest-qt
 
