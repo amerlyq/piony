@@ -17,6 +17,6 @@ Segment:
       select: [255, 120, 0, 255]
       press: [255, 40, 40, 255]
       normal: [100, 255, 0, 255]
-    scale: 0.40
+    scale: 0.80
 
 # vim:ts=2:sw=2:sts=2

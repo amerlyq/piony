@@ -1,5 +1,12 @@
 >>> Configuration Management >>>
 
+ARCHITECTURE
+	Dependency injection
+		< Instead of singletons and global states
+		: https://pypi.python.org/pypi/injector			(Guice-inspired)
+		: https://pypi.python.org/pypi/Inject/3.3.1		(Non-Guice based)
+		http://tutorials.jenkov.com/dependency-injection/the-opportunities-missed-by-annotation-based-dependency-injection.html
+
 DEVELOPMENT
 	https://docs.python.org/3.4/library/debug.html
 	https://docs.python.org/3.4/library/development.html
@@ -26,7 +33,7 @@ DEVELOPMENT
 		позволяет построчно отпрофилировать нужные участки кода: pip install line_profiler
 		: @profile
 		: def some_slow_function():
-		: 	...
+		:	...
 		2015-05-03 [X] memory profiling
 			https://github.com/fabianp/memory_profiler
 

@@ -3,9 +3,6 @@ Window:
   size: 300
   no_tooltip: false
 
-Button:
-  text_scale: 0.40
-
 Bud:
   default: ":/cfgs/krita.yml"
   line_width: 2

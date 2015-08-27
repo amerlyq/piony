@@ -2,17 +2,7 @@
 cd $(dirname $(readlink -m ${0}))
 source ./funcs
 
-# Use it regularly to update pip packages!
-if distro arch; then
-    pkg_inst "python python-pip python-pyqt5"
-
-elif distro ubuntu; then
-    # sudo apt-get update -qq
-    pkg_inst "python3-dev python3-pip python3-pyqt5"  #python3-yaml
-fi
-
 ### DEVELOP ###
-sudo pip3 install -U PyYAML
 sudo pip3 install -U pytest pytest-cov pytest-qt
 sudo pip3 install -U pylint pep8
 sudo pip3 install -U readline pyreadline ipython ipdb pudb
