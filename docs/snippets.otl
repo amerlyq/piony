@@ -146,6 +146,7 @@ Debug: (print OrderedDict)
 
 
 Singleton on metaclasses (can't have both metaclasses for QObject inheritance)
+: <#1>
 : class Singleton(type):
 :     _instances = {}
 :     def __call__(cls, *args, **kwargs):
@@ -155,3 +156,9 @@ Singleton on metaclasses (can't have both metaclasses for QObject inheritance)
 :         #     cls._instances[cls].__init__(*args, **kwargs)
 :         return cls._instances[cls]
 : # USAGE: class A(B, metaclass=Singleton)
+: <#2>
+: __instance = None
+: def __new__(cls):
+:     if GState.__instance is None:
+:         GState.__instance = QObject.__new__(cls)
+:     return GState.__instance

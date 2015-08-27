@@ -1,12 +1,12 @@
+import inject
 from PyQt5.QtCore import Qt  # , QRect, QPoint
 from PyQt5.QtGui import QCursor, QFont
 from PyQt5.QtWidgets import (
     QMainWindow, QGraphicsView, QGraphicsScene,
-    QAction, QToolTip, QWidget, QStackedLayout, qApp
+    QWidget, QStackedLayout, qApp
 )
 
 import piony
-from piony.common import expand_pj
 from piony.widget.bud import BudWidget
 from piony.hgevent import InputProcessor
 from piony.gstate import GState
@@ -119,13 +119,14 @@ class MainWindow(MainControlMixin, MainEventsMixin, QMainWindow):
         self._attachElements()
         self._setupContextMenu()
 
-    def reloadState(self, cfg, bud, bReload):
-        if cfg:
-            self.setupDynamic(cfg)
-        if bud or bReload['Window']:
-            self.wdg.refreshBuds(cfg, bud)
+    @inject.params(gs=GState)
+    def reloadState(self, chgs={}, gs=None):
+        if gs.cfg:
+            self.setupDynamic(gs.cfg)
+        if gs.bud or gs.bReload['Window']:
+            self.wdg.refreshBuds(gs.cfg, gs.bud)
             self.centerOnCursor()
-        if bReload['toggle']:
+        if chgs.get('toggle', False):
             self.setVisible(not self.isVisible())
 
     def _attachElements(self):
@@ -148,6 +149,7 @@ class MainWindow(MainControlMixin, MainEventsMixin, QMainWindow):
             piony.__appname__, piony.__version__))
 
     def _setupContextMenu(self):
+        from PyQt5.QtWidgets import QAction
         # SEE: http://doc.qt.io/qt-5/qtwidgets-mainwindows-menus-example.html
         aQuit = QAction("E&xit", self, shortcut="Ctrl+Q",
                         shortcutContext=Qt.ApplicationShortcut,
@@ -159,40 +161,43 @@ class MainWindow(MainControlMixin, MainEventsMixin, QMainWindow):
 
 class MainApplication(object):
     # start = pyqtSignal(list)
+    # gs = inject.attr(GState)
 
-    def __init__(self, argv):
-        self.load(argv)
+    def __init__(self):
+        self.create()
         # super().__init__()
         # CHG: bad try to introduce quit event before qapp event loop
         # self.start.connect(self.load)
         # self.start.emit(argv)
 
-    def load(self, argv):
-        self.gs = GState()
+    @inject.params(gs=GState)
+    def create(self, gs):
         self._globalSetup()
-        # if gs.cfg['System']['use_tray']:
-        self.tray = self._createTray()
-        self.srv = self._createServer()
+        if gs.cfg['System']['use_tray']:
+            self.tray = self._createTray()
+        self.srv = self._createServer(gs)
         self.wnd = MainWindow()
-        self.gs.invalidated.connect(self.wnd.reloadState)
-        self.gs.update(argv[1:])
+        gs.invalidated.connect(self.wnd.reloadState)
+        self.wnd.reloadState()
         self.wnd.show()
 
     def _globalSetup(self):
+        from PyQt5.QtWidgets import QToolTip
         QToolTip.setFont(QFont('Ubuntu', 12))
 
     def _createTray(self):
         from PyQt5.QtWidgets import QSystemTrayIcon
         from PyQt5.QtGui import QIcon
+        from piony.common import expand_pj
         tray = QSystemTrayIcon()
         tray.setIcon(QIcon(expand_pj(":/res/tray-normal.png")))
         tray.show()
         return tray
 
-    def _createServer(self):
+    def _createServer(self, gs):
         from piony.system.server import Server
         srv = Server()
         srv.create()
         # srv.quit.connect(qApp.quit)
-        srv.dataReceived.connect(self.gs.update)
+        srv.dataReceived.connect(gs.update)
         return srv

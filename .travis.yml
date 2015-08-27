@@ -1,4 +1,7 @@
 # vim:ts=2:sw=2:sts=2
+# SEE:
+#   https://github.com/skycaptain/gazetrack/blob/master/gui/pyqtgraph/.travis.yml
+
 sudo: false
 language: python
 python:
@@ -59,9 +62,8 @@ python:
   # Dependencies
 # - pip install .  # If you have 'setup.py' to install as package
 install:
-  - pip install -q python-qt5
-  - pip install -q PyYAML
-  - pip install -q pytest pylint pep8  # pytest-qt
+  # - pip install git+git://github.com/pyqt/python-qt5.git
+  - pip install python-qt5 PyYAML pytest pylint pep8  # pytest-qt
 
 # before_script:
 #   - export DISPLAY=:99.0

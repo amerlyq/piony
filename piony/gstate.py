@@ -1,6 +1,6 @@
 from PyQt5.QtCore import QObject, pyqtSignal  # , QRect, QPoint
 from PyQt5.QtWidgets import qApp
-from collections import OrderedDict
+# from collections import OrderedDict
 
 import piony.budparser.exceptions as bux
 from piony.config import ymlparser as yml
@@ -10,15 +10,9 @@ from piony.budparser.parser import BudParser
 
 
 class GState(QObject):
-    invalidated = pyqtSignal(OrderedDict, dict, dict)
-    __instance = None
+    invalidated = pyqtSignal(dict)
 
-    def __new__(cls):
-        if GState.__instance is None:
-            GState.__instance = QObject.__new__(cls)
-        return GState.__instance
-
-    def __init__(self):
+    def __init__(self, argv):
         super().__init__()
         self.active_window = '%1'
         self.cfg = None
@@ -26,6 +20,7 @@ class GState(QObject):
         self.now = None  # Instant states like current visibility, etc
         yml.init()
         self._psArg = ArgParser()
+        self.update(argv)
 
     def update(self, argv):
         kgs = self.parse(argv)
@@ -34,7 +29,7 @@ class GState(QObject):
         action.search_dst_window()
         # if chg_gs:
         #     self.invalidated.emit(self.get_gs(), chg_gs)
-        self.invalidated.emit(kgs['cfg'], kgs['bud'], kgs['bReload'])
+        self.invalidated.emit(kgs)
 
     def _set_args_from_command_line(self, cfg, args):
         ar = [(k, v) for k, v in vars(args).items() if v]
@@ -44,7 +39,7 @@ class GState(QObject):
                     cfg[section][k] = str(v)
 
     def parse(self, argv):  # NEED: RFC
-        args = self._psArg.parse(argv)
+        args = self._psArg.parse(argv[1:])
         self._psArg.apply(args)  # Set gvars
         cfg = yml.parse(yml.G_CONFIG_PATH)
         self.sty = yml.parse(yml.G_STYLE_PATH)
@@ -72,8 +67,8 @@ class GState(QObject):
 
         self.cfg = cfg
         self.bud = bud
-        # TODO: ret whole new current state
-        return {'cfg': cfg, 'bud': bud, 'bReload': bReload}
+        # TODO: ret whole new current state?
+        return bReload
 
     def compare(self, kgs):  # WARNING: broken
         """ Used as separate function because of embedded file paths in arg """

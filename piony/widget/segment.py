@@ -1,3 +1,4 @@
+import inject
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import Qt, QPoint, QSize, QRect
 
@@ -7,9 +8,11 @@ from piony.gstate import GState
 
 
 class SegmentWidget(QtWidgets.QToolButton):
+    gs = inject.attr(GState)
+
     def __init__(self, name="", act=None, parent=None):
         super().__init__(parent)
-        self.sty = GState().sty['Segment']
+        self.sty = self.gs.sty['Segment']
 
         self.setText(name)
         self.action = act
