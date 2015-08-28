@@ -6,8 +6,8 @@ sudo: false
 language: python
 python:
   # - "2.7"
-  - "3.3"
-  # - "3.4"
+  # - "3.3"
+  - "3.4"
   # - "nightly"
 
 # virtualenv:
@@ -62,8 +62,8 @@ python:
   # Dependencies
 # - pip install .  # If you have 'setup.py' to install as package
 install:
-  - pip install git+git://github.com/pyqt/python-qt5.git
-  - pip install PyYAML pytest pylint pep8  # python-qt5 pytest-qt
+  - pip3 install git+git://github.com/pyqt/python-qt5.git
+  - pip3 install PyYAML pytest pytest-qt pylint pep8  # python-qt5
 
 # before_script:
 #   - export DISPLAY=:99.0

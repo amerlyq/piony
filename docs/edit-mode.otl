@@ -35,6 +35,7 @@ Selection
 
 Animation
 	:& http://doc.qt.io/qt-5/qpropertyanimation.html
+	:http://blog.eduardofleury.com/archives/2009/02/51
 
 Ideas
 	[_] draw icons directly on buttons in edit-icons mode! Export them!
