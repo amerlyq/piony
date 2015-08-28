@@ -77,7 +77,7 @@ test-dbg test-cov test-lst: test-exec
 test-exec: export PYTHONPATH += .
 test-exec: export PYTEST_QT_API=pyqt5
 test-exec:
-	@py.test $(MODARGS) -- $(shell pwd)  # python3 -m pytest my_file_test.py
+	py.test $(MODARGS) -- $(shell pwd)  # python3 -m pytest my_file_test.py
 
 
 ### STYLE ###

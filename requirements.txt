@@ -1,0 +1,7 @@
+pip
+PyYAML
+pytest
+pylint
+pep8
+# python-qt5 pytest-qt
+git+https://github.com/pyqt/python-qt5.git
