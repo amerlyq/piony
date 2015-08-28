@@ -1,3 +1,8 @@
+Bud:
+  Text:
+    color: [100, 100, 100, 200]
+    scale: 0.64
+
 Segment:
   Border:
     color:

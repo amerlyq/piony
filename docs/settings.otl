@@ -38,9 +38,11 @@ CONFIG
 	[_] Use G_CONFIG_DEFAULT as list of permitted options
 		:> Check sections, then options in DEFAULT and corresponding section
 	[_] Abandon usage of G_CONFIG_DEFAULT
-		[_] All default values must be only in cfgfile (be DRY)
+		2015-08-26 [X] All default values must be only in cfgfile (be DRY)
 		[_] Embed cfg file in binary as irreplacable resource
-		[_] Represent cfgfile as block yaml
+		2015-08-26 [X] Represent cfgfile as block yaml
+	[_] Saving config.yml in mixed block/flow style
+		: http://stackoverflow.com/questions/14000893/specifying-styles-for-portions-of-a-pyyaml-dump
 
 
 

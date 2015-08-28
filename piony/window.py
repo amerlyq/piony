@@ -1,33 +1,12 @@
 import inject
 from PyQt5.QtCore import Qt  # , QRect, QPoint
-from PyQt5.QtGui import QCursor, QFont
-from PyQt5.QtWidgets import (
-    QMainWindow, QGraphicsView, QGraphicsScene,
-    QWidget, QStackedLayout, qApp
-)
+from PyQt5.QtGui import QCursor
+from PyQt5.QtWidgets import (QMainWindow, QGraphicsView, QGraphicsScene, qApp)
 
 import piony
 from piony.widget.bud import BudWidget
-from piony.hgevent import InputProcessor
+from piony.inputprc import InputProcessor
 from piony.gstate import GState
-
-
-class MainWidget(QWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.budwdg = None
-        self.setLayout(QStackedLayout())
-        self.setStyleSheet("background:transparent")
-
-    def refreshBuds(self, cfg, bud):
-        if self.budwdg:
-            self.layout().removeWidget(self.budwdg)
-            self.budwdg.close()
-        self.budwdg = BudWidget(bud, cfg)
-        self.layout().addWidget(self.budwdg)
-        # QObjectCleanupHandler().add(self.layout())
-        # self.setCurrentWidget(wdg) to display the one you want.
-        self.resize(self.sizeHint())
 
 
 class MainView(QGraphicsView):
@@ -59,7 +38,7 @@ class MainEventsMixin(object):
             e.accept()
 
     def mousePressEvent(self, e):
-        print(e.button())
+        # print(e.button())
         self.ipr.mPress(e)
         # e.accept()
 
@@ -124,14 +103,17 @@ class MainWindow(MainControlMixin, MainEventsMixin, QMainWindow):
         if gs.cfg:
             self.setupDynamic(gs.cfg)
         if gs.bud or gs.bReload['Window']:
-            self.wdg.refreshBuds(gs.cfg, gs.bud)
+            # self.scene.clear()
+            # self.wdg = BudWidget(gs.bud, gs.cfg)
+            # self.scene.addWidget(self.wdg)
+            self.wdg.refreshBuds()
             self.centerOnCursor()
         if chgs.get('toggle', False):
             self.setVisible(not self.isVisible())
 
     def _attachElements(self):
         self.ipr = InputProcessor()
-        self.wdg = MainWidget()
+        self.wdg = BudWidget()
         self.scene = QGraphicsScene()
         self.scene.addWidget(self.wdg)
         self.view = MainView(self.scene)
@@ -157,47 +139,3 @@ class MainWindow(MainControlMixin, MainEventsMixin, QMainWindow):
         self.addAction(aQuit)
         # TODO: for release use Qt.NoContextMenu, enable only in edit-mode
         self.setContextMenuPolicy(Qt.ActionsContextMenu)
-
-
-class MainApplication(object):
-    # start = pyqtSignal(list)
-    # gs = inject.attr(GState)
-
-    def __init__(self):
-        self.create()
-        # super().__init__()
-        # CHG: bad try to introduce quit event before qapp event loop
-        # self.start.connect(self.load)
-        # self.start.emit(argv)
-
-    @inject.params(gs=GState)
-    def create(self, gs):
-        self._globalSetup()
-        if gs.cfg['System']['use_tray']:
-            self.tray = self._createTray()
-        self.srv = self._createServer(gs)
-        self.wnd = MainWindow()
-        gs.invalidated.connect(self.wnd.reloadState)
-        self.wnd.reloadState()
-        self.wnd.show()
-
-    def _globalSetup(self):
-        from PyQt5.QtWidgets import QToolTip
-        QToolTip.setFont(QFont('Ubuntu', 12))
-
-    def _createTray(self):
-        from PyQt5.QtWidgets import QSystemTrayIcon
-        from PyQt5.QtGui import QIcon
-        from piony.common import expand_pj
-        tray = QSystemTrayIcon()
-        tray.setIcon(QIcon(expand_pj(":/res/tray-normal.png")))
-        tray.show()
-        return tray
-
-    def _createServer(self, gs):
-        from piony.system.server import Server
-        srv = Server()
-        srv.create()
-        # srv.quit.connect(qApp.quit)
-        srv.dataReceived.connect(gs.update)
-        return srv

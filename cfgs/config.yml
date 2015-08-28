@@ -1,11 +1,9 @@
 Window:
-  text_scale: 0.64
   size: 300
   no_tooltip: false
 
 Bud:
   default: ":/cfgs/krita.yml"
-  line_width: 2
 
 System:
   no_focus: false

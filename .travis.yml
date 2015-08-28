@@ -62,8 +62,8 @@ python:
   # Dependencies
 # - pip install .  # If you have 'setup.py' to install as package
 install:
-  # - pip install git+git://github.com/pyqt/python-qt5.git
-  - pip install python-qt5 PyYAML pytest pylint pep8  # pytest-qt
+  - pip install git+git://github.com/pyqt/python-qt5.git
+  - pip install PyYAML pytest pylint pep8  # python-qt5 pytest-qt
 
 # before_script:
 #   - export DISPLAY=:99.0

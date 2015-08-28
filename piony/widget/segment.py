@@ -9,16 +9,20 @@ from piony.gstate import GState
 
 class SegmentWidget(QtWidgets.QToolButton):
     gs = inject.attr(GState)
+    _fsm_regime = {'default': 'normal', 'normal': 'select',
+                   'select': 'press', 'press': 'select'}
+
+    def _clr(self, name):
+        return QtGui.QColor(*list(self.sty[name]['color'][self.regime]))
 
     def __init__(self, name="", act=None, parent=None):
         super().__init__(parent)
         self.sty = self.gs.sty['Segment']
 
         self.setText(name)
-        self.action = act
+        self.doAction = act
+        self.regime = 'normal'
 
-        self.bHover = False
-        self.bHold = False
         self.gPath = None
         self.gText = QRect(0, 0, 20, 20)
 
@@ -36,25 +40,21 @@ class SegmentWidget(QtWidgets.QToolButton):
         return QSize(80, 80)
 
     def enterEvent(self, e):
-        # self.setStyleSheet("background-color:#45b545;")
-        self.bHover = True
+        self.regime = SegmentWidget._fsm_regime[self.regime]
 
     def leaveEvent(self, e):
-        # self.setStyleSheet("background-color:yellow;")
-        self.bHover = False
-        self.bHold = False
+        self.regime = SegmentWidget._fsm_regime['default']
 
     def mousePressEvent(self, e):
         # if e.button() == Qt.LeftButton and _hasModCtrl():
-        self.bHold = True
+        self.regime = SegmentWidget._fsm_regime[self.regime]
         self.update()
 
     def mouseReleaseEvent(self, e):
         # if e.button() == Qt.LeftButton and not _hasModCtrl():
-        self.bHold = False
+        self.regime = SegmentWidget._fsm_regime[self.regime]
         self.update()
-        self.action()
-        # action.sysClose()
+        self.doAction()
 
     ## --------------
 
@@ -66,19 +66,10 @@ class SegmentWidget(QtWidgets.QToolButton):
                          QtGui.QPainter.HighQualityAntialiasing, True)
         return p
 
-    def _clr(self, nm):
-        if self.bHold:
-            regime = "press"
-        elif self.bHover:
-            regime = "select"
-        else:
-            regime = "normal"
-        return QtGui.QColor(*list(self.sty[nm]['color'][regime]))
-
     def drawSegment(self, p):
         p.setBrush(self._clr("Filler"))
         p.setPen(QtGui.QPen(self._clr("Border"),
-                            self.sty['Border']['width'], Qt.SolidLine))
+                            float(self.sty['Border']['width']), Qt.SolidLine))
         p.drawPath(self.gPath)
 
     def drawSegmentText(self, p):

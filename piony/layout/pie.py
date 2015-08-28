@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QLayout, QWidgetItem
-from PyQt5.QtCore import QPoint, QSize
+from PyQt5.QtCore import Qt, QPoint, QSize
 
 from piony.common import ra2xy
 from piony.ringsegment import RingSegment
@@ -51,8 +51,7 @@ class PieLayout(QLayout):
 
     def expandingDirections(self):
         # return QtCore.Qt.Horizontal | QtCore.Qt.Vertical
-        # return Qt.Orientations(Qt.Orientation(0))
-        return False
+        return Qt.Orientations()  # Qt.Orientation(0)
 
     def itemAt(self, index):
         if index >= 0 and index < len(self.sectors):

@@ -22,13 +22,10 @@ if __name__ == '__main__':
 
         import inject
         from piony.gstate import GState
-
-        def config(binder):
-            binder.bind(GState, GState(sys.argv))
-        inject.configure(config)
+        inject.configure(lambda binder: binder.bind(GState, GState(sys.argv)))
 
         from PyQt5.QtWidgets import QApplication
-        from piony.window import MainApplication
+        from piony.main import MainApplication
         app = QApplication(sys.argv)
         main = MainApplication()
         sys.exit(app.exec_())
