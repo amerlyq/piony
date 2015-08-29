@@ -154,16 +154,28 @@ TESTING
 
 
 ONLINE
-	> [_] https://travis-ci.org
-	| Will not work until them upgrade to 14.04. I couldn't setup env under 12.04.
+<Github policy>
+: http://blog.quickpeople.co.uk/2013/07/10/useful-github-patterns/
+	2015-08-29 [X] Develop: continuous integration
+		> Used only core tests, all relative to pyqt5 are disabled.
+		: https://travis-ci.org
+		| Will not work until them upgrade to 14.04. I couldn't setup env under 12.04.
+		https://github.com/pyqt/python-qt5/wiki/Compiling-PyQt5-on-Ubuntu-12.04
+		SEE:
+		http://stackoverflow.com/questions/20952797/pip-installing-in-global-site-packages-instead-of-virtualenv
+		http://code.openhub.net/file?fid=0PrA9WLQQDK3eJTLHrBLVqIggdM&cid=2f70lFT6IOE&s=
+		: https://github.com/skycaptain/gazetrack/blob/master/gui/pyqtgraph/.travis.yml
 		: https://github.com/harvimt/quamash/blob/master/.travis.yml
 		: https://github.com/spyder-ide/qtawesome/blob/master/.travis.yml
 		: https://github.com/pytest-dev/pytest-qt/blob/master/.travis.yml
-	[_] Develop: coverage
+	2015-08-29 [X] Develop: coverage
 		: https://coveralls.io
-	[_] https://gitter.im/
-	[_] Project mgmt: issue board
+	2015-08-29 [X] PjMgmt: chat
+		: https://gitter.im/
+	2015-08-29 [X] PjMgmt: issue board
 		: https://waffle.io/
+	[_] Other integrations
+		https://github.com/integrations
 
 
 CROSSPLATFORM

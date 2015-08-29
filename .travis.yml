@@ -1,9 +1,4 @@
 # vim:ts=2:sw=2:sts=2
-# SEE:
-#   https://github.com/skycaptain/gazetrack/blob/master/gui/pyqtgraph/.travis.yml
-#   https://github.com/pyqt/python-qt5/wiki/Compiling-PyQt5-on-Ubuntu-12.04
-#   http://stackoverflow.com/questions/20952797/pip-installing-in-global-site-packages-instead-of-virtualenv
-#   http://code.openhub.net/file?fid=0PrA9WLQQDK3eJTLHrBLVqIggdM&cid=2f70lFT6IOE&s=
 
 sudo: false
 language: python

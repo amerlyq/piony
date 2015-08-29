@@ -1,10 +1,13 @@
 piony
 ======
-
-[![Join the chat at https://gitter.im/amerlyq/piony](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/amerlyq/piony?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Build Status](https://travis-ci.org/amerlyq/piony.svg)](https://travis-ci.org/amerlyq/piony)
-[![Coverage Status](https://coveralls.io/repos/amerlyq/piony/badge.svg?branch=master&service=github)](https://coveralls.io/github/amerlyq/piony?branch=master)
-[![Stories in Ready](https://badge.waffle.io/amerlyq/piony.png?label=ready&title=Ready)](https://waffle.io/amerlyq/piony)
+[![Join the chat at https://gitter.im/amerlyq/piony](https://badges.gitter.im/Join%20Chat.svg)](
+    https://gitter.im/amerlyq/piony?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/amerlyq/piony.svg)](
+    https://travis-ci.org/amerlyq/piony)
+[![Coverage Status](https://coveralls.io/repos/amerlyq/piony/badge.svg?branch=master&service=github)](
+    https://coveralls.io/github/amerlyq/piony?branch=master)
+[![Stories in Ready](https://badge.waffle.io/amerlyq/piony.png?label=ready&title=Ready)](
+    https://waffle.io/amerlyq/piony)
 
 
 Radial menu for Wacom / mouse
@@ -31,8 +34,8 @@ Radial menu will appear. You can press on any sector to generate action.
 
 Depends
 -------
- * [Python3](https://www.python.org/) -- main language
- * [Qt5](https://www.qt.io/) -- main framework
+ * [Python >3.3](https://www.python.org/)
+ * [Qt5](https://www.qt.io/) -- GUI framework
  * [yaml](http://yaml.org/) -- interface configs format
  * [xdotool](http://www.semicomplete.com/projects/xdotool) -- keys emulation
  * [xbindkeys](http://www.nongnu.org/xbindkeys/xbindkeys.html) -- binds Wacom to menu
