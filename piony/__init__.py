@@ -16,11 +16,5 @@ if __debug__:
 G_ACTIVE_WINDOW = '%1'
 G_SOCKET_NAME = 'piony-socket'
 
-
 import logging
-logger = logging.getLogger(__appname__)
-
-
-# def loginf(text, self):
-#     return logger.info(text.format(
-#         self.__module__ + "." + self.__class__.__name__))
+logger = logging.getLogger(__name__)

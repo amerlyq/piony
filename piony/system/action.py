@@ -3,7 +3,7 @@ from subprocess import call, check_output, CalledProcessError
 from PyQt5.QtWidgets import qApp
 
 import piony
-from piony import logger
+from piony.system import logger
 
 
 # xdotool mousemove --sync 960 460 sleep 0.17 mousedown 1 sleep 0.12 mouseup 1

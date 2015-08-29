@@ -4,10 +4,11 @@ formatters:
   brief:
     format: '%(message)s'
   detailed:
-    format: '%(asctime)s %(levelname)-8s %(name)-15s %(message)s'
+    format: '%(asctime)s %(levelname)-8s %(name)-15s  %(message)s'
     datefmt: '%Y-%m-%d %H:%M:%S'
   full:
-    format: "%(asctime)s %(name)s[%(process)d] %(filename)s:%(lineno)d\n
+    # %(name)s[%(process)d]
+    format: "%(asctime)s -- %(filename)s:%(lineno)d -> %(funcName)-16s\n
              -%(levelname)s- %(message)s"
 
 handlers:
@@ -20,15 +21,15 @@ handlers:
   file:
     class    : logging.handlers.RotatingFileHandler
     formatter: full
-    # level    : INFO
-    filename : logconfig.log
-    maxBytes : 1024
+    level    : DEBUG
+    filename : /tmp/piony.log
+    maxBytes : 65536
     backupCount: 3
 
 loggers:
   piony:
     level: INFO
-    handlers: [console]  #, file
+    handlers: [console, file]
 
 # root:
 #   level: INFO

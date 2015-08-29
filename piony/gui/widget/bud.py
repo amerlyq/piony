@@ -1,10 +1,11 @@
-import inject
 from math import sqrt
 
+import inject
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt, QSize, QRect
 
 import piony
+from piony.gui import logger
 from piony.gui.widget import base
 from piony.gui.layout.pie import PieLayout
 from piony.gui.widget.segment import SegmentWidget
@@ -14,6 +15,7 @@ from piony.gstate import GState
 
 class BudWidget(QtWidgets.QWidget):
     def __init__(self, parent=None):
+        logger.info('%s init', self.__class__.__qualname__)
         super().__init__(parent)
         self.wdg = None
         self.setLayout(QtWidgets.QStackedLayout())
@@ -33,6 +35,7 @@ class BudWidget(QtWidgets.QWidget):
 class SliceWidget(QtWidgets.QWidget):
     @inject.params(gs=GState)
     def __init__(self, gs=None, parent=None):
+        logger.info('%s init', self.__class__.__qualname__)
         super().__init__(parent)
         self.sty = gs.sty['Bud']
         self.cfg = gs.cfg

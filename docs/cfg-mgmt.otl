@@ -44,6 +44,7 @@ DEVELOPMENT
 	2015-05-03 [X] Debugging
 		http://habrahabr.ru/company/mailru/blog/205426/
 	[_] Logging
+		: pref = self.__module__ + "." + self.__class__.__qualname__ + ": "
 		http://stackoverflow.com/questions/1623039/python-debugging-tips
 		https://docs.python.org/3/howto/logging.html
 		https://docs.python.org/3.4/library/logging.html

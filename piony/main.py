@@ -11,6 +11,7 @@ class MainApplication(object):
     # gs = inject.attr(GState)
 
     def __init__(self):
+        logger.info('%s init', self.__class__.__qualname__)
         self.create()
         # super().__init__()
         # CHG: bad try to introduce quit event before qapp event loop
@@ -19,7 +20,6 @@ class MainApplication(object):
 
     @inject.params(gs=GState)
     def create(self, gs):
-        logger.info('%s init', self.__class__.__name__)
         self._globalSetup()
         if gs.cfg['System']['use_tray']:
             self.tray = self._createTray()

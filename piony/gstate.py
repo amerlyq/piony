@@ -7,12 +7,13 @@ from piony.config.argparser import ArgParser
 from piony.config.budparser import BudParser, BudError
 
 
+
 class GState(QObject):
     invalidated = pyqtSignal(dict)
 
     def __init__(self, argv):
         super().__init__()
-        logger.info('%s init', self.__class__.__name__)
+        logger.info('%s init', self.__class__.__qualname__)
         self.active_window = '%1'
         self.cfg = None
         self.bud = None

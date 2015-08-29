@@ -4,6 +4,7 @@ from PyQt5.QtGui import QCursor
 from PyQt5.QtWidgets import (QMainWindow, QGraphicsView, QGraphicsScene, qApp)
 
 import piony
+from piony.gui import logger
 from piony.gui.widget.bud import BudWidget
 from piony.inputprc import InputProcessor
 from piony.gstate import GState
@@ -11,6 +12,7 @@ from piony.gstate import GState
 
 class MainView(QGraphicsView):
     def __init__(self, scene, parent=None):
+        logger.info('%s init', self.__class__.__qualname__)
         super().__init__(parent)
         self._setup()
         self.setScene(scene)
@@ -93,6 +95,7 @@ class MainControlMixin(object):
 
 class MainWindow(MainControlMixin, MainEventsMixin, QMainWindow):
     def __init__(self):
+        logger.info('%s init', self.__class__.__qualname__)
         super().__init__()
         self._setupWindow()
         self._attachElements()

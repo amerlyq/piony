@@ -3,6 +3,7 @@ from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import Qt, QPoint, QSize, QRect
 
 import piony
+from piony.gui import logger
 from piony.gui.widget import base
 from piony.gstate import GState
 
@@ -16,6 +17,7 @@ class SegmentWidget(QtWidgets.QToolButton):
         return QtGui.QColor(*list(self.sty[name]['color'][self.regime]))
 
     def __init__(self, name="", act=None, parent=None):
+        logger.info('%s init: %s', self.__class__.__qualname__, name)
         super().__init__(parent)
         self.sty = self.gs.sty['Segment']
 

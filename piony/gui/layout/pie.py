@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QLayout, QWidgetItem
 from PyQt5.QtCore import Qt, QPoint, QSize
 
+from piony.gui import logger
 from piony.common import ra2xy
 from piony.gui.ringsegment import RingSegment
 
@@ -16,6 +17,7 @@ class SegmentWrapper(object):
 # Rather SectorStrip, or SectorRing
 class PieLayout(QLayout):
     def __init__(self, cfg, r, dr, spacing=0, margin=0, parent=None):
+        logger.info('%s init', self.__class__.__qualname__)
         super().__init__(parent)
         self.cfg = cfg
         if parent is not None:
