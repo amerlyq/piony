@@ -64,9 +64,14 @@ python:  # Need python >= 3.3
   # Dependencies
 # - pip install .  # If you have 'setup.py' to install as package
 install:
-  - pip --version
-  - pip install -Ur requirements.txt
-  - pip search pyqt5  #cat $HOME/.pip/pip.log
+  # - pip install -U pip
+  # - pip --version
+  - pip install -U PyYAML
+  - pip install -U pytest pytest-cov pylint pep8
+  # python-qt5 pytest-qt
+  # git+https://github.com/pyqt/python-qt5.git
+  # - pip search pyqt5  #cat $HOME/.pip/pip.log
+  # - pip install -Ur requirements.txt --use-mirrors
 
   ## debug:
   # - apt-cache search python pip
@@ -80,7 +85,8 @@ before_script:
   - which py.test
 
 script:
-  PYTHONPATH=. PYTEST_QT_API=pyqt5 py.test -- $(find "$PWD/tests/" -type f -name '*_test.py' \! -name 'ringsegment*')
+  - FLS=$(find "$PWD/tests/" -type f -name '*_test.py' \! -name 'ringsegment*')
+  - PYTHONPATH=. PYTEST_QT_API=pyqt5 py.test --cov=piony --cov-report term-missing -- ${FLS}
   # - make test
 
 # after_script:
@@ -93,6 +99,10 @@ script:
 #   # directories:
 #   #   - /downloads
 #   apt: true
+
+after_success:
+  - pip install -U python-coveralls
+  - coveralls
 
 notifications:
   email: false

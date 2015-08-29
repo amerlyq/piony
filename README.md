@@ -2,6 +2,7 @@ piony
 ======
 
 [![Build Status](https://travis-ci.org/amerlyq/piony.svg)](https://travis-ci.org/amerlyq/piony)
+[![Coverage Status](https://coveralls.io/repos/amerlyq/piony/badge.svg?branch=master&service=github)](https://coveralls.io/github/amerlyq/piony?branch=master)
 
 Radial menu for Wacom / mouse
 ---------------------
