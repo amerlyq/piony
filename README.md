@@ -1,9 +1,9 @@
-[![Stories in Ready](https://badge.waffle.io/amerlyq/piony.png?label=ready&title=Ready)](https://waffle.io/amerlyq/piony)
 piony
 ======
-
 [![Build Status](https://travis-ci.org/amerlyq/piony.svg)](https://travis-ci.org/amerlyq/piony)
 [![Coverage Status](https://coveralls.io/repos/amerlyq/piony/badge.svg?branch=master&service=github)](https://coveralls.io/github/amerlyq/piony?branch=master)
+[![Stories in Ready](https://badge.waffle.io/amerlyq/piony.png?label=ready&title=Ready)](https://waffle.io/amerlyq/piony)
+
 
 Radial menu for Wacom / mouse
 ---------------------
