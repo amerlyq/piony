@@ -1,5 +1,7 @@
 piony
 ======
+
+[![Join the chat at https://gitter.im/amerlyq/piony](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/amerlyq/piony?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/amerlyq/piony.svg)](https://travis-ci.org/amerlyq/piony)
 [![Coverage Status](https://coveralls.io/repos/amerlyq/piony/badge.svg?branch=master&service=github)](https://coveralls.io/github/amerlyq/piony?branch=master)
 [![Stories in Ready](https://badge.waffle.io/amerlyq/piony.png?label=ready&title=Ready)](https://waffle.io/amerlyq/piony)
