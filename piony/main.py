@@ -3,7 +3,7 @@ from PyQt5.QtGui import QFont
 
 from piony import logger
 from piony.gstate import GState
-from piony.window import MainWindow
+from piony.gui.window import MainWindow
 
 
 class MainApplication(object):

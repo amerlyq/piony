@@ -1,11 +1,11 @@
 import pytest
 
-import piony.budparser.exceptions as bux
 from piony.exceptions import InputError
-from piony.budparser.segment import SegmentMaker
-from piony.budparser.ring import RingMaker
-from piony.budparser.slice import SliceMaker
-from piony.budparser.parser import BudParser
+from piony.config.budparser.exceptions import BudSyntaxError, BudArgumentError
+from piony.config.budparser.segment import SegmentMaker
+from piony.config.budparser.ring import RingMaker
+from piony.config.budparser.slice import SliceMaker
+from piony.config.budparser.bud import BudParser
 
 
 def SEG(n, a, t=None):
@@ -52,7 +52,7 @@ class TestSegmentMaker:
         assert SEG("a", "a") == func(["a"])
         assert SEG("a", "a") == func({"action": "a"})
 
-        with pytest.raises(bux.BudSyntaxError):
+        with pytest.raises(BudSyntaxError):
             func(2)
 
 
@@ -65,9 +65,9 @@ class TestRingMaker:
         assert func(["", {"name": "N"}]) == ["", {"name": "N"}]
         assert func({"k": "v"}) == {"k": "v"}
 
-        with pytest.raises(bux.BudSyntaxError):
+        with pytest.raises(BudSyntaxError):
             func([["a"], "b"])
-        with pytest.raises(bux.BudSyntaxError):
+        with pytest.raises(BudSyntaxError):
             func([1, {"k": "v"}])
 
     def test_fromDict(self):
@@ -76,9 +76,9 @@ class TestRingMaker:
         assert func({"action": "a"}) == [{"action": "a"}]
         assert func({"name": "N", "tooltip": "T"}) == [{"name": "N", "tooltip": "T"}]
 
-        with pytest.raises(bux.BudSyntaxError):
+        with pytest.raises(BudSyntaxError):
             func({"rings": ["a"]})
-        with pytest.raises(bux.BudSyntaxError):
+        with pytest.raises(BudSyntaxError):
             func({"segments": ["a"], "some": []})
 
     def test_make(self):
@@ -91,7 +91,7 @@ class TestRingMaker:
         assert func(["a", "b"]) == RING(
             SEG("a", "a"), SEG("b", "b"))
 
-        with pytest.raises(bux.BudArgumentError):
+        with pytest.raises(BudArgumentError):
             func("a")
 
 
@@ -102,11 +102,11 @@ class TestSliceMaker:
         assert func([["a"]]) == [["a"]]
         assert func([RING("a")]) == [RING("a")]
 
-        with pytest.raises(bux.BudSyntaxError):
+        with pytest.raises(BudSyntaxError):
             assert func("a")
-        with pytest.raises(bux.BudSyntaxError):
+        with pytest.raises(BudSyntaxError):
             assert func(["a"])
-        with pytest.raises(bux.BudSyntaxError):
+        with pytest.raises(BudSyntaxError):
             assert func(SLCE(["a"])) == SLCE(["a"])
 
     def test_fromDict(self):
@@ -114,11 +114,11 @@ class TestSliceMaker:
         assert func(RING("a")) == [RING("a")]
         assert func(SLCE(["a"])) == [["a"]]
 
-        with pytest.raises(bux.BudSyntaxError):
+        with pytest.raises(BudSyntaxError):
             func({"slices": ["a"]})
-        with pytest.raises(bux.BudSyntaxError):
+        with pytest.raises(BudSyntaxError):
             func({"rings": ["a"], "some": []})
-        with pytest.raises(bux.BudSyntaxError):
+        with pytest.raises(BudSyntaxError):
             func({"any": ["a"], "some": []})
 
     def test_make(self):
@@ -128,7 +128,7 @@ class TestSliceMaker:
         assert func(SLCE(["a"])) == SLCE(RING(SEG("a", "a")))
         # assert func(["a"]) == RING([])
 
-        with pytest.raises(bux.BudArgumentError):
+        with pytest.raises(BudArgumentError):
             func("a")
 
 

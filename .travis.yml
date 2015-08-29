@@ -81,7 +81,7 @@ before_script:
   - which py.test
 
 script:
-  PYTHONPATH=. PYTEST_QT_API=pyqt5 py.test -- $PWD
+  PYTHONPATH=. PYTEST_QT_API=pyqt5 py.test -- $(find "$PWD/tests/" -type f -name '*_test.py' \! -name 'ringsegment*')
   # - make test
 
 # after_script:

@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QLayout, QWidgetItem
 from PyQt5.QtCore import Qt, QPoint, QSize
 
 from piony.common import ra2xy
-from piony.ringsegment import RingSegment
+from piony.gui.ringsegment import RingSegment
 
 
 # TODO: replace with namedtuple

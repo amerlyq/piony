@@ -4,7 +4,7 @@ from PyQt5.QtGui import QCursor
 from PyQt5.QtWidgets import (QMainWindow, QGraphicsView, QGraphicsScene, qApp)
 
 import piony
-from piony.widget.bud import BudWidget
+from piony.gui.widget.bud import BudWidget
 from piony.inputprc import InputProcessor
 from piony.gstate import GState
 

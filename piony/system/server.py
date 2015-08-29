@@ -1,8 +1,8 @@
 from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtCore import QObject, QDataStream, pyqtSignal
 
+import piony
 from piony import logger
-from piony.config import gvars
 from piony.system import action
 
 
@@ -15,7 +15,7 @@ class Server(QObject):
         self.conn = None
         self.server = None
 
-    def create(self, name=gvars.G_SOCKET_NAME):
+    def create(self, name=piony.G_SOCKET_NAME):
         QLocalServer.removeServer(name)
         self.server = QLocalServer()
         if not self.server.listen(name):

@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-import piony.budparser.exceptions as bux
+from .exceptions import BudSyntaxError
 
 
 class SegmentMaker:
@@ -37,6 +37,6 @@ class SegmentMaker:
         elif isinstance(seg, dict):
             seg = self.fromDict(seg)
         else:
-            raise bux.BudSyntaxError(
+            raise BudSyntaxError(
                 'Impossible to derive {}'.format(SegmentMaker.NM))
         return SegmentMaker.SEG(*seg)

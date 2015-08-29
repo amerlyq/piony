@@ -1,7 +1,6 @@
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 import piony
-from piony.config import gvars
 from piony.exceptions import InputError
 
 
@@ -28,7 +27,7 @@ class ArgParser(object):
         if args.verbose:
             for entry in args.verbose:
                 res = map(xor, res, dbg[entry])
-            gvars.G_DEBUG_VISUALS, gvars.G_DEBUG_ACTIONS = res
+            piony.G_DEBUG_VISUALS, piony.G_DEBUG_ACTIONS = res
 
     def _setup_options(self):
         ## Configuration

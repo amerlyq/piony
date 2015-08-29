@@ -1,6 +1,6 @@
 from piony.config import ymlparser
-from piony.budparser.ring import RingMaker
-from piony.budparser.slice import SliceMaker
+from .ring import RingMaker
+from .slice import SliceMaker
 
 
 # class BudMaker:

@@ -1,12 +1,10 @@
 from PyQt5.QtCore import QObject, pyqtSignal  # , QRect, QPoint
 from PyQt5.QtWidgets import qApp
-# from collections import OrderedDict
 
 from piony import logger
-import piony.budparser.exceptions as bux
 from piony.config import ymlparser as yml
 from piony.config.argparser import ArgParser
-from piony.budparser.parser import BudParser
+from piony.config.budparser import BudParser, BudError
 
 
 class GState(QObject):
@@ -55,7 +53,7 @@ class GState(QObject):
         Bud_Ps = BudParser()
         try:
             bud = Bud_Ps.parse(entries)
-        except bux.BudError as e:
+        except BudError as e:
             print("Error:", e)
             if not self.bud:  # NOTE: work must go on if client args are bad
                 qApp.quit()

@@ -9,6 +9,14 @@ __email__ = "amerlyq@gmail.com"
 __url__ = 'https://github.com/amerlyq/piony'
 
 
+if __debug__:
+    G_DEBUG_ACTIONS = True
+    G_DEBUG_VISUALS = False
+
+G_ACTIVE_WINDOW = '%1'
+G_SOCKET_NAME = 'piony-socket'
+
+
 import logging
 logger = logging.getLogger(__appname__)
 

@@ -1,7 +1,7 @@
 from PyQt5.QtCore import QRect
 
 from piony.common import similar, ra2xy
-from piony.ringsegment import RingSegment
+from piony.gui.ringsegment import RingSegment
 
 
 class TestRingSegment():

@@ -1,7 +1,6 @@
-import piony.budparser.exceptions as bux
-
 from piony.common import all_are, any_in, all_in
-from piony.budparser.segment import SegmentMaker
+from .exceptions import BudSyntaxError, BudArgumentError
+from .segment import SegmentMaker
 
 
 class RingMaker:
@@ -13,7 +12,7 @@ class RingMaker:
 
     def fromList(self, ring):
         if not all_are(ring, (str, dict)):
-            raise bux.BudSyntaxError(
+            raise BudSyntaxError(
                 'Unsupported mixed {}'.format(RingMaker.NM),
                 RingMaker.KEYS)
         return ring
@@ -23,10 +22,10 @@ class RingMaker:
             if any_in(ring, self.segmentMaker.KEYS):
                 return [ring]
             else:
-                raise bux.BudSyntaxError(
+                raise BudSyntaxError(
                     'Invalid {} format'.format(RingMaker.NM))
         elif not all_in(ring, RingMaker.KEYS):
-            raise bux.BudSyntaxError(
+            raise BudSyntaxError(
                 '{} contains odd keywords'.format(RingMaker.NM))
         else:
             return ring['segments']
@@ -39,7 +38,7 @@ class RingMaker:
         elif isinstance(ring, dict):
             ring = self.fromDict(ring)
         else:
-            raise bux.BudArgumentError(
+            raise BudArgumentError(
                 'Impossible to derive {}'.format(RingMaker.NM))
 
         lst = map(self.segmentMaker.make, ring)

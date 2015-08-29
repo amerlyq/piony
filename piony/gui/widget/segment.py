@@ -2,8 +2,8 @@ import inject
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import Qt, QPoint, QSize, QRect
 
-from piony.config import gvars
-from piony.widget import base
+import piony
+from piony.gui.widget import base
 from piony.gstate import GState
 
 
@@ -78,13 +78,13 @@ class SegmentWidget(QtWidgets.QToolButton):
         base.adjustFontSize(p, self.text(), sz)
 
         p.setPen(self._clr("Text"))
-        if __debug__ and gvars.G_DEBUG_VISUALS:
+        if __debug__ and piony.G_DEBUG_VISUALS:
             p.drawRect(self.gText)
         p.drawText(self.gText, Qt.AlignCenter, self.text())
 
     def paintEvent(self, e):
         p = self.createPainter()
-        if __debug__ and gvars.G_DEBUG_VISUALS:
+        if __debug__ and piony.G_DEBUG_VISUALS:
             self.drawSegmentRegion(p)
         self.drawSegment(p)
         self.drawSegmentText(p)

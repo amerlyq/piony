@@ -4,10 +4,10 @@ from math import sqrt
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt, QSize, QRect
 
-from piony.config import gvars
-from piony.widget import base
-from piony.layout.pie import PieLayout
-from piony.widget.segment import SegmentWidget
+import piony
+from piony.gui.widget import base
+from piony.gui.layout.pie import PieLayout
+from piony.gui.widget.segment import SegmentWidget
 from piony.system.action import sendKey
 from piony.gstate import GState
 
@@ -78,7 +78,7 @@ class SliceWidget(QtWidgets.QWidget):
     def paintEvent(self, e):
         p = QtWidgets.QStylePainter(self)
 
-        if __debug__ and gvars.G_DEBUG_VISUALS:
+        if __debug__ and piony.G_DEBUG_VISUALS:
             self._drawBkgr(p)
             self._drawMask(p)
 

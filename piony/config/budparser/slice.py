@@ -1,7 +1,6 @@
-import piony.budparser.exceptions as bux
-
 from piony.common import all_are, any_in, all_in
-from piony.budparser.ring import RingMaker
+from .exceptions import BudSyntaxError, BudArgumentError
+from .ring import RingMaker
 
 
 class SliceMaker:
@@ -13,7 +12,7 @@ class SliceMaker:
 
     def fromList(self, layer):
         if not all_are(layer, (list, dict)):
-            raise bux.BudSyntaxError(
+            raise BudSyntaxError(
                 'Unsupported mixed {}'.format(SliceMaker.NM),
                 SliceMaker.KEYS)
         return layer
@@ -23,10 +22,10 @@ class SliceMaker:
             if any_in(layer, self.ringMaker.KEYS):
                 return [layer]
             else:
-                raise bux.BudSyntaxError(
+                raise BudSyntaxError(
                     'Invalid {} format'.format(SliceMaker.NM))
         elif not all_in(layer, SliceMaker.KEYS):
-            raise bux.BudSyntaxError(
+            raise BudSyntaxError(
                 '{} contains odd keywords'.format(SliceMaker.NM))
         else:
             return layer['rings']
@@ -39,7 +38,7 @@ class SliceMaker:
         elif isinstance(layer, dict):
             layer = self.fromDict(layer)
         else:
-            raise bux.BudArgumentError(
+            raise BudArgumentError(
                 'Impossible to derive {}'.format(SliceMaker.NM))
 
         lst = map(self.ringMaker.make, layer)
