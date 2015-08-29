@@ -1,33 +1,4 @@
 from math import degrees, acos, cos, sin, radians, sqrt, fmod
-import sys
-from os import path as fs
-
-
-def expand_pj(path, pjd=fs.dirname(fs.abspath(sys.argv[0]))):
-    if isinstance(path, str) and path.startswith(":/"):
-        path = fs.join(pjd, path[2:])
-    return path
-
-
-# def xstr(s):  # Returns empty string even if None
-#     return '' if s is None else str(s)
-
-
-def any_are(lst, ptype):  # ptype -- can be tuple
-    return any(map(lambda i: isinstance(i, ptype), lst))
-
-
-def all_are(lst, ptype):  # ptype -- can be tuple
-    return all(map(lambda i: isinstance(i, ptype), lst))
-
-
-def any_in(lst, dst):
-    return any(k in dst for k in list(lst))
-
-
-def all_in(lst, dst):
-    return all(k in dst for k in list(lst))
-
 
 def similar(x, y, estimate=0.001):  # Floats robust comparison
     if isinstance(x, list) and isinstance(y, list):

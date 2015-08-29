@@ -1,7 +1,7 @@
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 import piony
-from piony.exceptions import InputError
+from piony.common.exceptions import InputError
 
 
 class ArgParser(object):

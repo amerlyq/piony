@@ -4,7 +4,7 @@
 import sys
 import yaml
 import logging.config
-from piony.common import expand_pj
+from piony.common.system import expand_pj
 
 G_LOG_PATH = ':/cfgs/log.yml'
 with open(expand_pj(G_LOG_PATH), 'r') as f:

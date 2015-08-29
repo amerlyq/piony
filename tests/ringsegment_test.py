@@ -1,6 +1,6 @@
 from PyQt5.QtCore import QRect
 
-from piony.common import similar, ra2xy
+from piony.common.math import similar, ra2xy
 from piony.gui.ringsegment import RingSegment
 
 

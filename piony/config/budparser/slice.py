@@ -1,4 +1,4 @@
-from piony.common import all_are, any_in, all_in
+from piony.common.alias import all_are, any_in, all_in
 from .exceptions import BudSyntaxError, BudArgumentError
 from .ring import RingMaker
 

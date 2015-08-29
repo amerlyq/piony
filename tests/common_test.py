@@ -1,7 +1,7 @@
-from piony.common import expand_pj
-from piony.common import any_in, all_in, all_are
-from piony.common import degreeNorm, arcContains, iround, lrotate
-from piony.common import ra2xy, xy2ra, similar
+from piony.common.system import expand_pj
+from piony.common.alias import any_in, all_in, all_are
+from piony.common.math import (
+    degreeNorm, arcContains, iround, lrotate, ra2xy, xy2ra, similar)
 
 
 class TestF_expand_pj:

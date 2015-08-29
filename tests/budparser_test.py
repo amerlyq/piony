@@ -1,7 +1,8 @@
 import pytest
 
-from piony.exceptions import InputError
+from piony.common.exceptions import InputError
 from piony.config.budparser.exceptions import BudSyntaxError, BudArgumentError
+
 from piony.config.budparser.segment import SegmentMaker
 from piony.config.budparser.ring import RingMaker
 from piony.config.budparser.slice import SliceMaker

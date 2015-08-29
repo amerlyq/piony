@@ -1,4 +1,4 @@
-from piony.exceptions import PionyError
+from piony.common.exceptions import PionyError
 
 
 class BudError(PionyError):

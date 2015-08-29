@@ -2,7 +2,7 @@ from math import degrees, asin, sin, radians, sqrt
 from PyQt5 import QtGui
 from PyQt5.QtCore import Qt, QRect, QRectF
 
-from piony.common import ra2xy, arcContains, lrotate
+from piony.common.math import ra2xy, arcContains, lrotate
 
 
 class RingSegment:

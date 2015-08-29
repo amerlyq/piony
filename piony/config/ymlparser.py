@@ -3,8 +3,8 @@ import sys
 import yaml
 from collections import OrderedDict
 
-from piony.common import expand_pj
-from piony.exceptions import InputError
+from piony.common.system import expand_pj
+from piony.common.exceptions import InputError
 
 
 G_CONFIG_PATH = ':/cfgs/config.yml'

@@ -7,7 +7,7 @@ from PyQt5.QtCore import Qt, QSize, QRect
 import piony
 from piony.gui import logger
 from piony.gui.widget import base
-from piony.gui.layout.pie import PieLayout
+from piony.gui.layout.ring import RingLayout
 from piony.gui.widget.segment import SegmentWidget
 from piony.system.action import sendKey
 from piony.gstate import GState
@@ -48,14 +48,14 @@ class SliceWidget(QtWidgets.QWidget):
         self.r = (0.3 * a) // 2
         self.dr = (0.7 * a) // 2
 
-        pie = PieLayout(self.cfg, self.r, self.dr, 0)
+        ringLayout = RingLayout(self.cfg, self.r, self.dr, 0)
         for segment in ring['segments']:
             btn = SegmentWidget(segment.name,
                                 lambda a=segment.action: sendKey(a))
             if not bool(self.cfg['Window']['no_tooltip']):
                 btn.setToolTip(segment.tooltip)
-            pie.addWidget(btn)
-        self.setLayout(pie)
+            ringLayout.addWidget(btn)
+        self.setLayout(ringLayout)
 
         self.setFont(QtGui.QFont('Ubuntu', 16))
 

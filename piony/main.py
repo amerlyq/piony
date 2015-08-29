@@ -36,7 +36,7 @@ class MainApplication(object):
     def _createTray(self):
         from PyQt5.QtWidgets import QSystemTrayIcon
         from PyQt5.QtGui import QIcon
-        from piony.common import expand_pj
+        from piony.common.system import expand_pj
         tray = QSystemTrayIcon()
         tray.setIcon(QIcon(expand_pj(":/res/tray-normal.png")))
         tray.show()
