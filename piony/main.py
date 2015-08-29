@@ -1,6 +1,7 @@
 import inject
 from PyQt5.QtGui import QFont
 
+from piony import logger
 from piony.gstate import GState
 from piony.window import MainWindow
 
@@ -18,6 +19,7 @@ class MainApplication(object):
 
     @inject.params(gs=GState)
     def create(self, gs):
+        logger.info('%s init', self.__class__.__name__)
         self._globalSetup()
         if gs.cfg['System']['use_tray']:
             self.tray = self._createTray()

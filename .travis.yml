@@ -65,10 +65,9 @@ python:
   # Dependencies
 # - pip install .  # If you have 'setup.py' to install as package
 install:
-  - python --version
   - pip --version
   - pip install -Ur requirements.txt
-  - pip search PyQt5; cat $HOME/.pip/pip.log
+  - pip search pyqt5  #cat $HOME/.pip/pip.log
 
   # debug:
   - apt-cache search python pip
@@ -80,7 +79,6 @@ before_script:
 #   - sleep 3
   - which python
   - which py.test
-  - python --version
 
 script:
   PYTHONPATH=. PYTEST_QT_API=pyqt5 py.test -- $PWD

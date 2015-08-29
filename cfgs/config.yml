@@ -1,3 +1,5 @@
+# vim:ts=2:sw=2:sts=2
+
 Window:
   size: 300
   no_tooltip: false
@@ -8,5 +10,3 @@ Bud:
 System:
   no_focus: false
   use_tray: true
-
-# vim:ts=2:sw=2:sts=2

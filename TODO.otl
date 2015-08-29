@@ -24,6 +24,8 @@ RFC
 	[_] -T --no-tooltip=no change to --show-tooltip=yes
 	[_] Calculate text size to fit into rect in one pass (find Qt Api)
 	[_] Rename all config options to format 'fTextScale' with type letter
+	[_] Split GState in separately injected Style, Config, BudStruct
+		:= only if in further architecture only one of them used simultaneously
 
 
 STYLE

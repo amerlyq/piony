@@ -20,9 +20,20 @@ if __name__ == '__main__':
         ## WARNING: No cleanup possible (can't implement because of Qt).
         signal(SIGINT, SIG_DFL)
 
+        import yaml
+        import logging.config
+        from piony.common import expand_pj
+
+        G_LOG_PATH = ':/cfgs/log.yml'
+        with open(expand_pj(G_LOG_PATH), 'r') as f:
+            logging.config.dictConfig(yaml.safe_load(f.read()))
+
         import inject
         from piony.gstate import GState
-        inject.configure(lambda binder: binder.bind(GState, GState(sys.argv)))
+
+        def config(binder):
+            binder.bind(GState, GState(sys.argv))
+        inject.configure(config)
 
         from PyQt5.QtWidgets import QApplication
         from piony.main import MainApplication

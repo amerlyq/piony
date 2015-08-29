@@ -1,9 +1,29 @@
 >>> LAYOUT >>>
 : KISS : each level can accept only ones below it for now
 
+> MAP <
+Scene
+	SceneLayout
+	Bud
+		BudLayout
+		Fallback : (show for all / override by slice)
+			Center
+				Switcher*
+			Corner*
+		Slice*
+			SliceLayout
+			Center
+			Corner*
+			Ring*
+				RingLayout
+				Segment*
+					SegmentLayout
+					Zone/Button*
+
+
 Window
 	2015-04-25 [X] -s <N> : sets window size WxH=NxN to derive all rings sizes from it
-	[_] pointer to bud
+	2015-08-28 [X] pointer to bud
 	<Flags>
 	2015-04-26 [X] -T : disable QToolTip items
 		: for those who are distracted and irritated by text hints

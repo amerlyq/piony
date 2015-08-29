@@ -1,7 +1,9 @@
 from PyQt5.QtNetwork import QLocalServer
 from PyQt5.QtCore import QObject, QDataStream, pyqtSignal
 
+from piony import logger
 from piony.config import gvars
+from piony.system import action
 
 
 class Server(QObject):
@@ -26,24 +28,20 @@ class Server(QObject):
         self.server.close()
 
     def notify(self):
-        if __debug__ and gvars.G_DEBUG_SERVER:
-            print("Server: 1 new conn")
+        logger.info("1 new conn")
         # WARNING: when multiple connections, each will overwrite previous!
         self.conn = self.server.nextPendingConnection()
         self.conn.readyRead.connect(self.receiveData)
         self.conn.disconnected.connect(self.conn.deleteLater)
 
     def receiveData(self):
-        if __debug__ and gvars.G_DEBUG_SERVER:
-            print("Server: waits for data")
-
+        logger.info("Server: waits for data")
         ins = QDataStream(self.conn)
         ins.setVersion(QDataStream.Qt_5_0)
         if ins.atEnd():
             return
         argv = ins.readQVariant()
-
-        if __debug__ and gvars.G_DEBUG_SERVER:
-            print("Server reads:", argv)
-
+        logger.info("Server reads: %s", str(argv))
+        # Must be setted up on 'show' action. Move from beginning to appropriate.
+        action.search_dst_window()
         self.dataReceived.emit(argv)

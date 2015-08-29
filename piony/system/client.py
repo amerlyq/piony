@@ -1,3 +1,5 @@
+# WARNING: don't use logging in this module at all!
+
 from PyQt5.QtCore import QByteArray, QDataStream, QIODevice
 from PyQt5.QtNetwork import QLocalSocket
 
@@ -13,8 +15,7 @@ class Client:
 
     def connect(self):
         self.socket.abort()
-        if __debug__ and gvars.G_DEBUG_SERVER:
-            print("Client: connection attempt")
+        print("Client: connection attempt")
         self.socket.connectToServer()
 
     def send(self, argv):
@@ -22,15 +23,13 @@ class Client:
         out = QDataStream(data, QIODevice.WriteOnly)
         out.setVersion(QDataStream.Qt_5_0)
         out.writeQVariant(argv)
-
-        if __debug__ and gvars.G_DEBUG_SERVER:
-            print("Client writes:", data)
+        print("Client writes:", data)
         self.socket.write(data)
         self.socket.flush()
         self.socket.disconnectFromServer()
 
     def displayError(self, err):
-        errdesc = {
+        msg = {
             QLocalSocket.ServerNotFoundError:
                 "The host was not found. Check the host name and port.",
             QLocalSocket.ConnectionRefusedError:
@@ -38,9 +37,5 @@ class Client:
                 "Check server is running, it's host and port.",
             QLocalSocket.PeerClosedError:
                 "Peer was closed",  # None,
-        }
-
-        msg = errdesc.get(err, "Error occurred: {}."
-                          .format(self.socket.errorString()))
-        if msg:
-            print("Client:", msg)
+        }.get(err, "Client error: {}.".format(self.socket.errorString()))
+        print(msg)

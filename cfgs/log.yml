@@ -1,0 +1,38 @@
+# vim:ts=2:sw=2:sts=2
+
+formatters:
+  brief:
+    format: '%(message)s'
+  detailed:
+    format: '%(asctime)s %(levelname)-8s %(name)-15s %(message)s'
+    datefmt: '%Y-%m-%d %H:%M:%S'
+  full:
+    format: "%(asctime)s %(name)s[%(process)d] %(filename)s:%(lineno)d\n
+             -%(levelname)s- %(message)s"
+
+handlers:
+  console:
+    class    : logging.StreamHandler
+    formatter: detailed
+    level    : INFO
+    # filters  : [allow_foo]
+    stream   : ext://sys.stdout
+  file:
+    class    : logging.handlers.RotatingFileHandler
+    formatter: full
+    # level    : INFO
+    filename : logconfig.log
+    maxBytes : 1024
+    backupCount: 3
+
+loggers:
+  piony:
+    level: INFO
+    handlers: [console]  #, file
+
+# root:
+#   level: INFO
+#   handlers: ['console']
+
+version: 1
+disable_existing_loggers: true

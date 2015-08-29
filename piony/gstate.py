@@ -2,9 +2,9 @@ from PyQt5.QtCore import QObject, pyqtSignal  # , QRect, QPoint
 from PyQt5.QtWidgets import qApp
 # from collections import OrderedDict
 
+from piony import logger
 import piony.budparser.exceptions as bux
 from piony.config import ymlparser as yml
-from piony.system import action
 from piony.config.argparser import ArgParser
 from piony.budparser.parser import BudParser
 
@@ -14,6 +14,7 @@ class GState(QObject):
 
     def __init__(self, argv):
         super().__init__()
+        logger.info('%s init', self.__class__.__name__)
         self.active_window = '%1'
         self.cfg = None
         self.bud = None
@@ -25,10 +26,9 @@ class GState(QObject):
     def update(self, argv):
         kgs = self.parse(argv)
         # chg_gs = self.compare(kgs)
-        # Must be setted up on 'show' action. Move from beginning to appropriate.
-        action.search_dst_window()
         # if chg_gs:
         #     self.invalidated.emit(self.get_gs(), chg_gs)
+        logger.info('GState updated')
         self.invalidated.emit(kgs)
 
     def _set_args_from_command_line(self, cfg, args):

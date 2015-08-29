@@ -45,7 +45,10 @@ DEVELOPMENT
 		http://habrahabr.ru/company/mailru/blog/205426/
 	[_] Logging
 		http://stackoverflow.com/questions/1623039/python-debugging-tips
+		https://docs.python.org/3/howto/logging.html
 		https://docs.python.org/3.4/library/logging.html
+		https://docs.python.org/3.3/library/logging.config.html#logging-config-dictschema
+		> https://docs.python.org/3/howto/logging-cookbook.html
 	[_] Disassemble-bytecode
 		https://docs.python.org/3/library/dis.html
 		http://stackoverflow.com/questions/12524570/how-do-you-implement-ifdef-in-python
