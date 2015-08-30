@@ -141,7 +141,7 @@ def bps():
 
 class TestBudParser:
     def test_addEntry(self, bps):
-        # It's an accumulating scheme
+        # WARNING: It's an accumulating scheme
         assert bps.parse(None) == BUD(SLCE(RING()))
         assert bps.parse("") == BUD(SLCE(RING()), SLCE(RING()))
 

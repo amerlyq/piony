@@ -1,33 +1,19 @@
 import inject
-from PyQt5.QtCore import Qt  # , QRect, QPoint
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QCursor
-from PyQt5.QtWidgets import (QMainWindow, QGraphicsView, QGraphicsScene, qApp)
+from PyQt5.QtWidgets import QMainWindow, qApp
 
 import piony
+from piony.gstate import GState
 from piony.gui import logger
+from piony.gui.view import MainView
+from piony.gui.scene import MainScene
 from piony.gui.widget.bud import BudWidget
 from piony.inputprc import InputProcessor
-from piony.gstate import GState
-
-
-class MainView(QGraphicsView):
-    def __init__(self, scene, parent=None):
-        logger.info('%s init', self.__class__.__qualname__)
-        super().__init__(parent)
-        self._setup()
-        self.setScene(scene)
-        self.resize(scene.width(), scene.height())
-
-    def _setup(self):
-        self.setStyleSheet("background:transparent")
-        self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.setCacheMode(QGraphicsView.CacheBackground)
 
 
 class MainEventsMixin(object):
     def showEvent(self, e):
-        self.adjustSize()
         self.centerOnCursor()
 
     def keyPressEvent(self, e):
@@ -48,9 +34,6 @@ class MainEventsMixin(object):
         if self.key('M3') or self.key('C-M1'):
             self.move(self.ipr.delta(e, 'M3'))
 
-    def resizeEvent(self, e):
-        self.adjustSize()
-
     def wheelEvent(self, e):
         print("Ring rotate: ", e.angleDelta())
 
@@ -69,6 +52,7 @@ class MainControlMixin(object):
         self.setToolTip(text if text else None)
 
     def centerOnCursor(self):
+        # DEV: use center of scene (0,0) instead of window center
         fg = self.geometry()
         cp = QCursor.pos()
         # cp = QApplication.desktop().cursor().pos()
@@ -76,21 +60,6 @@ class MainControlMixin(object):
         # sg = QApplication.desktop().screenGeometry(screen)
         fg.moveCenter(cp)
         self.move(fg.topLeft())  # self.setGeometry(fg)
-
-    def adjustSize(self):
-        # CHG: fast (no bud recreation) but blur fonts after scaling
-        # THINK: may it be useful for wide scene?
-        # TODO: remove it when port all to QGraphics..
-        self.view.fitInView(self.scene.sceneRect(), Qt.KeepAspectRatio)
-
-        # ALT: create with exact size -- for rare resize
-        # self.scene.setSceneRect(self.scene.itemsBoundingRect())
-        # if self.wdg.budwdg:
-        #     self.scene.clear()
-        #     self.wdg = MainWidget()
-        #     self.wdg.budwdg.setGeometry(
-        #         QRect(0, 0, self.view.width(), self.view.height()))
-        #     self.scene.addWidget(self.wdg)
 
 
 class MainWindow(MainControlMixin, MainEventsMixin, QMainWindow):
@@ -117,9 +86,8 @@ class MainWindow(MainControlMixin, MainEventsMixin, QMainWindow):
     def _attachElements(self):
         self.ipr = InputProcessor()
         self.wdg = BudWidget()
-        self.scene = QGraphicsScene()
-        self.scene.addWidget(self.wdg)
-        self.view = MainView(self.scene)
+        self.scene = MainScene(self.wdg)
+        self.view = MainView(self.scene, self.wdg)
         self.setCentralWidget(self.view)
 
     def _setupWindow(self):

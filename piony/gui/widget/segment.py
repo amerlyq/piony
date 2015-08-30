@@ -1,6 +1,6 @@
 import inject
 from PyQt5 import QtGui, QtWidgets
-from PyQt5.QtCore import Qt, QPoint, QSize, QRect
+from PyQt5.QtCore import Qt, QPoint, QSizeF, QRect
 
 import piony
 from piony.gui import logger
@@ -8,7 +8,7 @@ from piony.gui.widget import base
 from piony.gstate import GState
 
 
-class SegmentWidget(QtWidgets.QToolButton):
+class SegmentWidget(QtWidgets.QGraphicsWidget):
     gs = inject.attr(GState)
     _fsm_regime = {'default': 'normal', 'normal': 'select',
                    'select': 'press', 'press': 'select'}
@@ -21,7 +21,7 @@ class SegmentWidget(QtWidgets.QToolButton):
         super().__init__(parent)
         self.sty = self.gs.sty['Segment']
 
-        self.setText(name)
+        self.text = name
         self.doAction = act
         self.regime = 'normal'
 
@@ -29,17 +29,17 @@ class SegmentWidget(QtWidgets.QToolButton):
         self.gText = QRect(0, 0, 20, 20)
 
         self.setFont(QtGui.QFont('Ubuntu', 16))
-        self.setMouseTracking(True)
-        self.resize(self.sizeHint())
+        # self.setMouseTracking(True)
+        # self.resize(self.sizeHint())
         # self.setMask(QtGui.QRegion(rct))
 
     ## --------------
 
     def minimalSize(self):
-        return QSize(10, 10)
+        return QSizeF(10, 10)
 
-    def sizeHint(self):
-        return QSize(80, 80)
+    # def sizeHint(self):
+    #     return QSizeF(80, 80)
 
     def enterEvent(self, e):
         self.regime = SegmentWidget._fsm_regime[self.regime]
@@ -60,14 +60,6 @@ class SegmentWidget(QtWidgets.QToolButton):
 
     ## --------------
 
-    def createPainter(self):
-        p = QtWidgets.QStylePainter(self)
-        p.setRenderHints(QtGui.QPainter.Antialiasing |
-                         QtGui.QPainter.TextAntialiasing |
-                         QtGui.QPainter.SmoothPixmapTransform |
-                         QtGui.QPainter.HighQualityAntialiasing, True)
-        return p
-
     def drawSegment(self, p):
         p.setBrush(self._clr("Filler"))
         p.setPen(QtGui.QPen(self._clr("Border"),
@@ -77,15 +69,15 @@ class SegmentWidget(QtWidgets.QToolButton):
     def drawSegmentText(self, p):
         ## RFC: Move to setGeometry. BUG: 'self' instead 'p' causes circular call
         sz = self.gText.size() * float(self.sty['Text']['scale'])
-        base.adjustFontSize(p, self.text(), sz)
+        base.adjustFontSize(p, self.text, sz)
 
         p.setPen(self._clr("Text"))
         if __debug__ and piony.G_DEBUG_VISUALS:
             p.drawRect(self.gText)
-        p.drawText(self.gText, Qt.AlignCenter, self.text())
+        p.drawText(self.gText, Qt.AlignCenter, self.text)
 
     def paintEvent(self, e):
-        p = self.createPainter()
+        p = QtWidgets.QStylePainter(self)
         if __debug__ and piony.G_DEBUG_VISUALS:
             self.drawSegmentRegion(p)
         self.drawSegment(p)
@@ -99,4 +91,4 @@ class SegmentWidget(QtWidgets.QToolButton):
             grd.setColorAt(1.0, QtGui.QColor(0, 0, 0, 40))
             p.setBrush(grd)
             p.setPen(QtGui.QPen(Qt.NoPen))
-            p.drawRect(QRect(QPoint(2, 2), self.size() - QSize(4, 4)))
+            p.drawRect(QRect(QPoint(2, 2), self.size() - QSizeF(4, 4)))
