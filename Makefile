@@ -9,7 +9,7 @@ TARGS := $(shell sed -n 's/^\([-a-z]\+\):.*/\1/p' Makefile|sort -u|xargs)
 
 ### DEFAULTS ###
 # USAGE: make dbg A="[a,b]"
-all: test debug
+all: test debug-all
 dbg: idbg
 test: test-exec
 style: style-lint

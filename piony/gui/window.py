@@ -7,7 +7,6 @@ import piony
 from piony.gstate import GState
 from piony.gui import logger
 from piony.gui.view import MainView
-from piony.gui.scene import MainScene
 from piony.gui.widget.bud import BudWidget
 from piony.inputprc import InputProcessor
 
@@ -51,15 +50,17 @@ class MainControlMixin(object):
             text = 'Slice No=1 <i>Click at any empty space to close.</i>'
         self.setToolTip(text if text else None)
 
-    def centerOnCursor(self):
-        # DEV: use center of scene (0,0) instead of window center
-        fg = self.geometry()
-        cp = QCursor.pos()
-        # cp = QApplication.desktop().cursor().pos()
-        # screen = QApplication.desktop().screenNumber(cp)
-        # sg = QApplication.desktop().screenGeometry(screen)
-        fg.moveCenter(cp)
-        self.move(fg.topLeft())  # self.setGeometry(fg)
+    @inject.params(gs=GState)
+    def centerOnCursor(self, gs):
+        if gs.cfg['System']['position'] == 'cursor_center':
+            # DEV: use center of scene (0,0) instead of window center
+            fg = self.geometry()
+            cp = QCursor.pos()
+            # cp = QApplication.desktop().cursor().pos()
+            # screen = QApplication.desktop().screenNumber(cp)
+            # sg = QApplication.desktop().screenGeometry(screen)
+            fg.moveCenter(cp)
+            self.move(fg.topLeft())  # self.setGeometry(fg)
 
 
 class MainWindow(MainControlMixin, MainEventsMixin, QMainWindow):
@@ -67,7 +68,7 @@ class MainWindow(MainControlMixin, MainEventsMixin, QMainWindow):
         logger.info('%s init', self.__class__.__qualname__)
         super().__init__()
         self._setupWindow()
-        self._attachElements()
+        self._compose()
         self._setupContextMenu()
 
     @inject.params(gs=GState)
@@ -83,11 +84,10 @@ class MainWindow(MainControlMixin, MainEventsMixin, QMainWindow):
         if chgs.get('toggle', False):
             self.setVisible(not self.isVisible())
 
-    def _attachElements(self):
+    def _compose(self):
         self.ipr = InputProcessor()
         self.wdg = BudWidget()
-        self.scene = MainScene(self.wdg)
-        self.view = MainView(self.scene, self.wdg)
+        self.view = MainView(self.wdg)
         self.setCentralWidget(self.view)
 
     def _setupWindow(self):

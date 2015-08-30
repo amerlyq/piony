@@ -33,6 +33,18 @@ Scene
 		http://habrahabr.ru/post/183432/
 
 
+Layout Composition
+	[_] one fullscreen overlay : no resize (beside edit mode)
+		:- can't work w/o composition wm,
+		:- maybe difficult for cross-platform
+	[_] one floating window under cursor -- max bbox on all layouts
+		:- move/resize events will cause window flickering
+		:- additional code for re-positioning
+	[_] individual windows (
+		:+ control layers by system's wm
+		:= can use one scene with different viewports
+		:- layer positioning may be interfered by wm
+
 
 Window
 	2015-04-25 [X] -s <N> : sets window size WxH=NxN to derive all rings sizes from it

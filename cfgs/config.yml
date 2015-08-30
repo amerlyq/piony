@@ -3,10 +3,12 @@
 Window:
   size: 300
   no_tooltip: false
+  composition: fullscreen  # DEV:ALT: fullscreen, floating, separate
 
 Bud:
   default: ":/cfgs/krita.yml"
 
 System:
   no_focus: false
+  position: screen_center  # DEV:ALT: screen_center, screen_last, cursor_center, cursor_last
   use_tray: true

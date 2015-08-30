@@ -1,76 +1,89 @@
-from math import sqrt
-
-import inject
-from PyQt5 import QtCore, QtGui
-from PyQt5.QtWidgets import (  # QGraphicsItem
-    QGraphicsWidget, QGraphicsLinearLayout,  # QSizePolicy,
-                             QStylePainter, QStyle)
-from PyQt5.QtCore import Qt, QRect  # , QRectF
+from PyQt5 import QtGui
+from PyQt5.QtWidgets import QGraphicsItem, QStyle
+from PyQt5.QtCore import Qt, QRectF
 
 import piony
-from piony.gui import logger
-from piony.gui.widget import base
-from piony.gui.layout.ring import RingLayout
-from piony.gui.widget.segment import SegmentWidget
-from piony.system.action import sendKey
-from piony.gstate import GState
+from piony.gui import logger, fmt
+# from piony.gui.layout.ring import RingLayout
+from piony.gui.engine.ring import RingLayoutEngine
 
 
-class MyItem(QGraphicsWidget):
-    def __init__(self, clr):
+class RadialItem(QGraphicsItem):
+    def __init__(self, engine=None):
         super().__init__()
+        self.engine = engine
+        self.x = 0
+        self.y = 0
+
+    @property
+    def R(self):
+        return self.engine.R if self.engine else 0
+
+    @R.setter
+    def R(self, R):
+        logger.info('%s <R> %f', self.__class__.__qualname__, R)
+        if self.engine:
+            self.engine.R = R
+            self.engine.update()
+        # self.engine.update()
+
+
+class MyItem(RadialItem):
+    def __init__(self, R, clr):
+        super().__init__()
+        self.R = R
         self.clr = clr
-        # self.resize(80, 20)
         # self.setPos(0, 0)
         # self.setFlags(QGraphicsItem.ItemIsSelectable |
         #               QGraphicsItem.ItemIsMovable)
 
     def boundingRect(self):
-        return self.geometry()
+        # NOTE: return fixed size to keep objects look the same
+        return QRectF(self.x, self.y, self.R, self.R)
 
-    # def sizeHing(self):
-    #     logger.info('%s hint %s', self.__class__.__qualname__, str(self.geometry()))
-    #     return self.geometry()
-
-    # def setGeometry(self, r):
-    #     logger.info('%s setGeometry %s', self.__class__.__qualname__, str(r))
-    #     super().setGeometry(r)
-
-    # def mousePressEvent(self, e):
-    #     self.setFocus()
-    #     super().mousePressEvent(e)
-
-    def paint(self, p, option, widget):
+    def paint(self, p, option, wdg):
         pen = QtGui.QPen(Qt.black, 3, Qt.SolidLine)
         if option.state & QStyle.State_Selected:
             pen.setColor(Qt.yellow)
         p.setPen(pen)
         p.setBrush(self.clr)
-        p.drawEllipse(option.rect)
+        r = self.boundingRect()
+        p.drawEllipse(r)  # option.rect
 
 
-class BudWidget(QGraphicsWidget):
-    def __init__(self, parent=None):
+class BudWidget(RadialItem):
+    def __init__(self):
+        super().__init__(RingLayoutEngine())  # NEED: QStackedLayout
         logger.info('%s init', self.__class__.__qualname__)
-        super().__init__(parent)
-        self.wdg = None
-        # self.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
 
-        hl = RingLayout()
-        for clr in [Qt.red, Qt.green, Qt.blue,
-                    QtGui.QColor(255, 255, 255, 40)]:
-            item = MyItem(clr)
-            logger.info('%s', str(item.geometry()))
-            hl.addItem(item)
+        for clr in [Qt.red, Qt.green, Qt.blue, QtGui.QColor(255, 255, 255, 40)]:
+            item = MyItem(40, clr)
+            logger.info('%s', fmt(item.boundingRect()))
+            self.engine.insertItem(-1, item)
 
-        self.setLayout(hl)
-        # self.setLayout(QGraphicsLinearLayout())  # QStackedLayout
-        # self.layout().addItem(QGraphicsEllipseItem(0, 0, 80, 40))
-        # self.setStyleSheet("background:transparent")
+    def boundingRect(self):
+        logger.info('%s bbox %s', self.__class__.__qualname__, fmt(self.engine.R))
+        return QRectF(0, 0, self.R, self.R)
 
+    # def setGeometry(self, r):
+    #     super().setGeometry(r)
+    #     # self.layout().setGeometry(r)
+    #     logger.info('%s setGeometry %s', self.__class__.__qualname__, fmt(self.geometry()))
+
+    def paint(self, p, option, wdg):  # : QStyleOptionGraphicsItem, QWidget
+        if __debug__ and piony.G_DEBUG_VISUALS:
+            p.setPen(QtGui.QPen(Qt.magenta, 3, Qt.SolidLine))
+            p.drawRect(self.boundingRect())
+            p.setPen(QtGui.QPen(Qt.red, 5, Qt.SolidLine))
+            p.drawLine(0, 0, 100, 0)
+            p.setPen(QtGui.QPen(Qt.green, 5, Qt.SolidLine))
+            p.drawLine(0, 0, 0, 100)
+        for item in self.engine.items:
+            item.paint(p, option, wdg)
+
+    # <New> --------------------
     def refreshBuds(self):
         logger.info('%s: buds', self.__class__.__qualname__)
-        pass
         # if self.wdg:
         #     self.layout().removeWidget(self.wdg)
         #     self.wdg.close()
@@ -79,98 +92,3 @@ class BudWidget(QGraphicsWidget):
         # QObjectCleanupHandler().add(self.layout())
         # self.setCurrentWidget(wdg) to display the one you want.
         # self.resize(self.sizeHint())
-
-    def setGeometry(self, r):
-        super().setGeometry(r)
-        logger.info('%s setGeometry %s', self.__class__.__qualname__, str(self.geometry()))
-
-    def resizeEvent(self, e):
-        logger.info('%s: resize', self.__class__.__qualname__)
-        super().resizeEvent(e)
-
-    def paint(self, p, option, widget):
-        p.setPen(QtGui.QPen(Qt.magenta, 3, Qt.SolidLine))
-        p.drawRect(self.boundingRect())
-
-
-class SliceWidget(QGraphicsWidget):
-    @inject.params(gs=GState)
-    def __init__(self, gs=None, parent=None):
-        logger.info('%s init', self.__class__.__qualname__)
-        super().__init__(parent)
-        self.sty = gs.sty['Bud']
-        self.cfg = gs.cfg
-        # self.setStyleSheet("background:transparent")
-
-        self.name = gs.bud['slices'][0].get('name', "slice")  # None
-        ring = gs.bud['slices'][0]['rings'][0]
-
-        a = int(self.cfg['Window']['size'])
-        self.r = (0.3 * a) // 2
-        self.dr = (0.7 * a) // 2
-
-        # ringLayout = RingLayout(self.cfg, self.r, self.dr, 0)
-        ringLayout = QGraphicsLinearLayout()
-        for segment in ring['segments']:
-            btn = SegmentWidget(segment.name,
-                                lambda a=segment.action: sendKey(a))
-            if not bool(self.cfg['Window']['no_tooltip']):
-                btn.setToolTip(segment.tooltip)
-            ringLayout.addItem(btn)
-        self.setLayout(ringLayout)
-
-        self.setFont(QtGui.QFont('Ubuntu', 16))
-
-    ## --------------
-    # def minimalSize(self):
-    #     return QSize(10, 10)
-
-    # def sizeHint(self):
-    #     return QSize(2*base.R(self), 2*base.R(self))
-
-    # def setGeometry(self, rect):    # rect -- w/o margin
-    #     super().setGeometry(rect)   # Necessary for updating masks and own geometry
-    #     self.layout().setGeometry(rect)
-    #     self.r = self.layout().r
-    #     self.dr = self.layout().dr
-
-    #     a = min(self.width(), self.height())
-    #     qr = QtCore.QRect(self.width()/2 - a/2, self.height()/2 - a/2, a, a)
-    #     rgn = QtGui.QRegion(qr, QtGui.QRegion.Ellipse)
-    #     self.setMask(rgn)
-
-    ## --------------
-    def paintEvent(self, e):
-        p = QStylePainter(self)
-
-        if __debug__ and piony.G_DEBUG_VISUALS:
-            self._drawBkgr(p)
-            self._drawMask(p)
-
-        self.drawName(p)
-        p.end()
-
-    def drawName(self, p):
-        a = self.r * sqrt(2)
-        sz = self.frameGeometry().size()
-        tq = QRect(sz.width()/2 - a/2, sz.height()/2 - a/2, a, a)
-        ## text_scale -- has effect only untill you fit bbox
-        tsz = tq.size() * float(self.sty['Text']['scale'])
-        base.adjustFontSize(self, self.name, tsz)
-
-        p.setPen(QtGui.QColor(*list(self.sty['Text']['color'])))
-        p.drawText(tq, Qt.AlignCenter, self.name)
-
-    ## --------------
-    if __debug__:
-        def _drawBkgr(self, p):
-            p.setPen(QtCore.Qt.NoPen)
-            p.setBrush(QtGui.QColor(0, 255, 255, 50))
-            p.drawRect(self.geometry())
-
-        def _drawMask(self, p):
-            p.setPen(Qt.NoPen)
-            p.setBrush(QtGui.QColor(255, 255, 0, 80))
-            path = QtGui.QPainterPath()
-            path.addRegion(self.mask())
-            p.drawPath(path)

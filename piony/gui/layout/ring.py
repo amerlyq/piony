@@ -15,9 +15,9 @@ class RingLayout(QGraphicsLayout):
         # self.dr = dr
         # self.setSpacing(spacing)
 
-    def invalidate(self):
-        self._engine.invalidate()
-        super().invalidate()
+    # def invalidate(self):
+    #     self._engine.invalidate()
+    #     super().invalidate()
 
     def count(self):
         return len(self._engine)
@@ -29,6 +29,7 @@ class RingLayout(QGraphicsLayout):
         return self._engine.removeAt(idx)
 
     def sizeHint(self, which: Qt.SizeHint, constrain: QSizeF):
+        logger.info('%s Hint %s', self.__class__.__qualname__, str(self._engine.R))
         # NOTE: will be useful only for Bud -- when Slices could shift one of another
         # size = QSize()
         # for item in self._items:
@@ -39,9 +40,18 @@ class RingLayout(QGraphicsLayout):
         return QSizeF(self._engine.R, self._engine.R)
 
     def setGeometry(self, r):
-        super().setGeometry(r)
-        self._engine.setGeometries(r, lambda m, *r: m.setGeometry(QRectF(*r)))
         logger.info('%s setG %s', self.__class__.__qualname__, str(self._engine.R))
+
+        def func(m, *r):
+            m.prepareGeometryChange()
+            m.setGeometry(QRectF(*r))
+        self._engine.setGeometries(r, func)
+        # self._engine.setGeometries(r, lambda m, *r:  m.setGeometry(QRectF(*r)))
+        super().setGeometry(r)
+
+    # def widgetEvent(self, e):
+    #     super().widgetEvent(e)
+    #     logger.info('%s wdgE %s', self.__class__.__qualname__, str(self._engine.R))
 
     # <New>
     def addItem(self, item):

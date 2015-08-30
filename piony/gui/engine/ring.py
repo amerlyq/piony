@@ -1,4 +1,4 @@
-from piony.gui import logger
+from piony.gui import logger, fmt
 
 from piony.common.math import ra2xy
 from piony.gui.ringsegment import RingSegment
@@ -7,6 +7,7 @@ from piony.gui.ringsegment import RingSegment
 class RingLayoutEngine(object):
     def __init__(self):
         self.R = 200
+        self.r = 100
         self.items = []
         self.rotation = 0        # Boundary between first and last items
         self.spacing = 0         # Between items
@@ -60,14 +61,17 @@ class RingLayoutEngine(object):
 
     # DEV: propagate one additional parameter 'innerR' on update
     def setGeometries(self, rf, setGeometryF):     # rect -- w/o margin
-        logger.info('%s setGeometry %s', self.__class__.__qualname__, str(rf))
+        logger.info('%s setGeometry %s', self.__class__.__qualname__, fmt(rf))
         self.R = min(rf.width(), rf.height()) / 2
         # r = 0.3 * R
         # dr = R - r
+        self.update()
+
+    def update(self):
         for idx, item in enumerate(self.items):
-            nw = rf.width() / len(self.items)
-            nx = rf.x() + idx * nw
-            setGeometryF(item, nx, rf.y(), nw, nw)
+            nw = 2*self.R / len(self.items)
+            nx = 0 + idx * nw
+            item.setGeometry(nx, 0, nw, nw)
 
     # OLD:
     def doLayout(self, rect):
