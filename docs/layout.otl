@@ -20,6 +20,19 @@ Scene
 					SegmentLayout
 					Zone/Button*
 
+> RESIZE <
+: [drag mouse] -> (Window -> (View -> Scene) -> Bud)
+: [show/hide sub-slice] -> (Bud.bbox ---> (View -> Scene) -> Window.setGeometry)
+:	{keep Cursor <-> same scene point}, use signal 'Bud.geometryChanged -> View.resize'
+:= if blinking on resize -- create fullscreen window
+:	(however now it would work tolerably even on non-composite wm)
+	SEE
+		http://habrahabr.ru/post/182142/
+		: https://github.com/DancingOnWater/GraphicsScenePlot
+		http://habrahabr.ru/post/182614/
+		http://habrahabr.ru/post/183432/
+
+
 
 Window
 	2015-04-25 [X] -s <N> : sets window size WxH=NxN to derive all rings sizes from it

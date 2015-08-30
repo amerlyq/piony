@@ -26,6 +26,7 @@ RFC
 	[_] Rename all config options to format 'fTextScale' with type letter
 	[_] Split GState in separately injected Style, Config, BudStruct
 		:= only if in further architecture only one of them used simultaneously
+	[_] When resizing window use view.fitIn then after end -- rebuild all widgets to remove blur
 
 
 STYLE

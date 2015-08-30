@@ -6,8 +6,6 @@ GENERAL
 	[_] style.js or style.css
 		: default style, if not specified one in <...>.json
 		: colors, spacings, curveness, etc
-	[_] keymap.json
-		: general kbd/mse/wst keys to control menu
 
 
 ARGUMENTS
@@ -44,10 +42,29 @@ CONFIG
 	[_] Saving config.yml in mixed block/flow style
 		: http://stackoverflow.com/questions/14000893/specifying-styles-for-portions-of-a-pyyaml-dump
 
-
-
 	<Flags>
 	[_] -c <path>: path to config.ini or STDIN
+
+
+KEYMAP
+	[_] Reasonable keymap.yml
+		: general kbd/mse/wst keys to control menu
+		[_] Maybe there is sense in actions.yml? (need reflexion)
+	[_] Parser (piony/config/keyparser.py)
+		[_] keymap.yml -> dict (SEE: config/budparser/bud.py)
+		[_] Separate global method to translate key notation into tuple
+		'press: C-S-M1'  ->
+			key = (Qt.ControlModifier|Qt.ShiftModifier, Qt.LeftButton)
+			keymap[key] = 'press'
+		*-a  -> [a, C-a, S-a, A-a, C-S-a, S-A-a, C-S-A-a]
+			:= multiple keys (...) -> one action
+	[_] Call inside MainEventsMixin events like this:
+		actions[keymap[(e.mod..s(), e.key())]]
+		: Somewhere:
+		: actions['press'] = sendKey
+		: actions['debug'] = lambda: print('dbg')
+	[_] Integrate keymap and actions to GState
+
 
 
 PROFILES   :>>> All syntax is yaml-compatible

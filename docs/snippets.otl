@@ -144,6 +144,12 @@ Debug: (print OrderedDict)
 	import pprint
 	pprint.pprint(bud, width=41, compact=True)
 
+Property
+: @property
+: def my_attr(self):
+:	...
+: @my_attr.setter
+: def my_attr(self, value):
 
 Singleton on metaclasses (can't have both metaclasses for QObject inheritance)
 : <#1>
