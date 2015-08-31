@@ -6,17 +6,15 @@ from piony.gui.ringsegment import RingSegment
 
 class RingLayoutEngine(object):
     def __init__(self):
-        self.R = 200
-        self.r = 100
         self.items = []
         self.rotation = 0        # Boundary between first and last items
         self.spacing = 0         # Between items
         self.orientation = None  # Order CW/CCW
-        self.gravity = None      # Text dir - In/Out/Bottom/etc -- for rotating screen
         self.invalidate()
 
     def invalidate(self):
-        self._len = None
+        self._r = None
+        self._R = None
 
     def insertItem(self, pos, item):
         self.items.insert(pos, item)
@@ -38,9 +36,7 @@ class RingLayoutEngine(object):
                 return None
 
     def __len__(self):
-        if not self._len:  # Cache
-            self._len = len(self.items)
-        return self._len
+        return len(self.items)
 
     def __setitem__(self, idx, item):
         self.items[idx] = item
@@ -67,11 +63,28 @@ class RingLayoutEngine(object):
         # dr = R - r
         self.update()
 
-    def update(self):
-        for idx, item in enumerate(self.items):
-            nw = 2*self.R / len(self.items)
-            nx = 0 + idx * nw
-            item.setGeometry(nx, 0, nw, nw)
+    def _cacheUpdated(self, r=None, R=None):
+        # NOTE: <caching optimization>
+        if r == self._r and R == self._R:
+            return False
+        if r is not None:
+            self._r = r
+        if R is not None:
+            self._R = R
+        if self._r is None or self._R is None:
+            return False
+        return True
+
+    def update(self, **kwargs):
+        # WARNING: on first update you must set both 'r' and 'R'
+        #       Then self.update() will simply cause re-layouting
+        logger.info('%s update %s', self.__class__.__qualname__, fmt(kwargs))
+        if not self._cacheUpdated(**kwargs):
+            return
+
+        da = float(360) / (len(self.items) if self.items else 1)
+        for i, item in enumerate(self.items):
+            item.setBoundings(a=i*da, A=i*da+da, **kwargs)
 
     # OLD:
     def doLayout(self, rect):
@@ -82,7 +95,7 @@ class RingLayoutEngine(object):
         cy = rect.height()/2
 
         # WARNING: case of empty list -- len([]) == 0
-        a = float(360) / max(1, len(self._items))
+        a = float(360) / (len(self.items) if self.items else 1)
 
         for i, wrapper in enumerate(self._items):
             item = wrapper.item

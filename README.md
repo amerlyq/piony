@@ -34,7 +34,7 @@ Radial menu will appear. You can press on any sector to generate action.
 
 Depends
 -------
- * [Python >3.3](https://www.python.org/)
+ * [Python](https://www.python.org/) ```>3.3```
  * [Qt5](https://www.qt.io/) -- GUI framework
  * [yaml](http://yaml.org/) -- interface configs format
  * [xdotool](http://www.semicomplete.com/projects/xdotool) -- keys emulation

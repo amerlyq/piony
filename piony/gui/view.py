@@ -54,8 +54,11 @@ class MainView(QGraphicsView):
         # THINK: may it be useful for wide scene?
         # TODO: remove it when port all to QGraphics..
         # self.fitInView(self.scene().sceneRect(), Qt.KeepAspectRatio)
+
         # NOTE: eliminates possibility for scrollbars and shrinking
-        self.setSceneRect(0, 0, sz.width(), sz.height())
+        # NOTE: for asymetric scene anyway will grow similarly in all
+        # directions
+        self.scene().setSceneRect(-sz.width()/2, -sz.height()/2, sz.width(), sz.height())
 
         # self._wdg.setGeometry(0, 0, sz.width(), sz.height())
         # rrf = QRectF(80, 80, sz.width(), sz.height())
