@@ -23,6 +23,7 @@ class MainEventsMixin(object):
         if e.modifiers() == Qt.ShiftModifier and e.key() == Qt.Key_K:
             print("K")
             e.accept()
+        logger.info("{:x} + {:x}".format(int(e.modifiers()), int(e.key())))
 
     def mousePressEvent(self, e):
         # print(e.button())

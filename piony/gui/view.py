@@ -11,6 +11,8 @@ class MainView(QGraphicsView):
         super().__init__(parent)
         self._setup()
         self._compose(wdg)
+        self.setMouseTracking(True)
+        # self.setInteractive(False)
 
     def _compose(self, wdg):
         self._wdg = wdg  # Link to call wdg methods inside scene

@@ -1,4 +1,4 @@
-from PyQt5 import QtGui
+from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
 
 
@@ -11,8 +11,8 @@ def adjustFontSize(self, text, sz):
     family = self.font().family()
     rw = sz.width()
     rh = sz.height()
-    self.setFont(QtGui.QFont(family, int(rh)))
+    self.setFont(QFont(family, int(rh)))
     tsz = self.fontMetrics().size(Qt.TextShowMnemonic, text)  # Qt.TextWordWrap
     fntscale = min(rw / tsz.width(), rh / tsz.height())
     if fntscale < 1:
-        self.setFont(QtGui.QFont(family, int(rh * fntscale)))
+        self.setFont(QFont(family, int(rh * fntscale)))
