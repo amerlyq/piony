@@ -11,7 +11,7 @@ Segment:
       select: [255, 200, 0, 220]
       press: [255, 200, 0, 220]
       normal: [10, 10, 0, 220]
-    width: 3
+    width: 2
 
   Filler:
     color:

@@ -53,11 +53,10 @@ class SegmentItem(RingItem):
         super().setBoundings(**kwargs)
         self.updatePath()
 
-    def updatePath(self):
+    def updatePath(self, lw=1.5):
         r, R, a, A = self.boundings()
         sgm = SegmentShapeEngine(r, a, R-r, A-a)
 
-        lw = 2
         pts = tuple(map(lambda p: (p[0], -p[1]), sgm.points_ra(lw)))
         (r, al), (_, aL), (R, AL), (_, Al) = sgm.points_RA(lw)
 

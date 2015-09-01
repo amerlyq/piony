@@ -19,7 +19,7 @@ class BudWidget(RingItem):
             item = SegmentWidget(nm, parent=self)
             self._engine.insertItem(len(self._engine), item)
         # WARNING: Don't use items until you call self.setBoundings!
-        self.setBoundings(r=50, R=100)
+        self.setBoundings(r=100, R=200)
 
     def paint(self, p, option, wdg):  # : QStyleOptionGraphicsItem, QWidget
         if __debug__ and piony.G_DEBUG_VISUALS:
