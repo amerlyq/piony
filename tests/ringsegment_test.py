@@ -1,5 +1,5 @@
 from piony.common.math import similar, ra2xy
-from piony.gui.engine.segment import SegmentShapeEngine
+from piony.gui.shape.segment import SegmentShapeEngine
 
 
 class TestSegmentShapeEngine():
@@ -76,8 +76,8 @@ class TestSegmentShapeEngine():
     ## ---------------
 
     def test_text_bbox_src(self):
-        assert similar((16, 1, 7, 7), SegmentShapeEngine(10, 0, 10, 180).text_bbox_scr(), 0.5)
-        assert similar((1, 16, 7, 7), SegmentShapeEngine(10, 0, 10, 358).text_bbox_scr(), 0.5)
+        assert similar((16.5, 1, 7, 7), SegmentShapeEngine(10, 0, 10, 180).text_bbox_scr(), 0.5)
+        assert similar((1, 16, 7, 7), SegmentShapeEngine(10, 0, 10, 358).text_bbox_scr(), 0.6)
 
     # def test_points_src(self):
         # assert similar([[11, 20], [19, 20], [0, 1], [0, 9]], SegmentShapeEngine(10, 0, 10, 90).points_scr(1))

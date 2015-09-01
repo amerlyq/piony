@@ -6,7 +6,7 @@ import piony
 from piony.gui import logger, fmt
 # from piony.gui.layout.ring import RingLayout
 from piony.gui.engine.ring import RingLayoutEngine
-from piony.gui.engine.segment import SegmentShapeEngine
+from piony.gui.shape.segment import SegmentShapeEngine
 # from piony.common.math import ra2xy
 
 # THINK: maybe (r,dr) is betters, as you can skip correctness check R>r
@@ -74,9 +74,8 @@ class SegmentItem(RingItem):
         # p.lineTo(*pts[0])
         p.arcTo(QRectF(-r, -r, 2*r, 2*r), Al, -(Al-al))
         self._path = p
-
-        # self._text_rf = QRectF(*segment.text_bbox_scr())
-        # wdg.setMask(segment.region())
+        self._text_rf = QRectF(*sgm.text_bbox_SCR())
+        # self.setMask(segment.region())
 
     # def region(self, path=None):
     #     if not path:
@@ -89,28 +88,10 @@ class SegmentWidget(SegmentItem):
     def __init__(self, clr, **kwargs):
         super().__init__(**kwargs)
         self.clr = clr
+        self.text = "A"
         self._path = None
         # self.setFlags(QGraphicsItem.ItemIsSelectable |
         #               QGraphicsItem.ItemIsMovable)
-
-    # def makePath(self):
-    #     r, R, a, A = self.boundings()
-    #     logger.info('%s bbs %s', self.__class__.__qualname__, fmt((self.clr, self.boundings())))
-    #     path = QPainterPath()
-    #     # path.moveTo(*ra2xy(0, 0))
-    #     path.moveTo(*ra2xy(r, -a))
-    #     # path.lineTo(*ra2xy(R, -a))
-    #     # path.lineTo(*ra2xy(R, -A))
-    #     path.arcTo(QRectF(-R, -R, 2*R, 2*R), a, A-a-40)
-    #     path.lineTo(*ra2xy(r, -A+40))
-    #     # path.lineTo(*ra2xy(r, -a))
-    #     path.arcTo(QRectF(-r, -r, 2*r, 2*r), A-40, -(A-a-40))
-    #     path.closeSubpath()
-    #     return path
-
-    # def setBoundings(self, **kwargs):
-    #     super().setBoundings(**kwargs)
-    #     # self._path = self.makePath()
 
     def paint(self, p, option, wdg):
         pen = QPen(Qt.black, 3, Qt.SolidLine)
@@ -121,6 +102,8 @@ class SegmentWidget(SegmentItem):
 
         if self._path:
             p.drawPath(self._path)
+        if self._text_rf:
+            p.drawText(self._text_rf, Qt.AlignCenter, self.text)
 
 
 class BudWidget(RingItem):

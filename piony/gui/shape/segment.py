@@ -71,7 +71,7 @@ class SegmentShapeEngine:
         l, t, w, h = self.bbox_ra()            # mirrored for screen coords
         return (round(x+l-x0), round(y-(t-y0)), round(w), round(h))
 
-    def text_bbox_scr(self, lw=0):
+    def text_bbox_SCR(self, lw=0):
         ## Text: get inscribed circle center tr, and size of inscribed square in it
         R = self.R()
         ha = self.da/2
@@ -82,4 +82,9 @@ class SegmentShapeEngine:
         ta = tr / sqrt(2)
         l, t = self.topLeft_ra()
         cx, cy = ra2xy(R-tr, ha+self.a)
-        return (cx-ta-l, t-cy-ta, 2*ta, 2*ta)
+        return (cx-ta, -cy-ta, 2*ta, 2*ta)
+
+    def text_bbox_scr(self, lw=0):
+        x, y, w, h = self.text_bbox_SCR(lw)
+        l, t = self.topLeft_ra()
+        return (x-l, t+y, w, h)
