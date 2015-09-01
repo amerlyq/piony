@@ -1,7 +1,8 @@
 from math import degrees, acos, cos, sin, radians, sqrt, fmod
 
+
 def similar(x, y, estimate=0.001):  # Floats robust comparison
-    if isinstance(x, list) and isinstance(y, list):
+    if isinstance(x, (list, tuple)) and isinstance(y, (list, tuple)):
         return all([similar(xi, yi, estimate) for xi, yi in zip(x, y)])
     else:
         return abs(x-y) < estimate

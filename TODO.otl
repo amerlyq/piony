@@ -11,11 +11,11 @@ TODO
 	[_] Option 'verbose' -- move under [Debug] section
 
 FLOW
-	2015-04-20 [X] RingSegment class (draft version)
+	2015-04-20 [X] SegmentShapeEngine class (draft version)
 	2015-04-23 [X] self.spacing() as pre-modifier for button outer size: path and mask
 
 RFC
-	[_] RingSegment: extract separate funcs
+	[_] SegmentShapeEngine: extract separate funcs
 		[_] coord-systems conversion code
 		[_] segment contour shrinking
 	[_] Try extract R() as single separate function instead defining in each class

@@ -1,14 +1,11 @@
 from piony.gui import logger, fmt
 
-from piony.common.math import ra2xy
-from piony.gui.ringsegment import RingSegment
-
 
 class RingLayoutEngine(object):
     def __init__(self):
         self.items = []
         self.rotation = 0        # Boundary between first and last items
-        self.spacing = 0         # Between items
+        self.spacing = 0         # Between items, may be linear or angle
         self.orientation = None  # Order CW/CCW
         self.invalidate()
 
@@ -55,14 +52,6 @@ class RingLayoutEngine(object):
     def __del__(self):
         del self.items
 
-    # DEV: propagate one additional parameter 'innerR' on update
-    def setGeometries(self, rf, setGeometryF):     # rect -- w/o margin
-        logger.info('%s setGeometry %s', self.__class__.__qualname__, fmt(rf))
-        self.R = min(rf.width(), rf.height()) / 2
-        # r = 0.3 * R
-        # dr = R - r
-        self.update()
-
     def _cacheUpdated(self, r=None, R=None):
         # NOTE: <caching optimization>
         if r == self._r and R == self._R:
@@ -81,30 +70,7 @@ class RingLayoutEngine(object):
         logger.info('%s update %s', self.__class__.__qualname__, fmt(kwargs))
         if not self._cacheUpdated(**kwargs):
             return
-
-        da = float(360) / (len(self.items) if self.items else 1)
-        for i, item in enumerate(self.items):
-            item.setBoundings(a=i*da, A=i*da+da, **kwargs)
-
-    # OLD:
-    def doLayout(self, rect):
-        a = min(rect.width(), rect.height())
-        self.r = (0.3 * a) // 2
-        self.dr = (0.7 * a) // 2
-        cx = rect.width()/2
-        cy = rect.height()/2
-
-        # WARNING: case of empty list -- len([]) == 0
-        a = float(360) / (len(self.items) if self.items else 1)
-
-        for i, wrapper in enumerate(self._items):
-            item = wrapper.item
-            wdg = item.widget()
-            sp = self.spacing()  # may be linear or angle
-
-            segment = RingSegment(self.r, a*i + sp/2., self.dr, a - sp)
-            x, y = ra2xy(self.r, a*i)
-            wdg.setGeometry(segment.geometry(cx + x, cy - y))
-            wdg.gPath = segment.path()
-            wdg.gText = segment.text_bbox_scr()
-            wdg.setMask(segment.region())
+        if self.items:
+            da = float(360) / len(self.items)
+            for i, item in enumerate(self.items):
+                item.setBoundings(a=i*da, A=i*da+da, **kwargs)

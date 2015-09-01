@@ -80,8 +80,9 @@ before_script:
   - which py.test
 
 script:
-  - FLS=$(find "$PWD/tests/" -type f -name '*_test.py' \! -name 'ringsegment*')
-  - PYTHONPATH=. PYTEST_QT_API=pyqt5 py.test --cov=piony --cov-report term-missing -- ${FLS}
+  # NOTE: now I removed all qt-dependent tests
+  # - FLS=$(find "$PWD/tests/" -type f -name '*_test.py' \! -name 'ringsegment*')
+  - PYTHONPATH=. PYTEST_QT_API=pyqt5 py.test --cov=piony --cov-report term-missing
   # - make test
 
 # after_script:

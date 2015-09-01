@@ -1,12 +1,9 @@
 from math import degrees, asin, sin, radians, sqrt
-from PyQt5 import QtGui
-from PyQt5.QtCore import Qt, QRect, QRectF
 
 from piony.common.math import ra2xy, arcContains, lrotate
 
 
-class RingSegment:
-
+class SegmentShapeEngine:
     def __init__(self, r, a, dr, da):     # 4 -- 3
         self.a = a                        # )    )
         self.r = r                        # 1 -- 2
@@ -20,20 +17,18 @@ class RingSegment:
     def A(self):
         return self.a + self.da
 
-    def arcFixes(self, lw=0):
+    def arcFixes(self, lw):
         # count separate shift to replace angle spacer on line spacer in between
-        def afix(r):
-            return degrees(asin(float(lw) / r)) if r else 0
-        return [afix(self.r), afix(self.r + self.dr)]
+        return list(map(lambda r: degrees(asin(float(lw) / r)) if r else 0,
+                        [self.r+lw, self.R()-lw]))
+
+    def points_RA(self, lw=0):
+        r, R, a, A = self.r, self.R(), self.a, self.A()
+        la, La = self.arcFixes(lw)
+        return [(r+lw, a+la), (R-lw, a+La), (R-lw, A-La), (r+lw, A-la)]
 
     def points_ra(self, lw=0):
-        r = self.r
-        R = self.R()
-        a = self.a
-        A = self.A()
-        la, La = self.arcFixes(lw)
-        return [ra2xy(r+lw, a+la), ra2xy(R-lw, a+La),
-                ra2xy(R-lw, A-La), ra2xy(r+lw, A-la)]
+        return list(map(lambda ra: ra2xy(*ra), self.points_RA(lw)))
 
     def limitAt(self, nq, pts):     # nq -- Cartesian quarter number [0..3]
         i = (nq + 1) % 4
@@ -45,12 +40,12 @@ class RingSegment:
 
     def bbox_ra(self):  # Cartesian box relative to ring center in (0,0)
         # NOTE: can be optimized -- as we already knew which dots influence which side
-        pts = lrotate(self.points_ra(), -int(self.a / 90))
+        pts = lrotate(self.points_ra(0), -int(self.a / 90))
         r = self.limitAt(0, pts)
         t = self.limitAt(1, pts)
         l = self.limitAt(2, pts)
         b = self.limitAt(3, pts)
-        pts = lrotate(self.points_ra(), -int((self.a+self.da) / 90))
+        pts = lrotate(self.points_ra(0), -int((self.a+self.da) / 90))
         r = max(r, self.limitAt(0, pts))
         t = max(t, self.limitAt(1, pts))
         l = min(l, self.limitAt(2, pts))
@@ -72,9 +67,9 @@ class RingSegment:
     ## --- Qt ---------
 
     def geometry(self, x=0, y=0):  # x,y -- current ring center
-        x0, y0 = self.points_ra()[0]
+        x0, y0 = self.points_ra(0)[0]
         l, t, w, h = self.bbox_ra()            # mirrored for screen coords
-        return QRect(round(x+l-x0), round(y-(t-y0)), round(w), round(h))
+        return (round(x+l-x0), round(y-(t-y0)), round(w), round(h))
 
     def text_bbox_scr(self, lw=0):
         ## Text: get inscribed circle center tr, and size of inscribed square in it
@@ -87,28 +82,4 @@ class RingSegment:
         ta = tr / sqrt(2)
         l, t = self.topLeft_ra()
         cx, cy = ra2xy(R-tr, ha+self.a)
-        qr = QRect(cx-ta-l, t-cy-ta, 2*ta, 2*ta)
-        return qr
-
-    def path(self, lw=3):  # lw -- line width
-        r = self.r + lw
-        R = self.R() - lw
-        cx, cy = self.arcCenter_scr()
-        pts = self.points_scr(lw)
-        la, La = self.arcFixes(lw)
-
-        p = QtGui.QPainterPath()
-        p.moveTo(*pts[0])
-        p.lineTo(*pts[1])
-        # p.lineTo(*pts[2])
-        p.arcTo(QRectF(cx-R, cy-R, 2*R, 2*R), self.a+La, self.da-2*La)
-        p.lineTo(*pts[3])
-        # p.lineTo(*pts[0])
-        p.arcTo(QRectF(cx-r, cy-r, 2*r, 2*r), self.a+self.da-la, -self.da+2*la)
-        return p
-
-    def region(self, path=None):
-        if not path:
-            path = self.path(0)
-        pg = path.toFillPolygon(QtGui.QTransform()).toPolygon()
-        return QtGui.QRegion(pg, Qt.WindingFill)
+        return (cx-ta-l, t-cy-ta, 2*ta, 2*ta)
