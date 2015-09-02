@@ -50,6 +50,9 @@ class MainControlMixin(object):
         if not bool(cfg['Window']['no_tooltip']):
             text = 'Slice No=1 <i>Click at any empty space to close.</i>'
         self.setToolTip(text if text else None)
+        # DEV: Enable/disable on system level through static function
+        # if not bool(self.cfg['Window']['no_tooltip']):
+        #     btn.setToolTip(segment.tooltip)
 
     @inject.params(gs=GState)
     def centerOnCursor(self, gs):

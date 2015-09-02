@@ -1,78 +1,54 @@
-from math import sqrt
-
 import inject
-from PyQt5 import QtGui
+from PyQt5.QtGui import QColor, QFont
 from PyQt5.QtCore import Qt, QRect
-from PyQt5.QtWidgets import (QGraphicsWidget, QGraphicsLinearLayout,
-                             QStylePainter)
+from PyQt5.QtWidgets import QGraphicsItem
 
 import piony
 from piony.gui import logger
 from piony.gstate import GState
 from piony.gui.widget import base
-from piony.gui.widget.segment import SegmentWidget
-from piony.system.action import sendKey
+from piony.gui.widget.ring import RingWidget
 
 
-class SliceWidget(QGraphicsWidget):
+class SliceWidget(QGraphicsItem):
     @inject.params(gs=GState)
-    def __init__(self, gs=None, parent=None):
+    def __init__(self, items, r=None, R=None, gs=None, parent=None):
         logger.info('%s init', self.__class__.__qualname__)
         super().__init__(parent)
         self.sty = gs.sty['Bud']
         self.cfg = gs.cfg
+        self.text = gs.bud['slices'][0].get('name')
+        self._text_rf = QRect(0, 0, 16, 16)
+        self.font = QFont(str(self.sty['Text']['font']), self._text_rf.height())
 
-        self.name = gs.bud['slices'][0].get('name', "slice")  # None
-        ring = gs.bud['slices'][0]['rings'][0]
+        rings = items[0]['segments']
+        self._ring = RingWidget(rings, r=r, R=R, parent=self)
+        # segments = map(lambda sgm: SegmentWidget(sgm, parent=self), items)
+        # self._engine.insert(segments)
 
-        a = int(self.cfg['Window']['size'])
-        self.r = (0.3 * a) // 2
-        self.dr = (0.7 * a) // 2
+    def boundingRect(self):
+        return self._ring.boundingRect()
 
-        # ringLayout = RingLayout(self.cfg, self.r, self.dr, 0)
-        ringLayout = QGraphicsLinearLayout()
-        for segment in ring['segments']:
-            btn = SegmentWidget(segment.name,
-                                lambda a=segment.action: sendKey(a))
-            if not bool(self.cfg['Window']['no_tooltip']):
-                btn.setToolTip(segment.tooltip)
-            ringLayout.addItem(btn)
-        self.setLayout(ringLayout)
-
-        self.setFont(QtGui.QFont('Ubuntu', 16))
-
-    ## --------------
-    def paintEvent(self, e):
-        p = QStylePainter(self)
-
+    def paint(self, p, option, wdg):
         if __debug__ and piony.G_DEBUG_VISUALS:
-            self._drawBkgr(p)
-            self._drawMask(p)
+            self._drawDbg(p)
+        if self.text:
+            self.drawText(p)
+        if self._ring:
+            self._ring.paint(p, option, wdg)
 
-        self.drawName(p)
-        p.end()
+    def drawText(self, p):
+        sz = self._text_rf.size() * float(self.sty['Text']['scale'])
+        base.adjustFontSize(p, self.text, sz)
+        p.setPen(QColor(*list(self.sty['Text']['color'])))
+        if __debug__ and piony.G_DEBUG_VISUALS:
+            p.drawRect(self._text_rf)
+        if self.text and self._text_rf:
+            p.drawText(self._text_rf, Qt.AlignCenter, self.text)
 
-    def drawName(self, p):
-        a = self.r * sqrt(2)
-        sz = self.frameGeometry().size()
-        tq = QRect(sz.width()/2 - a/2, sz.height()/2 - a/2, a, a)
-        ## text_scale -- has effect only untill you fit bbox
-        tsz = tq.size() * float(self.sty['Text']['scale'])
-        base.adjustFontSize(self, self.name, tsz)
-
-        p.setPen(QtGui.QColor(*list(self.sty['Text']['color'])))
-        p.drawText(tq, Qt.AlignCenter, self.name)
-
-    ## --------------
+    # <Dbg> --------------------
     if __debug__:
-        def _drawBkgr(self, p):
+        def _drawDbg(self, p):
             p.setPen(Qt.NoPen)
-            p.setBrush(QtGui.QColor(0, 255, 255, 50))
-            p.drawRect(self.geometry())
-
-        def _drawMask(self, p):
-            p.setPen(Qt.NoPen)
-            p.setBrush(QtGui.QColor(255, 255, 0, 80))
-            path = QtGui.QPainterPath()
-            path.addRegion(self.mask())
-            p.drawPath(path)
+            p.setBrush(QColor(0, 255, 255, 50))
+            p.drawRect(self.boundingRect())

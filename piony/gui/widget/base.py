@@ -9,10 +9,11 @@ def R(self):
 # always use 'p' in paintEvent and 'self' in setGeometry
 def adjustFontSize(self, text, sz):
     family = self.font().family()
-    rw = sz.width()
-    rh = sz.height()
+    rw, rh = sz.width(), sz.height()
     self.setFont(QFont(family, int(rh)))
     tsz = self.fontMetrics().size(Qt.TextShowMnemonic, text)  # Qt.TextWordWrap
-    fntscale = min(rw / tsz.width(), rh / tsz.height())
-    if fntscale < 1:
-        self.setFont(QFont(family, int(rh * fntscale)))
+    tw, th = tsz.width(), tsz.height()
+    if tw and th:
+        fntscale = min(rw / tw, rh / th)
+        if fntscale < 1:
+            self.setFont(QFont(family, int(rh * fntscale)))

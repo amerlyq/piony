@@ -6,17 +6,17 @@ from PyQt5.QtCore import Qt
 import piony
 from piony.gstate import GState
 from piony.gui import logger
-from piony.gui.widget.ring import RingWidget
+from piony.gui.widget.slice import SliceWidget
 
 
-class BudWidget(QGraphicsItem):
+class BudWidget(QGraphicsItem):  # OverlappedItem
     @inject.params(gs=GState)
     def __init__(self, gs, parent=None):
         super().__init__(parent)  # NEED: QStackedLayout
         logger.info('%s init', self.__class__.__qualname__)
 
-        items = gs.bud['slices'][0]['rings'][0]['segments']
-        self._ring = RingWidget(items, r=100, R=200, parent=self)
+        items = gs.bud['slices'][0]['rings']
+        self._slice = SliceWidget(items, r=50, R=200, parent=self)
 
     # m.prepareGeometryChange()
     # DEV caching
@@ -26,12 +26,12 @@ class BudWidget(QGraphicsItem):
         #     size = size.expandedTo(item.minimumSize())
         # size += QSize(2 * self.margin(), 2 * self.margin())
         # return size
-        return self._ring.boundingRect()
+        return self._slice.boundingRect()
 
     def paint(self, p, option, wdg):
         if __debug__ and piony.G_DEBUG_VISUALS:
             self._dbgPaing(p)
-        self._ring.paint(p, option, wdg)
+        self._slice.paint(p, option, wdg)
 
     # <Dbg> --------------------
     if __debug__ and piony.G_DEBUG_VISUALS:

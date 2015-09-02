@@ -4,12 +4,13 @@ Bud:
   Text:
     color: [100, 100, 100, 200]
     scale: 0.64
+    font: &fn 'Ubuntu'
 
 Segment:
   Border:
     color:
-      select: [255, 200, 0, 220]
-      press: [255, 200, 0, 220]
+      select: &cb [255, 200, 0, 220]
+      press:  *cb
       normal: [10, 10, 0, 220]
     width: 2
 
@@ -25,3 +26,4 @@ Segment:
       press: [255, 40, 40, 255]
       normal: [100, 255, 0, 255]
     scale: 0.80
+    font: *fn

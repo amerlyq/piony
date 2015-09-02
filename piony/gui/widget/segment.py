@@ -42,10 +42,10 @@ class SegmentWidget(SegmentItem):
         super().__init__(**kwargs)
         self.sty = self.gs.sty['Segment']
         self.sgm = sgm
-        self.regime = 'normal'
-        self._path = None
         self._text_rf = QRect(0, 0, 16, 16)
-        self.font = QFont('Ubuntu', self._text_rf.height())
+        self.font = QFont(str(self.sty['Text']['font']), self._text_rf.height())
+        self._regime = 'normal'
+        self._path = None
         # self.setMouseTracking(True)
         # self.setFlags(QGraphicsItem.ItemIsSelectable |
         #               QGraphicsItem.ItemIsMovable)
@@ -58,10 +58,10 @@ class SegmentWidget(SegmentItem):
         return self._path
 
     def _clr(self, name):
-        return QColor(*list(self.sty[name]['color'][self.regime]))
+        return QColor(*list(self.sty[name]['color'][self._regime]))
 
     def _nextClr(self, rgm=None):
-        self.regime = SegmentWidget._fsm_regime[rgm if rgm else self.regime]
+        self._regime = SegmentWidget._fsm_regime[rgm if rgm else self._regime]
         self.update()
 
     ## --------------
@@ -82,29 +82,28 @@ class SegmentWidget(SegmentItem):
             sendKey(self.sgm.action)
 
     ## --------------
-    def drawSegment(self, p):
+    def drawBody(self, p):
         p.setBrush(self._clr("Filler"))
         p.setPen(QPen(self._clr("Border"),
                  float(self.sty['Border']['width']), Qt.SolidLine))
         if self._path:
             p.drawPath(self._path)
 
-    def drawSegmentText(self, p):
-        ## RFC: Move to setGeometry. BUG: 'self' instead 'p' causes circular call
+    def drawText(self, p):
         sz = self._text_rf.size() * float(self.sty['Text']['scale'])
         base.adjustFontSize(p, self.sgm.name, sz)
 
         p.setPen(self._clr("Text"))
         if __debug__ and piony.G_DEBUG_VISUALS:
             p.drawRect(self._text_rf)
-        if self._text_rf:
+        if self.sgm.name and self._text_rf:
             p.drawText(self._text_rf, Qt.AlignCenter, self.sgm.name)
 
     def paint(self, p, opt, wdg):
         # if __debug__ and piony.G_DEBUG_VISUALS:
         #     self.drawSegmentRegion(p)
-        self.drawSegment(p)
-        self.drawSegmentText(p)
+        self.drawBody(p)
+        self.drawText(p)
 
 #     if __debug__:
 #         def drawSegmentRegion(self, p):  # Gradient brush
