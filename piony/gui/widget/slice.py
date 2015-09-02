@@ -21,7 +21,6 @@ class SliceWidget(QGraphicsWidget):
         super().__init__(parent)
         self.sty = gs.sty['Bud']
         self.cfg = gs.cfg
-        # self.setStyleSheet("background:transparent")
 
         self.name = gs.bud['slices'][0].get('name', "slice")  # None
         ring = gs.bud['slices'][0]['rings'][0]
@@ -41,24 +40,6 @@ class SliceWidget(QGraphicsWidget):
         self.setLayout(ringLayout)
 
         self.setFont(QtGui.QFont('Ubuntu', 16))
-
-    ## --------------
-    # def minimalSize(self):
-    #     return QSize(10, 10)
-
-    # def sizeHint(self):
-    #     return QSize(2*base.R(self), 2*base.R(self))
-
-    # def setGeometry(self, rect):    # rect -- w/o margin
-    #     super().setGeometry(rect)   # Necessary for updating masks and own geometry
-    #     self.layout().setGeometry(rect)
-    #     self.r = self.layout().r
-    #     self.dr = self.layout().dr
-
-    #     a = min(self.width(), self.height())
-    #     qr = QtCore.QRect(self.width()/2 - a/2, self.height()/2 - a/2, a, a)
-    #     rgn = QtGui.QRegion(qr, QtGui.QRegion.Ellipse)
-    #     self.setMask(rgn)
 
     ## --------------
     def paintEvent(self, e):

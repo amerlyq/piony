@@ -1,47 +1,40 @@
-from PyQt5.QtGui import QColor, QPen, QPainterPath
+import inject
+from PyQt5.QtWidgets import QGraphicsItem
+from PyQt5.QtGui import QPen
 from PyQt5.QtCore import Qt
 
 import piony
+from piony.gstate import GState
 from piony.gui import logger
-# from piony.gui.layout.ring import RingLayout
-from piony.gui.engine.ring import RingLayoutEngine
-from piony.gui.items import RingItem
-from piony.gui.widget.segment import SegmentWidget
+from piony.gui.widget.ring import RingWidget
 
 
-class BudWidget(RingItem):
-    def __init__(self):
-        super().__init__(engine=RingLayoutEngine())  # NEED: QStackedLayout
+class BudWidget(QGraphicsItem):
+    @inject.params(gs=GState)
+    def __init__(self, gs, parent=None):
+        super().__init__(parent)  # NEED: QStackedLayout
         logger.info('%s init', self.__class__.__qualname__)
 
-        # for clr in [Qt.red, QColor(0, 0, 0, 40), Qt.green]:  # , Qt.blue, QColor(255, 255, 255, 40)]:
-        for nm in ['a', 'b', 'c']:  # , Qt.blue, QColor(255, 255, 255, 40)]:
-            item = SegmentWidget(nm, parent=self)
-            self._engine.insertItem(len(self._engine), item)
-        # WARNING: Don't use items until you call self.setBoundings!
-        self.setBoundings(r=100, R=200)
+        items = gs.bud['slices'][0]['rings'][0]['segments']
+        self._ring = RingWidget(items, r=100, R=200, parent=self)
 
-    def paint(self, p, option, wdg):  # : QStyleOptionGraphicsItem, QWidget
+    # m.prepareGeometryChange()
+    # DEV caching
+    def boundingRect(self):
+        # size = QSizeF()
+        # for item in self._items:
+        #     size = size.expandedTo(item.minimumSize())
+        # size += QSize(2 * self.margin(), 2 * self.margin())
+        # return size
+        return self._ring.boundingRect()
+
+    def paint(self, p, option, wdg):
         if __debug__ and piony.G_DEBUG_VISUALS:
             self._dbgPaing(p)
-            # self._dbgRingShape(p)
-        for item in self._engine.items:
-            item.paint(p, option, wdg)
+        self._ring.paint(p, option, wdg)
 
     # <Dbg> --------------------
     if __debug__ and piony.G_DEBUG_VISUALS:
-        def _dbgRingShape(self, p):
-            r, R, = self.boundings()
-            opath = QPainterPath()
-            opath.setFillRule(Qt.WindingFill)
-            opath.addEllipse(-R, -R, 2*R, 2*R)
-            ipath = QPainterPath()
-            ipath.setFillRule(Qt.WindingFill)
-            ipath.addEllipse(-r, -r, 2*r, 2*r)
-            p.fillPath(opath.subtracted(ipath), QColor(255, 255, 0, 50))
-            p.strokePath(opath.simplified(), QPen(Qt.black, 3))
-            p.strokePath(ipath, QPen(Qt.black, 1))
-
         def _dbgPaing(self, p):
             # Scene bounds must always be sticked to window borders
             p.setPen(QPen(Qt.white, 3, Qt.SolidLine))

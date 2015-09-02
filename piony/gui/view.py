@@ -13,6 +13,9 @@ class MainView(QGraphicsView):
         self._compose(wdg)
         self.setMouseTracking(True)
         # self.setInteractive(False)
+        # rgn = QtGui.QRegion(qrect, QtGui.QRegion.Ellipse)
+        # self.setMask(rgn)
+
 
     def _compose(self, wdg):
         self._wdg = wdg  # Link to call wdg methods inside scene

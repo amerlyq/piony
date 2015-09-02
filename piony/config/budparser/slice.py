@@ -7,14 +7,13 @@ class SliceMaker:
     """ [[..]..] or {rings:[..],...} -> {rings:_} """
 
     NM = 'Slice'
-    KEYS = ('rings', 'corners')
+    KEYS = ('rings', 'corners', 'name')
     ringMaker = RingMaker()
 
     def fromList(self, layer):
         if not all_are(layer, (list, dict)):
             raise BudSyntaxError(
-                'Unsupported mixed {}'.format(SliceMaker.NM),
-                SliceMaker.KEYS)
+                'Unsupported mixed {}'.format(SliceMaker.NM), SliceMaker.KEYS)
         return layer
 
     def fromDict(self, layer):
@@ -23,10 +22,10 @@ class SliceMaker:
                 return [layer]
             else:
                 raise BudSyntaxError(
-                    'Invalid {} format'.format(SliceMaker.NM))
+                    'Invalid {} format'.format(SliceMaker.NM), layer)
         elif not all_in(layer, SliceMaker.KEYS):
             raise BudSyntaxError(
-                '{} contains odd keywords'.format(SliceMaker.NM))
+                '{} contains odd keywords'.format(SliceMaker.NM), SliceMaker.KEYS)
         else:
             return layer['rings']
 

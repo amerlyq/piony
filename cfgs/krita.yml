@@ -1,6 +1,14 @@
-segments: [
-    {name: VA, action: ctrl+a, tooltip: "Select all"},
-    b,f,
-    {action: c, type: key},
-    {action: Left, tooltip: "left arrow"}
-]
+# vim:ts=2:sw=2:sts=2
+
+{ name: 'slice1',
+  rings: [
+    { segments: [
+        {name: VA, action: ctrl+a, tooltip: "Select all"},
+        b,
+        f,
+        {action: c, type: key},
+        {action: Left, tooltip: "left arrow"}
+      ]
+    }
+  ]
+}

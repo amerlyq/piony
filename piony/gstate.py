@@ -7,7 +7,6 @@ from piony.config.argparser import ArgParser
 from piony.config.budparser import BudParser, BudError
 
 
-
 class GState(QObject):
     invalidated = pyqtSignal(dict)
 
@@ -56,8 +55,9 @@ class GState(QObject):
             bud = Bud_Ps.parse(entries)
         except BudError as e:
             print("Error:", e)
-            if not self.bud:  # NOTE: work must go on if client args are bad
-                qApp.quit()
+            if not self.bud:  # NOTE: work must go on if client args are bad?
+                # qApp.quit()  # don't work until main loop
+                raise e
 
         # TODO: Make 'bReload' as tuple to distinguish necessary refreshes.
         bReload = {}

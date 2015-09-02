@@ -13,8 +13,7 @@ class RingMaker:
     def fromList(self, ring):
         if not all_are(ring, (str, dict)):
             raise BudSyntaxError(
-                'Unsupported mixed {}'.format(RingMaker.NM),
-                RingMaker.KEYS)
+                'Unsupported mixed {}'.format(RingMaker.NM), RingMaker.KEYS)
         return ring
 
     def fromDict(self, ring):
@@ -23,10 +22,10 @@ class RingMaker:
                 return [ring]
             else:
                 raise BudSyntaxError(
-                    'Invalid {} format'.format(RingMaker.NM))
+                    'Invalid {} format'.format(RingMaker.NM), ring)
         elif not all_in(ring, RingMaker.KEYS):
             raise BudSyntaxError(
-                '{} contains odd keywords'.format(RingMaker.NM))
+                '{} contains odd keywords'.format(RingMaker.NM), RingMaker.KEYS)
         else:
             return ring['segments']
 

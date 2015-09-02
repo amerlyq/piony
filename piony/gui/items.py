@@ -9,9 +9,11 @@ from piony.gui.shape.segment import SegmentShapeEngine
 
 
 class RingItem(QGraphicsItem):
-    def __init__(self, engine=None, parent=None):
+    def __init__(self, r=None, R=None, engine=None, parent=None):
         super().__init__(parent)
         self._engine = engine
+        self._r = r
+        self._R = R
 
     def boundingRect(self):
         # NOTE: return fixed size to keep objects look the same
@@ -45,12 +47,12 @@ class SegmentItem(RingItem):
         return (r, R, self._a, self._A)
 
     def setBoundings(self, **kwargs):
+        super().setBoundings(**kwargs)
         logger.info('%s setB %s', self.__class__.__qualname__, fmt(kwargs))
         if 'a' in kwargs:
             self._a = kwargs.get('a')
         if 'A' in kwargs:
             self._A = kwargs.get('A')
-        super().setBoundings(**kwargs)
         self.updatePath()
 
     def updatePath(self, lw=1.5):
@@ -70,8 +72,8 @@ class SegmentItem(RingItem):
         p.arcTo(QRectF(-r, -r, 2*r, 2*r), Al, -(Al-al))
         self._path = p
         self._text_rf = QRectF(*sgm.text_bbox_SCR())
-        # self.setMask(segment.region())
 
+    # self.setMask(segment.region())
     # def region(self, path=None):
     #     if not path:
     #         path = self.path(0)
