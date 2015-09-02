@@ -1,7 +1,7 @@
 import inject
 from PyQt5.QtWidgets import QGraphicsItem
 from PyQt5.QtGui import QPen
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QRectF
 
 import piony
 from piony.gstate import GState
@@ -15,8 +15,8 @@ class BudWidget(QGraphicsItem):  # OverlappedItem
         super().__init__(parent)  # NEED: QStackedLayout
         logger.info('%s init', self.__class__.__qualname__)
 
-        items = gs.bud['slices'][0]['rings']
-        self._slice = SliceWidget(items, r=50, R=200, parent=self)
+        slices = gs.bud['slices'][0]
+        self._slice = SliceWidget(slices, r=50, R=200, parent=self)
 
     # m.prepareGeometryChange()
     # DEV caching
@@ -26,7 +26,8 @@ class BudWidget(QGraphicsItem):  # OverlappedItem
         #     size = size.expandedTo(item.minimumSize())
         # size += QSize(2 * self.margin(), 2 * self.margin())
         # return size
-        return self._slice.boundingRect()
+        R = 200
+        return QRectF(-R, -R, 2*R, 2*R)
 
     def paint(self, p, option, wdg):
         if __debug__ and piony.G_DEBUG_VISUALS:

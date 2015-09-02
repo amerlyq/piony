@@ -17,7 +17,7 @@ class RingItem(QGraphicsItem):
 
     def boundingRect(self):
         # NOTE: return fixed size to keep objects look the same
-        # logger.info('bboxR=%-5s : %s', self.R, self.__class__.__qualname__)
+        logger.info('bboxR=%-5s : %s', self._R, self.__class__.__qualname__)
         return QRectF(-self._R, -self._R, 2*self._R, 2*self._R)
 
     # <New> --------------------

@@ -1,20 +1,16 @@
 from piony.gui import logger, fmt
 
 
-class RingLayoutEngine(object):
+class SliceLayoutEngine(object):
     def __init__(self, r=None, R=None):
         self.items = []
-        self.rotation = 0        # Boundary between first and last items
-        self.spacing = 0         # Between items, may be linear or angle
-        self.orientation = None  # Order CW/CCW
+        self.rotation = 0        # For all items as whole
+        self.spacing = 0         # Between rings
+        self.orientation = None  # Order inside/outside
         # Cache
         self._len = len(self)
         self._r = r
         self._R = R
-
-    def insertStretch(self, idx, stretch=1):
-        # DEV: self.items.setStretch(stretch)
-        pass
 
     def __len__(self):
         return len(self.items)
@@ -81,7 +77,7 @@ class RingLayoutEngine(object):
         if not self._cacheUpdated(**kwargs):
             return
         if self.items:
-            da = float(360) / len(self.items)
+            dr = float(self._R - self._r) / len(self.items)
             for i, item in enumerate(self.items):
-                a = self.rotation + i*da
-                item.setBoundings(r=self._r, R=self._R, a=a, A=a+da)
+                r = self._r + i*dr
+                item.setBoundings(r=r, R=r+dr)

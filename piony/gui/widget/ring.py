@@ -10,11 +10,15 @@ from piony.gui.widget.segment import SegmentWidget
 
 
 class RingWidget(RingItem):
-    def __init__(self, items, **kw):
+    def __init__(self, ring, **kw):
         engine = RingLayoutEngine(r=kw.get('r'), R=kw.get('R'))
         super().__init__(engine=engine, **kw)
         logger.info('%s init', self.__class__.__qualname__)
-        segments = map(lambda sgm: SegmentWidget(sgm, parent=self), items)
+        self.build(ring)
+
+    def build(self, ring):
+        segments = map(lambda sgm: SegmentWidget(sgm, parent=self),
+                       ring['segments'])
         self._engine.insert(segments)
 
     def paint(self, p, option, wdg):  # : QStyleOptionGraphicsItem, QWidget
