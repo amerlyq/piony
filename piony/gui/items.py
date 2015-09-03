@@ -17,11 +17,13 @@ class RingItem(QGraphicsItem):
 
     def boundingRect(self):
         # NOTE: return fixed size to keep objects look the same
-        logger.info('bboxR=%-5s : %s', self._R, self.__class__.__qualname__)
+        # logger.info('bboxR=%-5s : %s', self._R, self.__class__.__qualname__)
+        # THINK: maybe cache whole rect?
         return QRectF(-self._R, -self._R, 2*self._R, 2*self._R)
 
     # <New> --------------------
     def setBoundings(self, **kwargs):
+        logger.info('%s := %s', self.__class__.__qualname__, fmt(kwargs))
         if 'r' in kwargs:
             self._r = kwargs.get('r')
         if 'R' in kwargs:
@@ -30,7 +32,8 @@ class RingItem(QGraphicsItem):
             self._engine.update(**kwargs)
 
     def boundings(self):
-        logger.info('%s <R> %f', self.__class__.__qualname__, self._R)
+        # THINK: cache whole boundings() call in external function?
+        # logger.info('%s <R> %f', self.__class__.__qualname__, self._R)
         return (self._r, self._R)
 
 
@@ -48,19 +51,18 @@ class SegmentItem(RingItem):
 
     def setBoundings(self, **kwargs):
         super().setBoundings(**kwargs)
-        logger.info('%s setB %s', self.__class__.__qualname__, fmt(kwargs))
         if 'a' in kwargs:
             self._a = kwargs.get('a')
         if 'A' in kwargs:
             self._A = kwargs.get('A')
         self.updatePath()
 
-    def updatePath(self, lw=1.5):
+    def updatePath(self, margin=2):
         r, R, a, A = self.boundings()
         sgm = SegmentShapeEngine(r, a, R-r, A-a)
 
-        pts = tuple(map(lambda p: (p[0], -p[1]), sgm.points_ra(lw)))
-        (r, al), (_, aL), (R, AL), (_, Al) = sgm.points_RA(lw)
+        pts = tuple(map(lambda p: (p[0], -p[1]), sgm.points_ra(margin)))
+        (r, al), (_, aL), (R, AL), (_, Al) = sgm.points_RA(margin)
 
         p = QPainterPath()
         p.moveTo(*pts[0])

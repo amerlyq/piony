@@ -15,7 +15,7 @@ class SliceWidget(QGraphicsItem):
     @inject.params(gs=GState)
     def __init__(self, slicee, r=None, R=None, gs=None, parent=None):
         logger.info('%s init', self.__class__.__qualname__)
-        self._engine = SliceLayoutEngine(r=r, R=R)
+        self._engine = SliceLayoutEngine(r=r, R=R, spacing=4)
         super().__init__(parent)
         self.sty = gs.sty['Bud']
         self.cfg = gs.cfg
@@ -26,13 +26,11 @@ class SliceWidget(QGraphicsItem):
 
     def build(self, slicee):
         # BUG: engine don't set boundings
-        rings = map(lambda rg: RingWidget(rg, r=self._engine._r,
-                                          R=self._engine._R, parent=self),
-                    slicee['rings'])
+        rings = map(lambda rg: RingWidget(rg, parent=self), slicee['rings'])
         self._engine.insert(rings)
 
     def boundingRect(self):
-        R = self._engine._R
+        R = self._engine.R
         return QRectF(-R, -R, 2*R, 2*R)
 
     def paint(self, p, option, wdg):

@@ -18,15 +18,19 @@ RFC
 	[_] SegmentShapeEngine: extract separate funcs
 		[_] coord-systems conversion code
 		[_] segment contour shrinking
-	[_] Try extract R() as single separate function instead defining in each class
+	2015-09-03 [$] Try extract R() as single separate function instead defining in each class
+		:> algorythms have changed, 'R' is used as value
 	2015-04-25 [X] Replace all imports with full versions
 	[_] -V l -- strictly unnecessary key
 	[_] -T --no-tooltip=no change to --show-tooltip=yes
 	[_] Calculate text size to fit into rect in one pass (find Qt Api)
 	[_] Rename all config options to format 'fTextScale' with type letter
+		: think if it's actual now, after migration to yaml
 	[_] Split GState in separately injected Style, Config, BudStruct
 		:= only if in further architecture only one of them used simultaneously
 	[_] When resizing window use view.fitIn then after end -- rebuild all widgets to remove blur
+	2015-09-03 [X] Inside layout engines make all values as public and replace _cache..() by setup()
+	[_] Add margin inside segments/rings (instead of lw variable)
 
 
 STYLE
@@ -50,7 +54,7 @@ CONTROLS
 	[_] Drag: replace by official dragMoveEvent? Or eventHolder?
 	2015-04-12 [X]     M3+drag | moves piony window (ALT: Mod_i3+M1+drag)
 	[_]  M3+nodrag | opens context menu
-	[_]  C+M3+drag | rotate ring around center
+	[_]  C+M3+drag | rotate ring around center (also use '+', '-', '=')
 		: to adapt icons towards hand's anisotropy
 		: to group instruments for current task from different rings
 	[_] CS+M3+drag | rotates all rings as whole
