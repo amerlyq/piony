@@ -13,17 +13,6 @@ class KeymapParser:
         self.keymap = {}
         self.kh = []
 
-    def test_convert(self):
-        print(chr(Qt.Key_A))
-
-        self.keymap = self.convert()
-        l = [(0, Qt.Key_A), (0, Qt.Key_B), (0, Qt.Key_F1),
-             (int(Qt.ControlModifier) | int(Qt.ShiftModifier), Qt.Key_C),
-             (int(Qt.ControlModifier), Qt.Key_A),
-             (int(Qt.ControlModifier), Qt.Key_B)]
-        for i in l:
-            print(self.keymap.get(i))
-
     def getQtKeyIndexes(self):
         keysqt = {k[4:]: v for k, v in Qt.__dict__.items() if k.startswith('Key_')}
         keysqt.update({k.lower(): v for k, v in keysqt.items()})
@@ -63,12 +52,5 @@ class KeymapParser:
 
         for ik in self.keymap:
             print(ik, self.keymap[ik])
-        # keymap = {}
-
-        # for segment in kmp:
-        #     for action in kmp[segment]:
-        #         for keys in kmp[segment][action]:
-        #             allkeys = self.extractKeys(keys)
-        #             keymap[allkeys] = action
 
         return self.keymap

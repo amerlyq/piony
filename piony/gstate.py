@@ -1,12 +1,11 @@
 from PyQt5.QtCore import QObject, pyqtSignal  # , QRect, QPoint
-from PyQt5.QtWidgets import qApp
+# from PyQt5.QtWidgets import qApp
 
 from piony import logger
 from piony.config import ymlparser as yml
 from piony.config.argparser import ArgParser
 from piony.config.budparser import BudParser, BudError
 
-from piony.config import keyparser as kpr
 
 class GState(QObject):
     invalidated = pyqtSignal(dict)
@@ -21,10 +20,6 @@ class GState(QObject):
         yml.init()
         self._psArg = ArgParser()
         self.update(argv)
-        print("+----------------+")
-        self.kk = kpr.KeymapParser()
-        self.kk.test_convert()
-        print("+----------------+")
 
     def update(self, argv):
         kgs = self.parse(argv)
