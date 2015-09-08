@@ -1,11 +1,15 @@
 # vim:ts=2:sw=2:sts=2
 
 Slice:
-  next: M2
+  next: [a,]
 
 Ring:
-  rotate: [C-M1, C-M2]
+  rotate: [C-a, C-b]
 
 Button:
-  press: M1
-  choose: '*-Space'
+  Inbutton:
+    move: [i, o]
+  press: [u, f1]
+  choose: [C-S-c]
+
+find: [f, s]
