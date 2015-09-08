@@ -3,7 +3,7 @@ from PyQt5.QtCore import Qt
 from piony.config import ymlparser as yml
 
 
-G_KEYMAP_PATH = ':/cfgs/keymap.yml'
+G_KEYMAP_PATH = ':/cfgs/keys.yml'
 
 
 class KeymapParser:
@@ -50,7 +50,7 @@ class KeymapParser:
         kmp = yml.parse(G_KEYMAP_PATH)
         self.getKeys(kmp)
 
-        for ik in self.keymap:
-            print(ik, self.keymap[ik])
+        # for ik in self.keymap:
+        #     print(ik, self.keymap[ik])
 
         return self.keymap
