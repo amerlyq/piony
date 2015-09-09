@@ -11,11 +11,17 @@ from piony.gui.widget.bud import BudWidget
 from piony.inputprc import InputProcessor
 
 
+actions = {}
+actions[('Slice', 'next')] = lambda: print("====function for 'next'")
+actions[('find', )] = lambda: print("====functin for 'find'")
+actions[('Ring', 'rotate')] = lambda: print("====functin for 'rotate'")
+
 class MainEventsMixin(object):
     def showEvent(self, e):
         self.centerOnCursor()
 
-    def keyPressEvent(self, e):
+    @inject.params(gs=GState)
+    def keyPressEvent(self, e, gs=None):
         # Tab, Space -- out of questions as used by Qt (and me in future)
         #   to choose/press UI elements
         if e.key() in [Qt.Key_Escape, Qt.Key_Return]:
@@ -24,6 +30,9 @@ class MainEventsMixin(object):
             print("K")
             e.accept()
         logger.info("{:x} + {:x}".format(int(e.modifiers()), int(e.key())))
+
+        a = actions.get(gs.kmp.get( (int(e.modifiers()), int( e.key() )) ))
+        if hasattr(a, '__call__'): a()
 
     def mousePressEvent(self, e):
         # print(e.button())

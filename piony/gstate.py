@@ -5,6 +5,7 @@ from piony import logger
 from piony.config import ymlparser as yml
 from piony.config.argparser import ArgParser
 from piony.config.budparser import BudParser, BudError
+from piony.config.keyparser import KeymapParser
 
 
 class GState(QObject):
@@ -17,6 +18,7 @@ class GState(QObject):
         self.cfg = None
         self.bud = None
         self.now = None  # Instant states like current visibility, etc
+        self.kmp = None
         yml.init()
         self._psArg = ArgParser()
         self.update(argv)
@@ -41,6 +43,8 @@ class GState(QObject):
         self._psArg.apply(args)  # Set gvars
         cfg = yml.parse(yml.G_CONFIG_PATH)
         self.sty = yml.parse(yml.G_STYLE_PATH)
+        kp = KeymapParser()
+        self.kmp = kp.convert()
 
         if args.kill:
             print("kill:")
