@@ -46,6 +46,9 @@ pre-setup-script
 	Switch for several platforms
 		pacman -S python-pylint  # if you live in the future
 
+register on donating
+	https://gratipay.com/~hut/
+
 
 PR-DISTRIBUTION
 	Video -- need real process of usage giving wishful feeling
