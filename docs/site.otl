@@ -10,14 +10,17 @@ DEVELOP
 CI
 	Build Status
 		https://travis-ci.org/
+		https://app.shippable.com/
 	Dependency
 		https://david-dm.org/
 	npm version
 		http://badge.fury.io/
 	build status
 		https://ci.appveyor.com/
+	dld
+		https://www.soimort.org/translate-shell/
 
-> Cool site, where you find tips on infrastructure
+> Cool site, where you find tips on infrastructure, xvfb etc
 	http://elementalselenium.com/tips/38-headless
 
 Auto-generating layout previews
@@ -38,7 +41,7 @@ Auto-generating layout previews
 			:	Xvfb :99 & && export DISPLAY=:99	# Use port == build number
 			:	./piony.py							# to build simultaneously
 			:	import -display :99 -window root image.png
-			:> 	I think you also won't get GLX if you don't have mesa-dri-drivers installed in the chroot.
+			:>	I think you also won't get GLX if you don't have mesa-dri-drivers installed in the chroot.
 			INFO for firefox
 				: http://www.leonardteo.com/2011/07/taking-server-side-screenshots-of-websites/
 		[_] screenshot with overlaying context menus
