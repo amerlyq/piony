@@ -3,7 +3,8 @@ cd $(dirname $(readlink -m ${0}))
 source ./funcs
 
 ### DEVELOP ###
-sudo pip3 install -U pytest pytest-cov pytest-qt
+pkg_inst python-pytest
+sudo pip3 install -U pytest-cov pytest-qt
 sudo pip3 install -U pylint pep8
 sudo pip3 install -U readline pyreadline ipython ipdb pudb
 sudo pip3 install -U git+git://github.com/mverteuil/pytest-ipdb.git
