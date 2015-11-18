@@ -31,6 +31,11 @@ RFC
 	[_] When resizing window use view.fitIn then after end -- rebuild all widgets to remove blur
 	2015-09-03 [X] Inside layout engines make all values as public and replace _cache..() by setup()
 	[_] Add margin inside segments/rings (instead of lw variable)
+	[_] THINK YAML also has a set type, which looks like this:
+		: set:  # http://learnxinyminutes.com/docs/yaml/
+		: 	? item1
+		: 	? item2
+		: 	? item3
 
 
 STYLE
@@ -299,4 +304,3 @@ IDEAS
 		[_] To bincode
 			http://www.cosc.canterbury.ac.nz/~greg/python/Pyrex/
 			http://psyco.sourceforge.net/
-
