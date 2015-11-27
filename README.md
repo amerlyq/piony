@@ -6,6 +6,10 @@ piony
     https://travis-ci.org/amerlyq/piony)
 [![Coverage Status](https://coveralls.io/repos/amerlyq/piony/badge.svg?branch=master&service=github)](
     https://coveralls.io/github/amerlyq/piony?branch=master)
+[![Release](http://img.shields.io/github/release/amerlyq/piony.svg)](
+    https://github.com/amerlyq/piony/releases)
+[![Issues](http://img.shields.io/github/issues/amerlyq/piony.svg)](
+    https://github.com/amerlyq/piony/issues)
 [![Stories in Ready](https://badge.waffle.io/amerlyq/piony.png?label=ready&title=Ready)](
     https://waffle.io/amerlyq/piony)
 
