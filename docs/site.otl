@@ -8,6 +8,7 @@ DEVELOP
 	[_] Interactive online layout generator in python -- to be able try layouts w/o install
 
 CI
+	SEE: http://shields.io/
 	Build Status
 		https://travis-ci.org/
 		https://app.shippable.com/
