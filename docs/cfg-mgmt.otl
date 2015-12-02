@@ -77,7 +77,7 @@ QA
 		: https://www.python.org/dev/peps/pep-0257/
 		http://sphinx-doc.org/
 		https://github.com/snide/sphinx_rtd_theme
-	[_] ADD Review service
+	2015-12-02 [X] ADD Review service ::> http://reviewable.io/
 	[_] Multilang support -- extract texts into lang file
 		: http://blog.nicolargo.com/2012/11/internationaliser-ses-programmes-python.html
 	[_] Style guideline -- add script with autochecking

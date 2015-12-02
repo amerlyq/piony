@@ -12,6 +12,7 @@ piony
     https://github.com/amerlyq/piony/issues)
 [![Stories in Ready](https://badge.waffle.io/amerlyq/piony.png?label=ready&title=Ready)](
     https://waffle.io/amerlyq/piony)
+[Review](http://reviewable.io/)
 
 
 Radial menu for Wacom / mouse
