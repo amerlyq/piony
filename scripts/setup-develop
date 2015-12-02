@@ -2,11 +2,18 @@
 cd $(dirname $(readlink -m ${0}))
 source ./funcs
 
-### DEVELOP ###
 pkg_inst python-pytest
+if distro arch; then
+    pkg_inst python-pylint pep8
+    pkg_inst ipython python-ipdb
+
+elif distro ubuntu; then
+    sudo pip3 install -U pylint pep8
+    sudo pip3 install -U ipython ipdb
+fi
+### DEVELOP ###
 sudo pip3 install -U pytest-cov pytest-qt
-sudo pip3 install -U pylint pep8
-sudo pip3 install -U readline pyreadline ipython ipdb pudb
+sudo pip3 install -U readline pyreadline pudb
 sudo pip3 install -U git+git://github.com/mverteuil/pytest-ipdb.git
 # readline # for adequate navigation in IPython cmdline
 # ipdb     # pretty debugger for IPython

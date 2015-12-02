@@ -10,6 +10,13 @@ python:  # Need python >= 3.3
 # virtualenv:
 #   system_site_packages: true
 
+addons:
+  apt:
+    packages: [gcc, g++, python3-dev, qtbase5-dev, qt5-qmake]
+
+before_install:
+  - bash ./scripts/site/travis-before
+
 # before_install:
   # Qt5
   # - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
@@ -17,44 +24,9 @@ python:  # Need python >= 3.3
   # - sudo apt-get install -qq python3-pyqt5
     # if sys.version_info[0] == 3: sudo apt-get install -qq python3-pyqt5
     # else: sudo apt-get install -qq python-qt5
+  # ALT - sudo apt-get install -qq python3-pyqt5 --fix-missing
   # - sudo apt-get install -y qtbase5-dev qtdeclarative5-dev
   # - sudo apt-get install -y qt5-default qttools5-dev-tools
-
-# Cached Downloads
-  # - sudo mkdir -p /downloads
-  # - sudo chmod a+rw /downloads
-  # - if [ ! -f /downloads/sip.tar.gz ]; then curl -L -o /downloads/sip.tar.gz http://sourceforge.net/projects/pyqt/files/sip/sip-4.16.5/sip-4.16.5.tar.gz; fi
-  # - if [ ! -f /downloads/pyqt5.tar.gz ]; then curl -L -o /downloads/pyqt5.tar.gz http://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-5.4/PyQt-gpl-5.4.tar.gz; fi
-  # - echo '6d01ea966a53e4c7ae5c5e48c40e49e5  /downloads/sip.tar.gz' | md5sum -c -
-  # - echo '7f2eb79eaf3d7e5e7df5a4e9c8c9340e  /downloads/pyqt5.tar.gz' | md5sum -c -
-  #
-  # # Builds
-  # - sudo mkdir -p /builds
-  # - sudo chmod a+rw /builds
-
-
-# install:
-  # - sudo apt-get install -qq python3-pyqt5 --fix-missing
-  # # Builds
-  # - pushd /builds
-  #
-  # # SIP
-  # - tar xzf /downloads/sip.tar.gz --keep-newer-files
-  # - pushd sip-4.16.5
-  # - python configure.py
-  # - make
-  # - sudo make install
-  # - popd
-  #
-  # # PyQt5
-  # - tar xzf /downloads/pyqt5.tar.gz --keep-newer-files
-  # - pushd PyQt-gpl-5.4
-  # - python configure.py -c --confirm-license --no-designer-plugin -e QtCore -e QtGui -e QtWidgets -e QtNetwork
-  # - make
-  # - sudo make install
-  # - popd
-  # # Builds Complete
-  # - popd
 
   # Dependencies
 # - pip install .  # If you have 'setup.py' to install as package
@@ -64,13 +36,12 @@ install:
   - pip install -U PyYAML
   - pip install -U pytest pytest-cov pylint pep8
   # python-qt5 pytest-qt
-  # git+https://github.com/pyqt/python-qt5.git
-  # - pip search pyqt5  #cat $HOME/.pip/pip.log
-  # - pip install -Ur requirements.txt --use-mirrors
+  - bash ./scripts/site/travis-install
 
-  ## debug:
-  # - apt-cache search python pip
-  # - apt-cache search python qt5
+cache:
+  directories:
+    - $HOME/dld
+  apt: true
 
 before_script:
 #   - export DISPLAY=:99.0
@@ -90,11 +61,6 @@ script:
 #     sudo pip install --quiet coveralls;
 #     coveralls;
 #     fi
-
-# cache:
-#   # directories:
-#   #   - /downloads
-#   apt: true
 
 after_success:
   - pip install -U python-coveralls

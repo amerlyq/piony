@@ -1,0 +1,26 @@
+#!/bin/bash -e
+# vim:ts=2:sw=2:sts=2
+
+DIR="$HOME/dld"
+cd "$DIR"
+
+tar xzf sip.tar.gz --keep-newer-files
+cd $(ls -d sip-* | tail)
+python3 configure.py
+make
+make install
+python3 -c "from sip import SIP_VERSION_STR as s; print('SIP: {}'.format(s))"
+cd "$DIR"  # && rm -r PyQt-gpl-54*
+
+
+tar xzf PyQt.tar.gz --keep-newer-files
+cd $(ls -d PyQt-* | tail)
+python3 configure.py --qmake /usr/bin/qmake-qt5
+# -c --confirm-license --no-designer-plugin -e QtCore -e QtGui -e QtWidgets -e QtNetwork
+make
+make install
+python3 -c "
+  from PyQt5.QtCore import QT_VERSION_STR as q
+  from PyQt5.Qt import PYQT_VERSION_STR as p
+  print('QT5: {}, {}'.format(q, p))"
+cd "$DIR" # && rm -r PyQt-gpl-54*
