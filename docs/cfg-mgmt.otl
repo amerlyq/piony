@@ -14,6 +14,8 @@ DEVELOPMENT
 	Separate Issue tracking like this?
 		[_] https://gaphor.lighthouseapp.com/dashboard
 
+	>>> SEE https://github.com/The-Compiler/qutebrowser/blob/master/CONTRIBUTING.asciidoc
+
 	[_] Isolated environment -- several reprodusable testing environments
 		> http://habrahabr.ru/post/248189/
 		> http://robertbasic.com/blog/install-pyqt5-in-python-3-virtual-environment
