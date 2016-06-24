@@ -42,6 +42,11 @@ Python
 	taught me to avoid importing into setup.py from within the package
 	directory if at all possible (which it has been so far).
 
+Packages
+	[_] autoconf/automake
+		https://github.com/alezost/xdaemon
+	[_] PKGBUILD
+
 pre-setup-script
 	Switch for several platforms
 		pacman -S python-pylint  # if you live in the future
@@ -67,4 +72,3 @@ PR-DISTRIBUTION
 		freely ported and integrated in original Qt.
 	Arch-linux wiki
 	http://linuxwacom.sourceforge.net/wiki/
-
