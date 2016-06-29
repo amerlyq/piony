@@ -5,6 +5,22 @@
 	http://skramm.blogspot.com/2013/04/writing-portable-makefiles.html
 	pyqt5 -> py2exe under Windows
 		http://habrahabr.ru/post/264233/
+	Direct install
+		https://wiki.python.org/moin/PyQt/Deploying_PyQt_Applications
+		https://docs.python.org/2/using/windows.html
+		http://www.instructables.com/id/How-to-install-Python-packages-on-Windows-7/
+			+ use cygwin/mingw + pip?
+	Freeze
+		- with PyQt -> resulting size is 120..230MB
+		https://cx-freeze.readthedocs.io/en/latest/
+		https://www.smallsurething.com/a-really-simple-guide-to-packaging-your-pyqt-application-with-cx_freeze/
+		https://github.com/sekrause/cx_Freeze-Wheels
+		https://github.com/Syncplay/syncplay/blob/master/buildPy2exe.py
+		http://www.pajamaprogrammer.com/2015/11/convert-python-35-script-py-to-windows.html
+		> http://www.pythonschool.net/pyqt/distributing-your-application-on-windows/
+	ALT: using built-in linux support on Windows10+
+		- available only in SP1 after 2016.08, until then only by subscription
+		- need manual switching into FastRing mode
 
 Store setting files in appropriate directories
 	http://stackoverflow.com/questions/1024114/location-of-ini-config-files-in-linux-unix
