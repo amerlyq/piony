@@ -3,11 +3,10 @@ cd $(dirname $(readlink -m ${0}))
 source ./funcs
 
 if distro arch; then
-    pkg_inst python python-pyqt5 python-pip
+    pkg_inst python python-pyqt5 python-pip python-yaml
+    sudo pip3 install -U inject
 
 elif distro ubuntu; then
     pkg_inst python3 python3-pyqt5 python3-pip
+    sudo pip3 install -U PyYAML inject
 fi
-
-# python3-yaml
-sudo pip3 install -U PyYAML inject

@@ -5,7 +5,7 @@ source ./funcs
 if distro arch; then
     pkg_inst "xorg-server-xvfb xorg-xwininfo xorg-xwud"
     pkg_inst "imagemagick feh ruby"
-    yaourt -S --needed --noconfirm compton
+    pkg_inst compton
 
 elif distro ubuntu; then
     pkg_inst "xvfb imagemagick compton feh gem"
