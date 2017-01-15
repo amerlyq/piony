@@ -9,6 +9,8 @@ TODO
 	[_] Compare performance for individual pathes and QTransform rotated.
 	[_] Add extracting git log messages to changelog
 	[_] Option 'verbose' -- move under [Debug] section
+	[_] Убрать из списка задач на Убунте
+	[_] Socket to receive data directly from shell read/write (rather fast)
 
 FLOW
 	2015-04-20 [X] SegmentShapeEngine class (draft version)
